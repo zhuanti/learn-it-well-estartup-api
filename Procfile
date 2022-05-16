@@ -1,4 +1,4 @@
-web: gunicorn core.wsgi
+
 
 [[source]]
 url = "https://pypi.org/simple"
@@ -20,3 +20,4 @@ requests = "*"
 
 [requires]
 python_version = "3.8"
+web: gunicorn core.wsgi
