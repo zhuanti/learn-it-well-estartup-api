@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-0n537xapk)821+*%ea3jo7zz@dxxg$x=h^%3c!q2(9!ol3$@h)
 # ALLOWED_HOSTS = []
 
 # 在Heroku用的連線資訊
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['learn-it-well-estartup-api.herokuapp.com']
 
 
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -90,24 +91,6 @@ DATABASES = {
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-# class DB():
-#     __host = 'ec2-34-202-66-20.compute-1.amazonaws.com'
-#     __user = 'ctqccghsrclyok'
-#     __dbname = 'd4kaq6iu2g0psr'
-#     __password = '9432225df32767cb8362ef5c8078b8d2a8508a241516fda698f8e8917175a860'
-#     __sslmode = 'require'
-#
-#     #-------------------------
-#     # 取得資料庫連線
-#     #-------------------------
-#     @staticmethod
-#     def getConn():
-#         conn_string = f'host={DB.__host} user={DB.__user} dbname={DB.__dbname} password={DB.__password} sslmode={DB.__sslmode}'
-#         return psycopg2.connect(conn_string)
-
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -137,8 +120,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
