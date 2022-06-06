@@ -1,34 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom
+from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans
 
+# 每一個測試的api_view,一次只能取消註解一個
 
-# import json
-# import datetime
-# import numpy as np
-#
-# class MyEncoder(json.JSONEncoder):
-#
-#     def default(self, obj):
-#         # 检查到是bytes类型的数据就转为str类型
-#         if isinstance(obj, bytes):
-#             return str(obj, encoding='utf-8')
-#
-#         # 检查到是intc类型的数据就转为str类型
-#         if isinstance(obj, np.intc):
-#             return str(obj)
-#
-#         # 检查到是float32类型的数据就转为str类型
-#         if isinstance(obj, np.float32):
-#             return str(obj)
-#
-#         # 检查到是datetime.datetime类型的数据就转为str类型
-#         if isinstance(obj, datetime.datetime):
-#             return obj.strftime("%Y-%m-%d %H:%M:%S")
-#         return json.JSONEncoder.default(self, obj)
-
-
+# 討論室列表
 @api_view()
 def get_all_reviews(request):
     discussrooms = Discussroom.objects.all()
@@ -44,22 +21,70 @@ def get_all_reviews(request):
                 'name': discussroom.name,
                 'pwd': discussroom.pwd,
                 'total_people': discussroom.total_people,
-
-                # no = models.IntegerField(primary_key=True)
-                # schoolsys_no = models.IntegerField
-                # subject_no = models.IntegerField
-                # name = models.CharField(max_length=100)
-                # pwd = models.CharField(max_length=30)
-                # total_people = models.IntegerField
-
             }
             for discussroom in discussrooms
 
 
         ]
             # json.dumps(discussrooms, cls=MyEncoder)
-
     })
+
+# 討論室文字紀錄測試
+# @api_view()
+# def get_all_reviews_test(request):
+#     discussroom_records = Discussroom_record.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': discussroom_record.pk,
+#                 'comment': discussroom_record.comment
+#             }
+#             for discussroom_record in discussroom_records
+#
+#
+#         ]
+#             # json.dumps(discussrooms, cls=MyEncoder)
+#     })
+
+# 討論室提問測試
+@api_view()
+def get_all_reviews_test(request):
+    discussroom_anss = Discussroom_ans.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom_ans.pk,
+                'comment': discussroom_ans.comment
+            }
+            for discussroom_ans in discussroom_anss
+
+
+        ]
+            # json.dumps(discussrooms, cls=MyEncoder)
+    })
+
+# 討論室提問答案測試
+# @api_view()
+# def get_all_reviews_test(request):
+#     discussroom_records = Discussroom_record.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': discussroom_record.pk,
+#                 'comment': discussroom_record.comment
+#             }
+#             for discussroom_record in discussroom_records
+#
+#
+#         ]
+#             # json.dumps(discussrooms, cls=MyEncoder)
+#     })
 
 
 
