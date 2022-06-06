@@ -7,12 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-
-
-
-
-
-# 學制
+# 學制類別
 class Schoolsys(models.Model):
     no = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20)
@@ -43,50 +38,16 @@ class Discussroom(models.Model):
         managed = False
         db_table = 'discussroom'
 
-# 使用者個人資料表
-# class User(models.Model):
-#     id = models.CharField(primary_key=True, max_length=100)
-#     pwd = models.CharField(max_length=30)
-#     name = models.CharField(max_length=30)
-#     gender = models.BooleanField()
-#     live = models.CharField(max_length=100)
-#     photo = models.TextField(blank=True, null=True)
-#     birth = models.DateField(blank=True, null=True)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'user'
+# 討論室文字紀錄
+class Discussroom_record(models.Model):
+    no = models.IntegerField(primary_key=True)
+    user_id = models.ForeignKey(Subject, models.DO_NOTHING)
+    comment = models.CharField()
+    discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)
+    datetime = models.CharField(max_length=30)
 
-# class Account(models.Model):
-#     id = models.CharField(primary_key=True, max_length=100)
-#     pwd = models.CharField(max_length=30)
-#     name = models.CharField(max_length=30)
-#     gender = models.BooleanField()
-#     photo = models.TextField(blank=True, null=True)
-#     birth = models.DateField(blank=True, null=True)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'account'
-#
-#
-# class Book(models.Model):
-#     no = models.AutoField(primary_key=True)
-#     user = models.ForeignKey(Account, models.DO_NOTHING)
-#     name = models.CharField(max_length=100)
-#     title = models.CharField(max_length=100)
-#     comment = models.TextField()
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'book'
-#
-#
-# class BookTag(models.Model):
-#     no = models.AutoField(primary_key=True)
-#     book_no = models.IntegerField()
-#     name = models.CharField(max_length=20)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'book_tag'
+    class Meta:
+        managed = False
+        db_table = 'discussroom_record'
+
+
