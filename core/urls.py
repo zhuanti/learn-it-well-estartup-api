@@ -17,4 +17,5 @@ from django.urls import path, include
 
 urlpatterns = [
         path('api/discusroom/', include('api.urls.discusroom_review_urls')),
+        path('api/report/', include('api.urls.report_review_urls')),
 ]
