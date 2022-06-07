@@ -7,6 +7,30 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+# 使用者資訊
+class User(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    pwd = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    gender = models.CharField(max_length=5)
+    live = models.CharField(max_length=100)
+    photo = models.CharField(max_length=100)
+    borth = models.DateField
+    purview = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'user'
+
+# 教室類別
+class Classroom(models.Model):
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=3)
+
+    class Meta:
+        managed = False
+        db_table = 'classroom'
+
 # 學制類別
 class Schoolsys(models.Model):
     no = models.IntegerField(primary_key=True)
@@ -38,20 +62,20 @@ class Discussroom(models.Model):
         managed = False
         db_table = 'discussroom'
 
-# 使用者資訊
-class User(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
-    pwd = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    gender = models.CharField(max_length=5)
-    live = models.CharField(max_length=100)
-    photo = models.CharField(max_length=100)
-    borth = models.DateField
-    purview = models.CharField(max_length=1)
+# 讀書時長報表
+class Report(models.Model):
+    no = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    classroom_type_no = models.ForeignKey(Classroom, models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
+    set_time = models.DateField(blank=True, null=True)
+    entry_time = models.DateField(blank=True, null=True)
+    exit_time = models.DateField(blank=True, null=True)
+    total_time = models.DateField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'user'
+        db_table = 'report'
 
 # 討論室文字紀錄
 class Discussroom_record(models.Model):
@@ -89,6 +113,8 @@ class Discussroom_ans(models.Model):
         managed = False
         db_table = 'discussroom_ans'
 
+
+# 以下為學姊範例程式碼
 # class Account(models.Model):
 #     id = models.CharField(primary_key=True, max_length=100)
 #     pwd = models.CharField(max_length=30)

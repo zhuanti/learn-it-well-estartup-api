@@ -1,30 +1,23 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans
+from api.models import Report
 
 # 每一個測試的api_view,一次只能取消註解一個
 
-# 討論室列表
+# 讀書時長報表測試
 @api_view()
-def get_all_reviews(request):
-    discussrooms = Discussroom.objects.all()
-    # print(discussrooms)
+def get_all_reviews_test(request):
+    reports = Report.objects.all()
 
     return Response({
         'success': True,
         'data': [
             {
-                'no': discussroom.pk,
-                'schoolsys_no': discussroom.schoolsys_no.pk,
-                'subject_no': discussroom.subject_no.pk,
-                'name': discussroom.name,
-                'pwd': discussroom.pwd,
-                'total_people': discussroom.total_people,
+                'no': report.pk,
+                'classroom_type_no': report.classroom_type_no.pk,
+                'set_time': report.set_time,
             }
-            for discussroom in discussrooms
-
-
+            for report in reports
         ]
-            # json.dumps(discussrooms, cls=MyEncoder)
     })

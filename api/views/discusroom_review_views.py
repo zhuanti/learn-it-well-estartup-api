@@ -49,37 +49,37 @@ def get_all_reviews(request):
 #     })
 
 # 討論室提問測試
-@api_view()
-def get_all_reviews_test(request):
-    discussroom_anss = Discussroom_ans.objects.all()
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': discussroom_ans.pk,
-                'comment': discussroom_ans.comment
-            }
-            for discussroom_ans in discussroom_anss
-
-
-        ]
-            # json.dumps(discussrooms, cls=MyEncoder)
-    })
-
-# 討論室提問答案測試
 # @api_view()
 # def get_all_reviews_test(request):
-#     discussroom_records = Discussroom_record.objects.all()
+#     discussroom_questions = Discussroom_question.objects.all()
 #
 #     return Response({
 #         'success': True,
 #         'data': [
 #             {
-#                 'no': discussroom_record.pk,
-#                 'comment': discussroom_record.comment
+#                 'no': discussroom_question.pk,
+#                 'title': discussroom_question.title
 #             }
-#             for discussroom_record in discussroom_records
+#             for discussroom_question in discussroom_questions
+#
+#
+#         ]
+#             # json.dumps(discussrooms, cls=MyEncoder)
+#     })
+
+# 討論室提問答案測試
+# @api_view()
+# def get_all_reviews_test(request):
+#     discussroom_anss = Discussroom_ans.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': discussroom_ans.pk,
+#                 'comment': discussroom_ans.comment
+#             }
+#             for discussroom_ans in discussroom_anss
 #
 #
 #         ]
@@ -87,7 +87,7 @@ def get_all_reviews_test(request):
 #     })
 
 
-
+# 以下為學姊範例程式碼
 
 # @api_view()
 # def get_all_reviews(request):
