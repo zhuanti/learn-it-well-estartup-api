@@ -15,7 +15,7 @@ class User(models.Model):
     gender = models.CharField(max_length=5)
     live = models.CharField(max_length=100)
     photo = models.CharField(max_length=100)
-    borth = models.DateField
+    borth = models.DateField(blank=True, null=True)
     purview = models.CharField(max_length=1)
 
     class Meta:
