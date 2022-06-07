@@ -30,23 +30,23 @@ def get_all_reviews(request):
     })
 
 # 討論室文字紀錄測試
-# @api_view()
-# def get_all_reviews_test(request):
-#     discussroom_records = Discussroom_record.objects.all()
-#
-#     return Response({
-#         'success': True,
-#         'data': [
-#             {
-#                 'no': discussroom_record.pk,
-#                 'comment': discussroom_record.comment
-#             }
-#             for discussroom_record in discussroom_records
-#
-#
-#         ]
-#             # json.dumps(discussrooms, cls=MyEncoder)
-#     })
+@api_view()
+def get_all_reviews_test(request):
+    discussroom_records = Discussroom_record.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom_record.pk,
+                'comment': discussroom_record.comment
+            }
+            for discussroom_record in discussroom_records
+
+
+        ]
+            # json.dumps(discussrooms, cls=MyEncoder)
+    })
 
 # 討論室提問測試
 # @api_view()

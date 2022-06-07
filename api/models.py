@@ -64,6 +64,19 @@ class Report(models.Model):
         managed = False
         db_table = 'report'
 
+# 學習規劃
+class Plan(models.Model):
+    no = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    name = models.CharField(max_length=100)
+    pace = models.IntegerField()
+    datetime = models.DateField(blank=True, null=True)
+    ftime = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'plan'
+
 # 成就輔助
 class Success(models.Model):
     no = models.IntegerField(primary_key=True)
@@ -134,6 +147,28 @@ class Discussroom_ans(models.Model):
     class Meta:
         managed = False
         db_table = 'discussroom_ans'
+
+# 自習室
+class Studyroom(models.Model):
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=20)
+    total_people = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'studyroom'
+
+# 檢舉
+class Impeach(models.Model):
+    no = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    reason = models.CharField(max_length=1000)
+    discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)
+    datetime = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'impeach'
 
 
 # 以下為學姊範例程式碼
