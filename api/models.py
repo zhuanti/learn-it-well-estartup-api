@@ -49,19 +49,6 @@ class Subject(models.Model):
         managed = False
         db_table = 'subject'
 
-# 討論室
-class Discussroom(models.Model):
-    no = models.IntegerField(primary_key=True)
-    schoolsys_no = models.ForeignKey(Schoolsys, models.DO_NOTHING)
-    subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
-    name = models.CharField(max_length=100)
-    pwd = models.CharField(max_length=30)
-    total_people = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'discussroom'
-
 # 讀書時長報表
 class Report(models.Model):
     no = models.IntegerField(primary_key=True)
@@ -76,6 +63,41 @@ class Report(models.Model):
     class Meta:
         managed = False
         db_table = 'report'
+
+# 成就輔助
+class Success(models.Model):
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=40)
+    pace = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'success'
+
+# 成就列表
+class Success_list(models.Model):
+    no = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    success_no = models.ForeignKey(Success, models.DO_NOTHING)
+    pace = models.IntegerField()
+    lockif = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'success_list'
+
+# 討論室
+class Discussroom(models.Model):
+    no = models.IntegerField(primary_key=True)
+    schoolsys_no = models.ForeignKey(Schoolsys, models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
+    name = models.CharField(max_length=100)
+    pwd = models.CharField(max_length=30)
+    total_people = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'discussroom'
 
 # 討論室文字紀錄
 class Discussroom_record(models.Model):
