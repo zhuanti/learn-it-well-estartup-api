@@ -2,7 +2,7 @@ from django.urls import path
 
 from api.views.user_review_views import *
 
-
+# 將被auth_urls取代
 app_name = 'user'
 
 urlpatterns = [
