@@ -3,8 +3,13 @@ from rest_framework.response import Response
 
 from api.models import Impeach, Studyroom
 
+
+from utils.decorators import user_login_required
+
+
 # 自習室列表
 @api_view()
+@user_login_required
 def get_all_reviews_studyroom(request):
     studyrooms = Studyroom.objects.all()
 
@@ -24,6 +29,7 @@ def get_all_reviews_studyroom(request):
 
 # 檢舉測試
 @api_view()
+@user_login_required
 def get_all_reviews_impeach_test(request):
     impeachs = Impeach.objects.all()
 
@@ -41,6 +47,7 @@ def get_all_reviews_impeach_test(request):
 
 # 自習室測試
 @api_view()
+@user_login_required
 def get_all_reviews_studyroom_test(request):
     studyrooms = Studyroom.objects.all()
 

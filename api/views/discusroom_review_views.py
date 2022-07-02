@@ -5,8 +5,12 @@ from api.models import Discussroom, Discussroom_record, Discussroom_question, Di
 
 # 每一個測試的api_view,一次只能取消註解一個
 
+from utils.decorators import user_login_required
+
+
 # 討論室列表
 @api_view()
+@user_login_required
 def get_all_reviews(request):
     discussrooms = Discussroom.objects.all()
     # print(discussrooms)
@@ -31,6 +35,7 @@ def get_all_reviews(request):
 
 # 討論室文字紀錄測試
 @api_view()
+@user_login_required
 def get_all_reviews_test(request):
     discussroom_records = Discussroom_record.objects.all()
 
