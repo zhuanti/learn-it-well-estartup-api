@@ -14,7 +14,7 @@ class User(models.Model):
     name = models.CharField(max_length=30)
     gender = models.CharField(max_length=5)
     live = models.CharField(max_length=100)
-    photo = models.CharField(max_length=100)
+    photo = models.TextField(blank=True, null=True)
     borth = models.DateField(blank=True, null=True)
     purview = models.CharField(max_length=1)
 

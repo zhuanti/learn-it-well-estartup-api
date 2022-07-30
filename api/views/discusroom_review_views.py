@@ -1,7 +1,8 @@
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans
+from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User
 
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -33,6 +34,34 @@ def get_all_reviews(request):
             # json.dumps(discussrooms, cls=MyEncoder)
     })
 
+# 討論室聊天內容
+@api_view()
+@user_login_required
+def rec_reviews(request):
+
+    # 注意：因使用POST，data
+    data = request.query_params
+    user_id = data.get('user_id')
+
+    user_id = str(user_id).strip()
+
+    # get 後面加東西，可能部會成功，故fileter 方便
+    discussroom_recs = Discussroom_record.objects.filter(user_id=user_id)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom_rec.pk,
+                'discussroom_no': discussroom_rec.discussroom_no.pk,
+                'user_id': discussroom_rec.user.pk,
+                'comment': discussroom_rec.comment,
+                'datetime': discussroom_rec.datetime
+            }
+            for discussroom_rec in discussroom_recs
+        ]
+    })
+
 # 討論室文字紀錄測試
 @api_view()
 @user_login_required
@@ -50,7 +79,6 @@ def get_all_reviews_test(request):
 
 
         ]
-            # json.dumps(discussrooms, cls=MyEncoder)
     })
 
 # 討論室提問測試

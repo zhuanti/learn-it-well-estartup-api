@@ -1,13 +1,28 @@
+import base64
+
+from django.db import IntegrityError
+
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from api.models import User
 
-# 除了取得資料其他都用post
+
 from utils.decorators import user_login_required
 
 
+
+# 除了取得資料其他都用post
+# 登出
+@api_view(['POST'])
+@user_login_required
+def logout(request):
+    data = request.data
+    request.session.flush()
+    return Response({'success': True, 'message': '登出成功'})
+
+# 登入
 @api_view(['POST'])
 def login(request):
     data = request.data
@@ -24,10 +39,24 @@ def login(request):
     request.session.save()
     return Response({'success': True, 'message': '登入成功', 'sessionid': request.session.session_key})
 
+# 註冊
 @api_view(['POST'])
-@user_login_required
-def logout(request):
+def register(request):
     data = request.data
-    request.session.flush()
-    return Response({'success': True, 'message': '登出成功'})
 
+    # 圖片轉base64字串
+    photo = request.FILES['photo']
+    photo_string = str(base64.b64encode(photo.read()))[2:-1]
+
+    # 新增使用者資料
+    try:
+        User.objects.create(id=data['id'], pwd=data['pwd'], name=data['name'],
+                            gender=data['gender'], live=data['live'],
+                            # photo=data['photo'],
+                            photo=photo_string,
+                            borth=data['borth'],  purview='0')
+
+        return Response({'success': True, 'message': '註冊成功'})
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '此帳號已被註冊'}, status=status.HTTP_409_CONFLICT)
