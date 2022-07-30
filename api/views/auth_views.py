@@ -44,16 +44,16 @@ def login(request):
 def register(request):
     data = request.data
 
-    # 圖片轉base64字串
-    photo = request.FILES['photo']
-    photo_string = str(base64.b64encode(photo.read()))[2:-1]
+    # # 圖片轉base64字串
+    # photo = request.FILES['photo']
+    # photo_string = str(base64.b64encode(photo.read()))[2:-1]
 
     # 新增使用者資料
     try:
         User.objects.create(id=data['id'], pwd=data['pwd'], name=data['name'],
                             gender=data['gender'], live=data['live'],
                             # photo=data['photo'],
-                            photo=photo_string,
+                            # photo=photo_string,
                             borth=data['borth'],  purview='0')
 
         return Response({'success': True, 'message': '註冊成功'})
