@@ -11,19 +11,19 @@ from utils.decorators import user_login_required
 # 使用者列表測試
 @api_view()
 @user_login_required
-def get_all_reviews_test(request):
-    users = User.objects.all()
+def get_user_detail(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+    except:
+        return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
 
     return Response({
         'success': True,
-        'data': [
-            {
-                'id': user.pk,
+        'data': {
+                'id': user.id.pk,
                 'name': user.name,
                 'gender': user.gender,
                 'live': user.live,
                 'borth': user.borth,
             }
-            for user in users
-        ]
     })
