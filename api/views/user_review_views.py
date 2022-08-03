@@ -12,7 +12,7 @@ from utils.decorators import user_login_required
 # 使用者列表測試
 @api_view()
 @user_login_required
-def get_user_detail(request):
+def get_user_detail_test(request):
     users = User.objects.all()
     #get(pk=pk) all()
 
@@ -32,20 +32,18 @@ def get_user_detail(request):
 
 @api_view()
 @user_login_required
-def get_user_2_detail(request, pk):
-    users = User.objects.get(pk=pk)
-    #get(pk=pk) all()
+def get_user_detail(request):
+    data = request.data
 
+    user = User.objects.get(pk=data['id'])
+
+    request.session.session_key
     return Response({
         'success': True,
-        'data': [
-            {
-                'id': user.pk,
-                'name': user.name,
-                'gender': user.gender,
-                'live': user.live,
-                'borth': user.borth,
-            }
-            for user in users
-        ]
+        'data': {
+            'name': user.name,
+            'id': user.id,
+            'gender': user.gender,
+            'live': user.live,
+        }
     })
