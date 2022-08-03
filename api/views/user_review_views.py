@@ -30,4 +30,22 @@ def get_user_detail(request):
         ]
     })
 
+@api_view()
+@user_login_required
+def get_user_2_detail(request, pk):
+    users = User.objects.get(pk=pk)
+    #get(pk=pk) all()
 
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'id': user.pk,
+                'name': user.name,
+                'gender': user.gender,
+                'live': user.live,
+                'borth': user.borth,
+            }
+            for user in users
+        ]
+    })
