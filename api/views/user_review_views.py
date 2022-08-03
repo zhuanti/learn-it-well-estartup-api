@@ -37,13 +37,13 @@ def get_user_detail(request):
 
     user = User.objects.get(pk=data['id'])
 
-    request.session.session_key
     return Response({
         'success': True,
         'data': {
             'name': user.name,
-            'id': user.id,
+            'id': user.pk,
             'gender': user.gender,
             'live': user.live,
+            'borth': user.borth,
         }
     })
