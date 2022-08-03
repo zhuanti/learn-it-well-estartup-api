@@ -12,8 +12,8 @@ from utils.decorators import user_login_required
 # 使用者列表測試
 @api_view()
 @user_login_required
-def get_user_detail(request, pk):
-    users = User.object.get(pk=pk)
+def get_user_detail(request):
+    users = User.objects.all()
     #get(pk=pk) all()
 
     return Response({
@@ -29,3 +29,5 @@ def get_user_detail(request, pk):
             for user in users
         ]
     })
+
+
