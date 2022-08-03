@@ -9,7 +9,7 @@ from django.db import models
 
 # 使用者資訊
 class User(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = models.CharField(primary_key=True, max_length=100)
     pwd = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     gender = models.CharField(max_length=5)

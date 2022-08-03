@@ -5,6 +5,7 @@ from api.models import User
 
 from utils.decorators import user_login_required
 
+
 # 將被auth_views取代
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -12,18 +13,19 @@ from utils.decorators import user_login_required
 @api_view()
 @user_login_required
 def get_user_detail(request, pk):
-    try:
-        user = User.objects.get(pk=pk)
-    except:
-        return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
+    users = User.object.get(pk=pk)
+    #get(pk=pk) all()
 
     return Response({
         'success': True,
-        'data': {
-                'id': user.id.pk,
+        'data': [
+            {
+                'id': user.pk,
                 'name': user.name,
                 'gender': user.gender,
                 'live': user.live,
                 'borth': user.borth,
             }
+            for user in users
+        ]
     })
