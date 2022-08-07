@@ -30,12 +30,16 @@ def get_user_detail_test(request):
         ]
     })
 
+# 個人資料顯示頁面
 @api_view()
 @user_login_required
 def get_user_detail(request):
-    data = request.data
+    data = request.query_params
+    user_id = data.get('user_id')
 
-    user = User.objects.get(pk=data['id'])
+    # data = request.data
+
+    user = User.objects.get(pk=user_id)
 
     return Response({
         'success': True,

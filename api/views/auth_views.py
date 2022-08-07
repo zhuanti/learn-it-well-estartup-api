@@ -40,7 +40,7 @@ def login(request):
     return Response({'success': True, 'message': '登入成功', 'sessionid': request.session.session_key})
 
 # 註冊
-@api_view(['POST'])
+@api_view()
 def register(request):
     data = request.data
 
