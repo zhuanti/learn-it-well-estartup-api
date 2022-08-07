@@ -41,6 +41,7 @@ def login(request):
 
 # 註冊
 @api_view(['POST'])
+# @api_view()
 def register(request):
     data = request.data
 
@@ -54,7 +55,7 @@ def register(request):
                             gender=data['gender'], live=data['live'],
                             # photo=data['photo'],
                             # photo=photo_string,
-                            borth=data['borth'],  purview='0')
+                            borth=data['borth'],  purview=data['purview'])
 
         return Response({'success': True, 'message': '註冊成功'})
 

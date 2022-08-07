@@ -29,6 +29,10 @@ SECRET_KEY = 'django-insecure-0n537xapk)821+*%ea3jo7zz@dxxg$x=h^%3c!q2(9!ol3$@h)
 DEBUG = True
 ALLOWED_HOSTS = []
 
+# DEBUG = True
+# ALLOWED_HOSTS = []
+
+
 # 在Heroku用的連線資訊
 # DEBUG = False
 # ALLOWED_HOSTS = ['learn-it-well-estartup-api.herokuapp.com']
