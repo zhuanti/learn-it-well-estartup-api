@@ -16,11 +16,11 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-        path('api/auth/', include('api.urls.auth_urls')),
-        path('api/discusroom/', include('api.urls.discusroom_review_urls')),
-        path('api/report/', include('api.urls.report_review_urls')),
-        path('api/success/', include('api.urls.success_review_urls')),
-        path('api/plan/', include('api.urls.plan_review_urls')),
-        path('api/user/', include('api.urls.user_review_urls')),
-        path('api/', include('api.urls.other_review_urls')),
+    path('api/auth/', include('api.urls.auth_urls')),
+    path('api/discusroom/', include('api.urls.discusroom_review_urls')),
+    path('api/report/', include('api.urls.report_review_urls')),
+    path('api/success/', include('api.urls.success_review_urls')),
+    path('api/plan/', include('api.urls.plan_review_urls')),
+    path('api/user/', include('api.urls.user_review_urls')),
+    path('api/', include('api.urls.other_review_urls')),
 ]

@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -21,7 +22,7 @@ def get_all_reviews(request):
         'data': [
             {
                 'no': discussroom.pk,
-                'schoolsys_no': discussroom.schoolsys_no.pk,
+                # 'schoolsys_no': discussroom.schoolsys_no.pk,
                 'subject_no': discussroom.subject_no.pk,
                 'name': discussroom.name,
                 'pwd': discussroom.pwd,
@@ -119,6 +120,20 @@ def get_all_reviews_test(request):
 #             # json.dumps(discussrooms, cls=MyEncoder)
 #     })
 
+# 新增房間
+@api_view(['POST'])
+# @user_login_required
+def addroom(request):
+    data = request.data
+
+    try:
+        Discussroom.objects.create(no=data['no'], subject_no_id=data['subject_no_id'],
+                            name=data['name'],total_people=data['total_people'],)
+
+        return Response({'success': True, 'message': '新增成功'})
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
 # 以下為學姊範例程式碼
 
