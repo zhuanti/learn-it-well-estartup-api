@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -14,7 +15,7 @@ from utils.decorators import user_login_required
 @user_login_required
 def get_user_detail_test(request):
     users = User.objects.all()
-    #get(pk=pk) all()
+    # get(pk=pk) all()
 
     return Response({
         'success': True,
@@ -29,6 +30,7 @@ def get_user_detail_test(request):
             for user in users
         ]
     })
+
 
 # 個人資料顯示頁面
 @api_view()
@@ -52,24 +54,19 @@ def get_user_detail(request):
         }
     })
 
+
 # 個人資料編輯
-@api_view()
+@api_view(['POST'])
 @user_login_required
-def get_user_detail_edit(request):
-    data = request.query_params
+def user_detail_edit(request):
+    data = request.data
+    # data = request.query_params
     user_id = data.get('user_id')
 
-    # data = request.data
+    user = User.objects.filter(pk=user_id)
 
-    user = User.objects.get(pk=user_id)
-
-    return Response({
-        'success': True,
-        'data': {
-            'name': user.name,
-            'id': user.pk,
-            'gender': user.gender,
-            'live': user.live,
-            'borth': user.borth,
-        }
-    })
+    try:
+        user.update(name=data['name'], live=data['live'], borth=data['borth'])
+        return Response({'success': True, 'message': '編輯成功'})
+    except:
+        return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
