@@ -51,3 +51,25 @@ def get_user_detail(request):
             'borth': user.borth,
         }
     })
+
+# 個人資料編輯
+@api_view()
+@user_login_required
+def get_user_detail_edit(request):
+    data = request.query_params
+    user_id = data.get('user_id')
+
+    # data = request.data
+
+    user = User.objects.get(pk=user_id)
+
+    return Response({
+        'success': True,
+        'data': {
+            'name': user.name,
+            'id': user.pk,
+            'gender': user.gender,
+            'live': user.live,
+            'borth': user.borth,
+        }
+    })

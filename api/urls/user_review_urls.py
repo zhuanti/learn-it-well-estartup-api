@@ -7,10 +7,11 @@ app_name = 'user'
 
 urlpatterns = [
     # path('all/', get_all_reviews),
-    
+
     # 下面test/ 供成就相關表格進行測試
     path('test/', get_user_detail_test),
     path('detail/', get_user_detail),
+    path('detail/edit/', get_user_detail_edit),
 
     # 學姊的範例測試
     # path('get/<int:pk>/', get_review),
