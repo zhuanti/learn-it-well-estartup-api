@@ -60,7 +60,7 @@ def get_user_detail(request):
 @user_login_required
 def user_detail_edit(request):
     data = request.data
-    #data = request.query_params
+    # data = request.query_params
     user_id = data.get('user_id')
 
     user = User.objects.filter(pk=user_id)

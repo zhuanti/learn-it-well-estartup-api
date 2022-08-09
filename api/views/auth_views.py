@@ -61,3 +61,28 @@ def register(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '此帳號已被註冊'}, status=status.HTTP_409_CONFLICT)
+
+# 忘記密碼
+@api_view()
+def forget(request, pk):
+    # # 注意：因使用POST，data
+    # data = request.data
+    #
+    # user_id = data.get('user_id')
+    # # get 後面加東西，可能部會成功，故fileter 方便
+    #
+    # user = User.objects.filter(pk=user_id)
+    #
+    # if not user.exists():
+    #     return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+    #
+    # return Response({'success': True, 'message': '成功找到此帳號'})
+
+    try:
+        User.objects.get(pk=pk)
+    except:
+        return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'message': '即將發送郵件重設密碼'
+    })
