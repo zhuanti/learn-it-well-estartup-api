@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User
+from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject
 
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -30,16 +30,15 @@ def get_all_reviews(request):
             }
             for discussroom in discussrooms
 
-
         ]
-            # json.dumps(discussrooms, cls=MyEncoder)
+        # json.dumps(discussrooms, cls=MyEncoder)
     })
+
 
 # 討論室聊天內容
 @api_view()
 @user_login_required
 def rec_reviews(request):
-
     # 注意：因使用POST，data
     data = request.query_params
     user_id = data.get('user_id')
@@ -63,6 +62,7 @@ def rec_reviews(request):
         ]
     })
 
+
 # 討論室文字紀錄測試
 @api_view()
 @user_login_required
@@ -78,9 +78,9 @@ def get_all_reviews_test(request):
             }
             for discussroom_record in discussroom_records
 
-
         ]
     })
+
 
 # 討論室提問測試
 # @api_view()
@@ -102,9 +102,11 @@ def get_all_reviews_test(request):
 #     })
 
 # 討論室提問答案測試
-# @api_view()
+# @api_view(['POST'])
+# # @user_login_required
 # def get_all_reviews_test(request):
 #     discussroom_anss = Discussroom_ans.objects.all()
+#     data = request.data
 #
 #     return Response({
 #         'success': True,
@@ -134,6 +136,26 @@ def addroom(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
+
+# 討論室房間新增-科目
+@api_view()
+# @user_login_required
+def get_subject_reviews(request):
+    subjects = Subject.objects.all()
+    # print(discussrooms)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': subject.pk,
+                'name': subject.name,
+            }
+            for subject in subjects
+
+        ]
+        # json.dumps(discussrooms, cls=MyEncoder)
+    })
 
 # 以下為學姊範例程式碼
 
