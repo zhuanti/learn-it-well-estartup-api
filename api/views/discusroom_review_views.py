@@ -126,11 +126,11 @@ def get_all_reviews_test(request):
 @api_view(['POST'])
 # @user_login_required
 def addroom(request):
-    data = request.data
 
+    data = request.data
     try:
-        Discussroom.objects.create(no=data['no'], subject_no_id=data['subject_no_id'],
-                                   name=data['name'], total_people=data['total_people'], )
+        Discussroom.objects.create(no=data['no'], subject_no=data['subject_no'],
+                            name=data['name'], total_people=data['total_people'],)
 
         return Response({'success': True, 'message': '新增成功'})
 
