@@ -83,51 +83,64 @@ def get_all_reviews_test(request):
 
 
 # 討論室提問測試
-# @api_view()
-# def get_all_reviews_test(request):
-#     discussroom_questions = Discussroom_question.objects.all()
-#
-#     return Response({
-#         'success': True,
-#         'data': [
-#             {
-#                 'no': discussroom_question.pk,
-#                 'title': discussroom_question.title
-#             }
-#             for discussroom_question in discussroom_questions
-#
-#
-#         ]
-#             # json.dumps(discussrooms, cls=MyEncoder)
-#     })
+@api_view()
+def get_qus(request):
+    discussroom_questions = Discussroom_question.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom_question.pk,
+                'title': discussroom_question.title
+            }
+            for discussroom_question in discussroom_questions
+
+
+        ]
+            # json.dumps(discussrooms, cls=MyEncoder)
+    })
 
 # 討論室提問答案測試
-# @api_view(['POST'])
-# # @user_login_required
-# def get_all_reviews_test(request):
-#     discussroom_anss = Discussroom_ans.objects.all()
-#     data = request.data
-#
-#     return Response({
-#         'success': True,
-#         'data': [
-#             {
-#                 'no': discussroom_ans.pk,
-#                 'comment': discussroom_ans.comment
-#             }
-#             for discussroom_ans in discussroom_anss
-#
-#
-#         ]
-#             # json.dumps(discussrooms, cls=MyEncoder)
-#     })
+@api_view(['POST'])
+# @user_login_required
+def get_ans(request):
+    discussroom_anss = Discussroom_ans.objects.all()
+    data = request.data
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom_ans.pk,
+                'comment': discussroom_ans.comment
+            }
+            for discussroom_ans in discussroom_anss
+
+
+        ]
+            # json.dumps(discussrooms, cls=MyEncoder)
+    })
 
 # 新增房間
 @api_view(['POST'])
 # @user_login_required
 def addroom(request):
-
     data = request.data
+    # Subjects = Subject.objects.all()
+    #科目
+    # return Response({
+    #     'success': True,
+    #     'data': [
+    #         {
+    #             'no': subject.pk,
+    #             'name': subject.name,
+    #         }
+    #         for subject in subjects
+    #
+    #     ]
+    # })
+    #新增
     try:
         Discussroom.objects.create(no=data['no'], subject_no=data['subject_no'],
                             name=data['name'], total_people=data['total_people'],)
@@ -138,24 +151,22 @@ def addroom(request):
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
 # 討論室房間新增-科目
-@api_view()
-# @user_login_required
-def get_subject_reviews(request):
-    subjects = Subject.objects.all()
-    # print(discussrooms)
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': subject.pk,
-                'name': subject.name,
-            }
-            for subject in subjects
-
-        ]
-        # json.dumps(discussrooms, cls=MyEncoder)
-    })
+# @api_view()
+# # @user_login_required
+# def get_subject_reviews(request):
+#     subjects = Subject.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': subject.pk,
+#                 'name': subject.name,
+#             }
+#             for subject in subjects
+#
+#         ]
+#     })
 
 # 以下為學姊範例程式碼
 
