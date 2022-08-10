@@ -10,7 +10,7 @@ urlpatterns = [
     path('rec/', rec_reviews),
     path('addroom/', addroom),
     # path('addroom_subject/',get_subject_reviews),
-    path('qus/',get_qus),
+    path('qus/', get_qus),
 
     # 下面test/ 供討論室相關表格進行測試
     path('test/', get_all_reviews_test),

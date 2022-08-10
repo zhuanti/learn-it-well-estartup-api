@@ -93,7 +93,7 @@ def get_qus(request):
             {
                 'no': discussroom_question.pk,
                 'title': discussroom_question.title,
-                'quser_id': discussroom_question.quser,
+                'quser_id': discussroom_question.quser.pk,
 
             }
             for discussroom_question in discussroom_questions
