@@ -101,7 +101,7 @@ class Success_list(models.Model):
 
 # 討論室
 class Discussroom(models.Model):
-    no = models.IntegerField(primary_key=True)
+    no = models.AutoField(primary_key=True)
     schoolsys_no = models.ForeignKey(Schoolsys, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
     name = models.CharField(max_length=100)

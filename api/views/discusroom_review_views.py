@@ -130,7 +130,7 @@ def addroom(request):
     # Subjects = Subject.objects.all()
     #新增
     try:
-        Discussroom.objects.create( subject_no=data['subject_no'],
+        Discussroom.objects.create(no=data['no'], subject_no_id=data['subject_no_id'],
                             name=data['name'], total_people=data['total_people'],)
 
         return Response({'success': True, 'message': '新增成功'})
