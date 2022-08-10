@@ -79,10 +79,14 @@ def forget(request, pk):
     # return Response({'success': True, 'message': '成功找到此帳號'})
 
     try:
-        User.objects.get(pk=pk)
+       user = User.objects.get(pk=pk)
     except:
         return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
     return Response({
         'success': True,
-        'message': '即將發送郵件重設密碼'
+        'message': '即將發送郵件重設密碼',
+        'data':
+            {
+                'id': user.pk
+            }
     })
