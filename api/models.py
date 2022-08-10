@@ -33,7 +33,7 @@ class Classroom(models.Model):
 
 # 學制類別
 class Schoolsys(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20)
 
     class Meta:
@@ -42,7 +42,7 @@ class Schoolsys(models.Model):
 
 # 科目
 class Subject(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20)
 
     class Meta:

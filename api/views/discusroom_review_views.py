@@ -128,21 +128,9 @@ def get_ans(request):
 def addroom(request):
     data = request.data
     # Subjects = Subject.objects.all()
-    #科目
-    # return Response({
-    #     'success': True,
-    #     'data': [
-    #         {
-    #             'no': subject.pk,
-    #             'name': subject.name,
-    #         }
-    #         for subject in subjects
-    #
-    #     ]
-    # })
     #新增
     try:
-        Discussroom.objects.create(no=data['no'], subject_no=data['subject_no'],
+        Discussroom.objects.create( subject_no=data['subject_no'],
                             name=data['name'], total_people=data['total_people'],)
 
         return Response({'success': True, 'message': '新增成功'})
