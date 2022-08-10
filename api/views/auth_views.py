@@ -41,7 +41,6 @@ def login(request):
 
 # 註冊
 @api_view(['POST'])
-# @api_view()
 def register(request):
     data = request.data
 
@@ -59,8 +58,12 @@ def register(request):
 
         return Response({'success': True, 'message': '註冊成功'})
 
+
     except IntegrityError:
         return Response({'success': False, 'message': '此帳號已被註冊'}, status=status.HTTP_409_CONFLICT)
+
+    except :
+        return Response({'success': False, 'message': '輸入格式錯誤，請確認生日及其他欄位的填寫格式'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # 忘記密碼
 @api_view()
@@ -82,6 +85,7 @@ def forget(request, pk):
        user = User.objects.get(pk=pk)
     except:
         return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
+
     return Response({
         'success': True,
         'message': '即將發送郵件重設密碼',
