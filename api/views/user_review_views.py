@@ -65,6 +65,9 @@ def user_detail_edit(request):
 
     user = User.objects.filter(pk=user_id)
 
+    if not user.exists():
+        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+
     try:
         user.update(name=data['name'], live=data['live'], borth=data['borth'])
         return Response({'success': True, 'message': '編輯成功'})
