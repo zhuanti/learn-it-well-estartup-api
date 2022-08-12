@@ -126,7 +126,7 @@ def get_ans(request):
 
 # 新增房間
 @api_view(['POST'])
-@user_login_required
+# @user_login_required
 def addroom(request):
     data = request.data
     # Subjects = Subject.objects.all()

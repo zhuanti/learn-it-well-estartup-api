@@ -26,12 +26,12 @@ SECRET_KEY = 'django-insecure-0n537xapk)821+*%ea3jo7zz@dxxg$x=h^%3c!q2(9!ol3$@h)
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # 在本地時使用的連線資訊
-DEBUG = True
-ALLOWED_HOSTS = []
+# DEBUG = True
+# ALLOWED_HOSTS = []
 
 # 在Heroku用的連線資訊
-# DEBUG = False
-# ALLOWED_HOSTS = ['learn-it-well-estartup-api.herokuapp.com']
+DEBUG = False
+ALLOWED_HOSTS = ['learn-it-well-estartup-api.herokuapp.com']
 
 
 INSTALLED_APPS = [
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api.apps.ApiConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -86,7 +86,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://ctqccghsrclyok:9432225df32767cb8362ef5c8078b8d2a8508a241516fda698f8e8917175a860@ec2-34-202-66-20.compute-1.amazonaws.com:5432/d4kaq6iu2g0psr')
+    'default': dj_database_url.parse(
+        'postgres://ctqccghsrclyok:9432225df32767cb8362ef5c8078b8d2a8508a241516fda698f8e8917175a860@ec2-34-202-66-20.compute-1.amazonaws.com:5432/d4kaq6iu2g0psr')
 }
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
@@ -131,5 +132,3 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-

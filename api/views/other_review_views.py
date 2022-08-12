@@ -1,3 +1,5 @@
+import django_filters
+from django import forms
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -74,6 +76,8 @@ def Sserch(request):
 
     # 去除前後空白
     no = str(no).strip()
+    # if no==None:
+    #     no="1"
     name = str(name).strip()
     studyrooms = Studyroom.objects.filter(no=no,name=name)
 
@@ -81,8 +85,9 @@ def Sserch(request):
         'success': True,
         'data': [
             {
-                'id': studyroom.no,
+                'no': studyroom.pk,
                 'name': studyroom.name,
+                'total_people': studyroom.total_people,
             }
             for studyroom in studyrooms
         ]
