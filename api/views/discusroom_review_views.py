@@ -147,7 +147,7 @@ def get_room_no(request, pk):
     try:
         discussroom = Discussroom.objects.get(pk=pk)
     except:
-        return Response ({'success': False, 'message':'查無資料'}, status=status.HTTP_404_NOT_FOUND)
+        return Response ({'success': False, 'message':'查無此房間'}, status=status.HTTP_404_NOT_FOUND)
     return Response({
         'success': True,
         'data':
