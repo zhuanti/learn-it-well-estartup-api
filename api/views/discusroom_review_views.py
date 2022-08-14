@@ -140,6 +140,26 @@ def addroom(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
+
+# 討論室抓使用者
+@api_view()
+@user_login_required
+def getuser(request):
+    users = User.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': users.pk,
+                'name': users.name,
+            }
+            for users in users
+
+        ]
+    })
+
+
 # 討論室房間新增-科目
 # @api_view()
 # # @user_login_required
