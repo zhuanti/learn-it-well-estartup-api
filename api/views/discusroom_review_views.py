@@ -140,6 +140,27 @@ def addroom(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
+# 顯示加入房間編號
+@api_view()
+@user_login_required
+def get_room_no(request, pk):
+    try:
+        discussroom = Discussroom.objects.get(pk=pk)
+    except:
+        return Response ({'success': False, 'message':'查無資料'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'data':
+            {
+                'no': discussroom.pk,
+                # 'schoolsys_no': discussroom.schoolsys_no.pk,
+                'subject_no': discussroom.subject_no.pk,
+                'name': discussroom.name,
+                'pwd': discussroom.pwd,
+                'total_people': discussroom.total_people,
+            }
+    })
+
 # 討論室房間新增-科目
 # @api_view()
 # # @user_login_required
