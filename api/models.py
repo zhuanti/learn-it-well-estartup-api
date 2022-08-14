@@ -55,10 +55,11 @@ class Report(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     classroom_type_no = models.ForeignKey(Classroom, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
-    set_time = models.IntegerField(blank=True, null=True)
+    set_time = models.IntegerField()
     entry_time = models.DateField(blank=True, null=True)
     exit_time = models.DateField(blank=True, null=True)
     total_time = models.DateField(blank=True, null=True)
+    subject_detail = models.CharField(max_length=50)
 
     class Meta:
         managed = False
