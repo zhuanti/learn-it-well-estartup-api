@@ -14,7 +14,7 @@ urlpatterns = [
 
     # 下面test/ 供討論室相關表格進行測試
     path('test/', get_all_reviews_test),
-    path('getuser',getuser)
+    path('getuser/<pk>',getuser),
     # path('addroom_subject/',get_subject_reviews), # 新增房間時顯示科目名稱
     path('get/<int:pk>', get_room_no),  # 加入房間編號
 

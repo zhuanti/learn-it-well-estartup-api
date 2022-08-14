@@ -1,3 +1,5 @@
+from json import JSONDecodeError
+
 from django.db import IntegrityError
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -164,21 +166,26 @@ def get_room_no(request, pk):
 
 # 討論室抓使用者
 @api_view()
-@user_login_required
-def getuser(request):
-    users = User.objects.all()
+# @user_login_required
+def getuser(request, pk):
+    # users = User.objects.all()
+    try:
+        user = User.objects.get(pk=pk)
+        return Response({
+            'success': True,
+            'data': [
+                {
+                    'id': user.pk,
+                    'name': user.name,
+                }
 
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': users.pk,
-                'name': users.name,
-            }
-            for users in users
+            ]
+        })
+    except JSONDecodeError:
+        return Response({'success': False, 'message': '查無此人'}, status=status.HTTP_404_NOT_FOUND)
 
-        ]
-    })
+
+
 
 
 # 討論室房間新增-科目
