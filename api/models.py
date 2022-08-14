@@ -101,6 +101,19 @@ class Success_list(models.Model):
 
 # 討論室
 class Discussroom(models.Model):
+    # SUBJECT_CHOICES = (
+    #     ('1', '國文'),
+    #     ('2', '數學'),
+    #     ('3', '英文'),
+    #     ('4', '物理'),
+    #     ('5', '化學'),
+    #     ('6', '地科'),
+    #     ('7', '生物'),
+    #     ('8', '地理'),
+    #     ('9', '歷史'),
+    #     ('10', '公民'),
+    #     ('11', '其他'),
+    # )
     no = models.AutoField(primary_key=True)
     schoolsys_no = models.ForeignKey(Schoolsys, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
@@ -150,7 +163,7 @@ class Discussroom_ans(models.Model):
 
 # 自習室
 class Studyroom(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20)
     total_people = models.IntegerField()
 

@@ -8,9 +8,7 @@ from rest_framework.response import Response
 
 from api.models import User
 
-
 from utils.decorators import user_login_required
-
 
 
 # 除了取得資料其他都用post
@@ -21,6 +19,7 @@ def logout(request):
     data = request.data
     request.session.flush()
     return Response({'success': True, 'message': '登出成功'})
+
 
 # 登入
 @api_view(['POST'])
@@ -39,6 +38,7 @@ def login(request):
     request.session.save()
     return Response({'success': True, 'message': '登入成功', 'sessionid': request.session.session_key})
 
+
 # 註冊
 @api_view(['POST'])
 def register(request):
@@ -54,7 +54,7 @@ def register(request):
                             gender=data['gender'], live=data['live'],
                             # photo=data['photo'],
                             # photo=photo_string,
-                            borth=data['borth'],  purview=data['purview'])
+                            borth=data['borth'], purview=data['purview'])
 
         return Response({'success': True, 'message': '註冊成功'})
 
@@ -62,8 +62,10 @@ def register(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此帳號已被註冊'}, status=status.HTTP_409_CONFLICT)
 
-    except :
-        return Response({'success': False, 'message': '輸入格式錯誤，請確認生日及其他欄位的填寫格式'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except:
+        return Response({'success': False, 'message': '輸入格式錯誤，請確認生日及其他欄位的填寫格式'},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 # 忘記密碼
 @api_view()
@@ -82,7 +84,7 @@ def forget(request, pk):
     # return Response({'success': True, 'message': '成功找到此帳號'})
 
     try:
-       user = User.objects.get(pk=pk)
+        user = User.objects.get(pk=pk)
     except:
         return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -94,3 +96,23 @@ def forget(request, pk):
                 'id': user.pk
             }
     })
+
+
+# 重設忘記密碼
+@api_view()
+def forget_rest(request, pk):
+    data = request.data
+    # data = request.query_params
+    user_id = data.get('user_id')
+
+    user = User.objects.filter(pk=user_id)
+
+    if not user.exists():
+        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    try:
+        user.update(pwd=data['pwd'])
+        return Response({'success': True, 'message': '編輯成功'})
+    except:
+        return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
