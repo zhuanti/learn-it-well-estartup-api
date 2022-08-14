@@ -98,10 +98,10 @@ def get_qus(request):
             }
             for discussroom_question in discussroom_questions
 
-
         ]
-            # json.dumps(discussrooms, cls=MyEncoder)
+        # json.dumps(discussrooms, cls=MyEncoder)
     })
+
 
 # 討論室提問答案測試
 @api_view(['POST'])
@@ -119,10 +119,10 @@ def get_ans(request):
             }
             for discussroom_ans in discussroom_anss
 
-
         ]
-            # json.dumps(discussrooms, cls=MyEncoder)
+        # json.dumps(discussrooms, cls=MyEncoder)
     })
+
 
 # 新增房間
 @api_view(['POST'])
@@ -130,10 +130,10 @@ def get_ans(request):
 def addroom(request):
     data = request.data
     # Subjects = Subject.objects.all()
-    #新增
+    # 新增
     try:
         Discussroom.objects.create(no=data['no'], subject_no_id=data['subject_no_id'],
-                            name=data['name'], total_people=data['total_people'],)
+                                   name=data['name'], total_people=data['total_people'], )
 
         return Response({'success': True, 'message': '新增成功'})
 
