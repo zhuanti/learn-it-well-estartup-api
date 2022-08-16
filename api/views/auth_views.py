@@ -99,19 +99,13 @@ def forget(request, pk):
 
 
 # 重設忘記密碼
-@api_view()
+@api_view(['POST'])
 def forget_rest(request, pk):
     data = request.data
     # data = request.query_params
-    user_id = data.get('user_id')
-
-    user = User.objects.filter(pk=user_id)
-
-    if not user.exists():
-        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
-
-
+    # user_id = data.get('user_id')
     try:
+        user = User.objects.filter(pk=pk)
         user.update(pwd=data['pwd'])
         return Response({'success': True, 'message': '編輯成功'})
     except:
