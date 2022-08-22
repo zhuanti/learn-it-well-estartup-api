@@ -26,11 +26,7 @@ def get_all_reviews(request, pk):
             {
                 # 自習室
                 'no': studyroom.pk,
-                # 'schoolsys_no': discussroom.schoolsys_no.pk,
-                # 'subject_no': discussroom.subject_no.pk,
                 'study_name': studyroom.name,
-                # 'pwd': discussroom.pwd,
-                # 'total_people': discussroom.total_people,
                 'study_sub_names': [
                     {  # 科目
                         'sub_no': subject.no,
