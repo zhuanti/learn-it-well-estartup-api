@@ -195,6 +195,33 @@ def getuser(request, pk):
     except JSONDecodeError:
         return Response({'success': False, 'message': '查無此人'}, status=status.HTTP_404_NOT_FOUND)
 
+# 查詢
+@api_view()
+@user_login_required
+def get_critic_reviews(request):
+    # 注意：因使用GET，使用query_params
+    data = request.query_params
+    name = data.get('name')
+
+    # 去除前後空白
+    name = str(name).strip()
+    discussrooms = Discussroom.objects.filter(name=name)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom.pk,
+                # 'schoolsys_no': discussroom.schoolsys_no.pk,
+                'subject_no': discussroom.subject_no.pk,
+                'name': discussroom.name,
+                'pwd': discussroom.pwd,
+                'total_people': discussroom.total_people,
+            }
+            for discussroom in discussrooms
+        ]
+    })
+
 
 
 
