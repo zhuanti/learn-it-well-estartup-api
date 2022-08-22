@@ -84,25 +84,7 @@ def get_all_reviews_test(request):
     })
 
 
-# 討論室提問測試
-@api_view()
-def get_qus(request):
-    discussroom_questions = Discussroom_question.objects.all()
 
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': discussroom_question.pk,
-                'title': discussroom_question.title,
-                'quser_id': discussroom_question.quser.pk,
-
-            }
-            for discussroom_question in discussroom_questions
-
-        ]
-        # json.dumps(discussrooms, cls=MyEncoder)
-    })
 
 
 # 討論室提問答案測試
@@ -160,7 +142,36 @@ def get_room_no(request, pk):
                 'name': discussroom.name,
                 'pwd': discussroom.pwd,
                 'total_people': discussroom.total_people,
+                'discussroom_qus_lists':[
+                    {
+                        'discussroom_no': discussroom_question.pk,
+                        'title': discussroom_question.title,
+                        'quser_id': discussroom_question.quser.pk,
+                    }
+                    for discussroom_question in Discussroom_question.objects.filter(discussroom_no=discussroom.pk)
+                ],
             }
+    })
+
+
+# 討論室提問測試
+@api_view()
+def get_qus(request):
+    discussroom_questions = Discussroom_question.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': discussroom_question.pk,
+                'title': discussroom_question.title,
+                'quser_id': discussroom_question.quser.pk,
+
+            }
+            for discussroom_question in discussroom_questions
+
+        ]
+        # json.dumps(discussrooms, cls=MyEncoder)
     })
 
 
