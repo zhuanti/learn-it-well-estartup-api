@@ -38,19 +38,19 @@ def get_all_reviews(request, pk):
             }
 
     })
-@api_view()
-@user_login_required
-def get_selfall_reviews(request):
-    subjects = Subject.objects.all()
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': subject.pk,
-                'name': subject.name,
-            }
-            for subject in subjects
-
-        ]
-    })
+# @api_view()
+# @user_login_required
+# def get_selfall_reviews(request):
+#     subjects = Subject.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': subject.pk,
+#                 'name': subject.name,
+#             }
+#             for subject in subjects
+#
+#         ]
+#     })
