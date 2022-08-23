@@ -24,4 +24,5 @@ urlpatterns = [
     path('api/user/', include('api.urls.user_review_urls')),
     path('api/', include('api.urls.other_review_urls')),
     path('api/subject/', include('api.urls.subject_review_urls')),
+    path('api/settime/', include('api.urls.settime_review_urls')),
 ]

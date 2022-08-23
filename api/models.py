@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+
 # 使用者資訊
 class User(models.Model):
     id = models.CharField(primary_key=True, max_length=100)
@@ -22,6 +23,7 @@ class User(models.Model):
         managed = False
         db_table = 'user'
 
+
 # 教室類別
 class Classroom(models.Model):
     no = models.IntegerField(primary_key=True)
@@ -30,6 +32,7 @@ class Classroom(models.Model):
     class Meta:
         managed = False
         db_table = 'classroom'
+
 
 # 學制類別
 class Schoolsys(models.Model):
@@ -40,6 +43,7 @@ class Schoolsys(models.Model):
         managed = False
         db_table = 'school_sys'
 
+
 # 科目
 class Subject(models.Model):
     no = models.IntegerField(primary_key=True)
@@ -49,13 +53,24 @@ class Subject(models.Model):
         managed = False
         db_table = 'subject'
 
+
+# 設定時間
+class Settime(models.Model):
+    no = models.IntegerField(primary_key=True)
+    time = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'settime'
+
+
 # 讀書時長報表
 class Report(models.Model):
     no = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     classroom_type_no = models.ForeignKey(Classroom, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
-    set_time = models.IntegerField()
+    settime_no = models.IntegerField()
     entry_time = models.DateField(blank=True, null=True)
     exit_time = models.DateField(blank=True, null=True)
     total_time = models.DateField(blank=True, null=True)
@@ -64,6 +79,7 @@ class Report(models.Model):
     class Meta:
         managed = False
         db_table = 'report'
+
 
 # 學習規劃
 class Plan(models.Model):
@@ -78,6 +94,7 @@ class Plan(models.Model):
         managed = False
         db_table = 'plan'
 
+
 # 成就輔助
 class Success(models.Model):
     no = models.AutoField(primary_key=True)
@@ -87,6 +104,7 @@ class Success(models.Model):
     class Meta:
         managed = False
         db_table = 'success'
+
 
 # 成就列表
 class Success_list(models.Model):
@@ -99,6 +117,7 @@ class Success_list(models.Model):
     class Meta:
         managed = False
         db_table = 'success_list'
+
 
 # 討論室
 class Discussroom(models.Model):
@@ -126,6 +145,7 @@ class Discussroom(models.Model):
         managed = False
         db_table = 'discussroom'
 
+
 # 討論室文字紀錄
 class Discussroom_record(models.Model):
     no = models.AutoField(primary_key=True)
@@ -137,7 +157,8 @@ class Discussroom_record(models.Model):
     class Meta:
         managed = False
         db_table = 'discussroom_record'
-        
+
+
 # 討論室提問
 class Discussroom_question(models.Model):
     no = models.AutoField(primary_key=True)
@@ -149,6 +170,7 @@ class Discussroom_question(models.Model):
     class Meta:
         managed = False
         db_table = 'discussroom_question'
+
 
 # 討論室提問答案
 class Discussroom_ans(models.Model):
@@ -162,6 +184,7 @@ class Discussroom_ans(models.Model):
         managed = False
         db_table = 'discussroom_ans'
 
+
 # 自習室
 class Studyroom(models.Model):
     no = models.IntegerField(primary_key=True)
@@ -171,6 +194,7 @@ class Studyroom(models.Model):
     class Meta:
         managed = False
         db_table = 'studyroom'
+
 
 # 檢舉
 class Impeach(models.Model):
@@ -219,5 +243,3 @@ class Impeach(models.Model):
 #     class Meta:
 #         managed = False
 #         db_table = 'book_tag'
-
-
