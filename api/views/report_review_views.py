@@ -40,10 +40,33 @@ def addsub(request):
                               user_id=data['user_id'],
                               classroom_type_no_id=data['classroom_type_no_id'],
                               subject_no_id=data['subject_no_id'],
-                              set_time=data['set_time'],
+                              settime_no=data['settime_no'],
                               subject_detail=data['subject_detail'], )
 
         return Response({'success': True, 'message': '新增成功'})
 
     except IntegrityError:
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
+
+# 取得使用者填寫讀書資訊
+@api_view()
+@user_login_required
+def get_reviews_insideshow(request):
+    informations = Report.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': information.pk,
+                'user_id': information.user_id,
+                'classroom_type_no_id': information.classroom_type_no_id,
+                'subject_no_id': information.subject_no_id,
+                'settime_no': information.settime_no,
+                'subject_detail': information.subject_detail,
+            }
+            for information in informations
+
+        ]
+    })
