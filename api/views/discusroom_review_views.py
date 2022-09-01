@@ -124,7 +124,7 @@ def addroom(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
-# 顯示加入房間編號
+# 顯示加入房間編號、問題列表
 @api_view()
 @user_login_required
 def get_room_no(request, pk):
