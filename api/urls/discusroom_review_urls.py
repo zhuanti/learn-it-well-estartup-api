@@ -6,7 +6,7 @@ from api.views.discusroom_review_views import *
 app_name = 'discusroom'
 
 urlpatterns = [
-    path('all/<pk>', get_all_reviews),  # 列表
+    path('all/', get_all_reviews),  # 列表
     path('rec/', rec_reviews),  # 聊天內容
     path('addroom/', addroom),  # 新增房間
     path('qus/', get_qus),  # 問題
