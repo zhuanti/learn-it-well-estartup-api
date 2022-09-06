@@ -12,6 +12,8 @@ django = "*"
 pillow = "*"
 djangorestframework = "*"
 django-filter = "*"
+channels = "*"
+channels-redis = "*"
 
 [dev-packages]
 

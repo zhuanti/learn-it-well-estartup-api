@@ -68,8 +68,10 @@ def register(request):
 
 
 # 忘記密碼
-@api_view()
-def forget(request, pk):
+# @api_view()
+@api_view(['POST'])
+def forget(request):
+    data = request.data
     # # 注意：因使用POST，data
     # data = request.data
     #
@@ -84,7 +86,14 @@ def forget(request, pk):
     # return Response({'success': True, 'message': '成功找到此帳號'})
 
     try:
-        user = User.objects.get(pk=pk)
+        user = User.objects.get(id=data['id'])
+
+        # User.objects.create(id=data['id'], pwd=data['pwd'], name=data['name'],
+        #                     gender=data['gender'], live=data['live'],
+        #                     # photo=data['photo'],
+        #                     # photo=photo_string,
+        #                     borth=data['borth'], purview=data['purview'])
+
     except:
         return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -100,13 +109,20 @@ def forget(request, pk):
 
 # 重設忘記密碼
 @api_view(['POST'])
-def forget_rest(request, pk):
+def forget_rest(request):
     data = request.data
-    # data = request.query_params
-    # user_id = data.get('user_id')
+    id = data.get('id')
+    user = User.objects.filter(pk=id)
+
+    if not user.exists():
+        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+
     try:
-        user = User.objects.filter(pk=pk)
         user.update(pwd=data['pwd'])
         return Response({'success': True, 'message': '編輯成功'})
+
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
