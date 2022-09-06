@@ -125,15 +125,15 @@ def get_all_reviews_studyroom_test(request):
 def Sserch(request):
     # 注意：因使用GET，使用query_params
     data = request.query_params
-    no = data.get('no')
+    # no = data.get('no')
     name = data.get('name')
 
     # 去除前後空白
-    no = str(no).strip()
+    # no = str(no).strip()
     # if no==None:
     #     no="1"
     name = str(name).strip()
-    studyrooms = Studyroom.objects.filter(no=no, name=name)
+    studyrooms = Studyroom.objects.filter(name=name)
 
     return Response({
         'success': True,
