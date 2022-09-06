@@ -22,7 +22,7 @@ def get_all_reviews_test(request):
             {
                 'no': report.pk,
                 'classroom_type_no': report.classroom_type_no.pk,
-                'set_time': report.set_time,
+                'set_time': report.settime_no.pk,
             }
             for report in reports
         ]
@@ -53,20 +53,37 @@ def addsub(request):
 @api_view()
 @user_login_required
 def get_reviews_insideshow(request):
-    informations = Report.objects.all()
+    # informations = Report.objects.all()
+    #
+    # return Response({
+    #     'success': True,
+    #     'data': [
+    #         {
+    #             'no': information.pk,
+    #             'user_id': information.user_id,
+    #             'classroom_type_no_id': information.classroom_type_no_id,
+    #             'subject_no_id': information.subject_no_id,
+    #             'settime_no': information.settime_no,
+    #             'subject_detail': information.subject_detail,
+    #         }
+    #         for information in informations
+    #
+    #     ]
+    # })
+
+    reports = Report.objects.all()
 
     return Response({
         'success': True,
         'data': [
             {
-                'no': information.pk,
-                'user_id': information.user_id,
-                'classroom_type_no_id': information.classroom_type_no_id,
-                'subject_no_id': information.subject_no_id,
-                'settime_no': information.settime_no,
-                'subject_detail': information.subject_detail,
+                'no': report.pk,
+                'user_id': report.user_id,
+                'classroom_type_no': report.classroom_type_no.pk,
+                'subject_no_id': report.subject_no.pk,
+                'set_time': report.settime_no.pk,
+                'subject_detail': report.subject_detail,
             }
-            for information in informations
-
+            for report in reports
         ]
     })

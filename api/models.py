@@ -70,7 +70,7 @@ class Report(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     classroom_type_no = models.ForeignKey(Classroom, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
-    settime_no = models.IntegerField()
+    settime_no = models.ForeignKey(Settime, models.DO_NOTHING)
     entry_time = models.DateField(blank=True, null=True)
     exit_time = models.DateField(blank=True, null=True)
     total_time = models.DateField(blank=True, null=True)
