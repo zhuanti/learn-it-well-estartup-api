@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', login),
     path('logout/', logout),
     path('forget/', forget),
-    path('forget/rest/<pk>/', forget_rest),
+    path('forget/reset/', forget_rest),
 ]
