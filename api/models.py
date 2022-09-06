@@ -208,7 +208,6 @@ class Impeach(models.Model):
         managed = False
         db_table = 'impeach'
 
-
 # 以下為學姊範例程式碼
 # class Account(models.Model):
 #     id = models.CharField(primary_key=True, max_length=100)
