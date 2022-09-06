@@ -116,10 +116,12 @@ def addroom(request):
     # Subjects = Subject.objects.all()
     # 新增
     try:
-        Discussroom.objects.create(no=data['no'], subject_no_id=data['subject_no_id'],
+        Discussroom.objects.create(subject_no_id=data['subject_no_id'],
                                    name=data['name'], total_people=data['total_people'], )
 
+
         return Response({'success': True, 'message': '新增成功'})
+
 
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
@@ -154,25 +156,42 @@ def get_room_no(request, pk):
     })
 
 
-# 討論室提問測試
-@api_view()
-def get_qus(request):
-    discussroom_questions = Discussroom_question.objects.all()
+# 討論室提問
+@api_view(['POST'])
+def add_qus(request):
+    # discussroom_questions = Discussroom_question.objects.all()
+    # 注意：因使用POST，data
+    data = request.data
+    try:
+        Discussroom_question.objects.create(no=data['no'],discussroom_no=data['discussroom_no'],
+                                            title=data['title'],quser=data['quser'], )
 
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': discussroom_question.pk,
-                'title': discussroom_question.title,
-                'quser_id': discussroom_question.quser.pk,
 
-            }
-            for discussroom_question in discussroom_questions
+        return Response({'success': True, 'message': '新增成功'})
 
-        ]
-        # json.dumps(discussrooms, cls=MyEncoder)
-    })
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+    # return Response({
+    #     'success': True,
+    #     'data': [
+    #         {
+    #             'no': discussroom_question.pk,
+    #             'discussroom_no':[
+    #                 {
+    #                     'discussroom_no': discussroom_question.pk,
+    #                 }
+    #                 for discussroom in Discussroom
+    #             ],
+    #             'title': discussroom_question.title,
+    #             'quser_id': discussroom_question.quser.pk,
+    #
+    #         }
+    #         for discussroom_question in discussroom_questions
+    #
+    #     ]
+    #     # json.dumps(discussrooms, cls=MyEncoder)
+    # })
 
 
 # 討論室抓使用者

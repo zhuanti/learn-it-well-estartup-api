@@ -8,7 +8,11 @@
 from django.db import models
 
 
+
 # 使用者資訊
+from django.db.models import Model
+
+
 class User(models.Model):
     id = models.CharField(primary_key=True, max_length=100)
     pwd = models.CharField(max_length=30)
@@ -22,6 +26,11 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
+
+#DateTimeField：主要存储时间相关的数据类型，格式为YYYY-MM-DD HH:MM:[ss[.uuuuuu]][TZ]
+
+#注意：DateField与DateTimeField有两个属性，配置auto_now_add=True，创建数据记录的时候会把当前时间添加到数据库，
+# 配置auto_now=True，每次更新数据记录的时候都会更新该字段
 
 
 # 教室類別
@@ -121,20 +130,7 @@ class Success_list(models.Model):
 
 # 討論室
 class Discussroom(models.Model):
-    # SUBJECT_CHOICES = (
-    #     ('1', '國文'),
-    #     ('2', '數學'),
-    #     ('3', '英文'),
-    #     ('4', '物理'),
-    #     ('5', '化學'),
-    #     ('6', '地科'),
-    #     ('7', '生物'),
-    #     ('8', '地理'),
-    #     ('9', '歷史'),
-    #     ('10', '公民'),
-    #     ('11', '其他'),
-    # )
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True,auto_created=True)
     schoolsys_no = models.ForeignKey(Schoolsys, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
     name = models.CharField(max_length=100)
@@ -165,7 +161,7 @@ class Discussroom_question(models.Model):
     discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)
     quser = models.ForeignKey(User, models.DO_NOTHING)
     title = models.CharField(max_length=1000)
-    datetime = models.DateField(blank=True, null=True)
+    datetime = models.DateTimeField(auto_now_add=True,blank=True, null=True)
 
     class Meta:
         managed = False
