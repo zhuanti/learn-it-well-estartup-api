@@ -116,7 +116,7 @@ def addroom(request):
     # Subjects = Subject.objects.all()
     # 新增
     try:
-        Discussroom.objects.create(no=data['no'],subject_no_id=data['subject_no_id'],
+        Discussroom.objects.create(subject_no_id=data['subject_no_id'],
                                    name=data['name'], total_people=data['total_people'], )
 
 
