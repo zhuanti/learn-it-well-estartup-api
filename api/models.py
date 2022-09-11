@@ -75,7 +75,7 @@ class Settime(models.Model):
 
 # 讀書時長報表
 class Report(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     classroom_type_no = models.ForeignKey(Classroom, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
@@ -94,7 +94,7 @@ class Report(models.Model):
 
 # 學習規劃
 class Plan(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
     pace = models.IntegerField()
@@ -108,7 +108,7 @@ class Plan(models.Model):
 
 # 成就輔助
 class Success(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=40)
     pace = models.IntegerField()
 
@@ -119,7 +119,7 @@ class Success(models.Model):
 
 # 成就列表
 class Success_list(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     success_no = models.ForeignKey(Success, models.DO_NOTHING)
     pace = models.IntegerField()
@@ -146,7 +146,7 @@ class Discussroom(models.Model):
 
 # 討論室文字紀錄
 class Discussroom_record(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)
     user = models.ForeignKey(User, models.DO_NOTHING)
     comment = models.CharField(max_length=1000)
@@ -159,7 +159,7 @@ class Discussroom_record(models.Model):
 
 # 討論室提問
 class Discussroom_question(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)
     quser = models.ForeignKey(User, models.DO_NOTHING)
     title = models.CharField(max_length=1000)
@@ -172,7 +172,7 @@ class Discussroom_question(models.Model):
 
 # 討論室提問答案
 class Discussroom_ans(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     question_no = models.ForeignKey(Discussroom_question, models.DO_NOTHING)
     auser = models.ForeignKey(User, models.DO_NOTHING)
     comment = models.CharField(max_length=1000)
@@ -196,7 +196,7 @@ class Studyroom(models.Model):
 
 # 檢舉
 class Impeach(models.Model):
-    no = models.AutoField(primary_key=True)
+    no = models.IntegerField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     reason = models.CharField(max_length=1000)
     discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)

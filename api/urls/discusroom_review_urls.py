@@ -10,6 +10,7 @@ urlpatterns = [
     path('rec/', rec_reviews),  # 聊天內容
     path('addroom/', addroom),  # 新增房間
     path('qus/', add_qus),  # 問題
+    path('ans/', add_ans),  # 回答
     path('get_critic_reviews/', get_critic_reviews), # 搜尋
     path('get/<int:pk>', get_room_no),  # 加入房間編號
 

@@ -116,7 +116,7 @@ def addroom(request):
     # Subjects = Subject.objects.all()
     # 新增
     try:
-        Discussroom.objects.create(subject_no_id=data['subject_no_id'],
+        Discussroom.objects.create(no=data['no'],subject_no_id=data['subject_no_id'],
                                    name=data['name'], total_people=data['total_people'], )
 
 
@@ -163,8 +163,8 @@ def add_qus(request):
     # 注意：因使用POST，data
     data = request.data
     try:
-        Discussroom_question.objects.create(no=data['no'],discussroom_no=data['discussroom_no'],
-                                            title=data['title'],quser=data['quser'], )
+        Discussroom_question.objects.create(no=data['no'],discussroom_no_id=data['discussroom_no_id'],
+                                            title=data['title'],quser_id=data['quser_id'],datetime=data['datetime'] )
 
 
         return Response({'success': True, 'message': '新增成功'})
@@ -172,26 +172,23 @@ def add_qus(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
-    # return Response({
-    #     'success': True,
-    #     'data': [
-    #         {
-    #             'no': discussroom_question.pk,
-    #             'discussroom_no':[
-    #                 {
-    #                     'discussroom_no': discussroom_question.pk,
-    #                 }
-    #                 for discussroom in Discussroom
-    #             ],
-    #             'title': discussroom_question.title,
-    #             'quser_id': discussroom_question.quser.pk,
-    #
-    #         }
-    #         for discussroom_question in discussroom_questions
-    #
-    #     ]
-    #     # json.dumps(discussrooms, cls=MyEncoder)
-    # })
+
+# 討論室回答
+@api_view(['POST'])
+def add_ans(request):
+    # discussroom_questions = Discussroom_question.objects.all()
+    # 注意：因使用POST，data
+    data = request.data
+    try:
+        Discussroom_ans.objects.create(no=data['no'],question_no_id=data['question_no_id'],
+                                            auser_id=data['auser_id'],comment=data['comment'],datetime=data['datetime'] )
+
+
+        return Response({'success': True, 'message': '新增成功'})
+
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
 
 # 討論室抓使用者
