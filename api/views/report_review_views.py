@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from api.models import Report
 
 from utils.decorators import user_login_required
+# from django.db.models import Max
+#
+# from datetime import datetime
 
 
 # 每一個測試的api_view,一次只能取消註解一個
@@ -41,9 +44,9 @@ def addsub(request):
                               classroom_type_no_id=data['classroom_type_no_id'],
                               subject_no_id=data['subject_no_id'],
                               settime_no_id=data['settime_no_id'],
-                              subject_detail=data['subject_detail'],)
-                              # entry_time=data['entry_time'],
-                              # exit_time=data['exit_time'],)
+                              subject_detail=data['subject_detail'],
+                              entry_time=data['entry_time'],
+                              exit_time=data['exit_time'], )
 
         return Response({'success': True, 'message': '新增成功'})
 
@@ -59,15 +62,20 @@ def get_reviews_insideshow(request):
     # data = request.query_params
     # data = request.GET
     user_id = data.get('user_id')
-
+    # 1. start = datetime.timedelta(hours=23, minutes=59, seconds=59)
     # user_id = str(user_id).strip()
-
     informations = Report.objects.filter(user_id=user_id)
+    # 1. in2 = informations.exclude(entry_time__gte=start)/informations = Report.objects.filter(user_id=user_id, entry_time_gte=start) ->AttributeError at /api/report/inside/ type object 'datetime.datetime' has no attribute 'timedelta'
+    # in2 = informations.aggregate(Max('no'))/in2 = Report.objects.all().aggregate(Max('no')) ->AttributeError at /api/report/inside/ 'dict' object has no attribute 'exists'
+    #
+    # in2 = in1.filter().latest('no') ->
     # last = Report.obejcts.order_by('pk').last()
 
     # informations = Reports.objects.all()
     if not informations.exists():
         return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
+    # if not in2.exists():
+    #     return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
 
     return Response({
         'success': True,
@@ -127,6 +135,8 @@ def get_reviews_insideshow(request):
     #
     #     ]
     # })
+
+
 # 開始結束時間資料編輯
 @api_view(['POST'])
 @user_login_required
@@ -145,4 +155,3 @@ def report_recordtime_edit(request):
         return Response({'success': True, 'message': '編輯成功'})
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
-
