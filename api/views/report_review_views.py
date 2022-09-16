@@ -3,10 +3,13 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report
+from api.models import Report, Subject
 
 from utils.decorators import user_login_required
-# from django.db.models import Max
+
+from django.db.models import Max
+
+
 #
 # from datetime import datetime
 
@@ -36,22 +39,60 @@ def get_all_reviews_test(request):
 @api_view(['POST'])
 @user_login_required
 def addsub(request):
+    # 學姊寫法同樣可在postman使用https://hsinyi-lin.gitbook.io/django-rest-api-orm/book-reviews/1.%E6%96%B0%E5%A2%9E%E8%A9%95%E8%AB%96
     data = request.data
+    user_id = request.session['user_id']
     # 新增
-    try:
-        Report.objects.create(no=data['no'],
-                              user_id=data['user_id'],
-                              classroom_type_no_id=data['classroom_type_no_id'],
-                              subject_no_id=data['subject_no_id'],
-                              settime_no_id=data['settime_no_id'],
-                              subject_detail=data['subject_detail'],
-                              entry_time=data['entry_time'],
-                              exit_time=data['exit_time'], )
+    # try:
+    report = Report.objects.create(no=data['no'],
+                                   user_id=user_id,
+                                   classroom_type_no_id=data['classroom_type_no_id'],
+                                   subject_no_id=data['subject_no_id'],
+                                   settime_no_id=data['settime_no_id'],
+                                   subject_detail=data['subject_detail'], )
 
-        return Response({'success': True, 'message': '新增成功'})
+    return Response({'success': True, 'message': '新增成功'})
 
-    except IntegrityError:
-        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+    subjects = Subject.objects.filter(subject_no_id=report.subject_no)
+    return Response({
+        'success': True,
+        'data':
+            {
+                'no': report.pk,
+                'user_id': report.user_id,
+                'classroom_type_no': report.classroom_type_no.pk,
+                'subject_no': report.subject_no.pk,
+                'settime_no': report.settime_no.pk,
+                'subject_detail': report.subject_detail,
+                'subject': [
+                    {
+                        'sub_no': subject.no,
+                        'sub_name': subject.name
+                    } for subject in subjects
+                ]
+            }
+    })
+
+
+# 照著其他人寫的新增所寫的，postman成功
+# data = request.data
+# user_id = request.session['user_id']
+# # 新增
+# # try:
+# report = Report.objects.create(no=data['no'],
+#                                user_id=user_id,
+#                                classroom_type_no_id=data['classroom_type_no_id'],
+#                                subject_no_id=data['subject_no_id'],
+#                                settime_no_id=data['settime_no_id'],
+#                                subject_detail=data['subject_detail'], )
+# # entry_time=data['entry_time'],
+# # exit_time=data['exit_time'], )
+#
+# return Response({'success': True, 'message': '新增成功'})
+#
+# except IntegrityError:
+#     return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+#
 
 
 # 取得使用者填寫讀書資訊
@@ -62,13 +103,16 @@ def get_reviews_insideshow(request):
     # data = request.query_params
     # data = request.GET
     user_id = data.get('user_id')
+    # (下方取得時間去做比較的搭配)
     # 1. start = datetime.timedelta(hours=23, minutes=59, seconds=59)
     # user_id = str(user_id).strip()
     informations = Report.objects.filter(user_id=user_id)
+    # 嘗試過取得最新此使用者的紀錄寫法 (含錯誤的顯示)
+    # informations = Report.objects.aggregate(max_id=Max('no')) informations.get('max_id') ->AttributeError at /api/report/inside/ 'str' object has no attribute 'pk'
+    # informations = Report.objects.all().order_by("-no")[0] ->TypeError at /api/report/inside/ 'Report' object is not iterable
     # 1. in2 = informations.exclude(entry_time__gte=start)/informations = Report.objects.filter(user_id=user_id, entry_time_gte=start) ->AttributeError at /api/report/inside/ type object 'datetime.datetime' has no attribute 'timedelta'
     # in2 = informations.aggregate(Max('no'))/in2 = Report.objects.all().aggregate(Max('no')) ->AttributeError at /api/report/inside/ 'dict' object has no attribute 'exists'
-    #
-    # in2 = in1.filter().latest('no') ->
+    # in2 = in1.filter().latest('no')
     # last = Report.obejcts.order_by('pk').last()
 
     # informations = Reports.objects.all()
@@ -92,7 +136,7 @@ def get_reviews_insideshow(request):
 
         ]
     })
-
+#取得fk內容寫法(按照學姊的寫)https://hsinyi-lin.gitbook.io/django-rest-api-orm/book-reviews/1.%E6%96%B0%E5%A2%9E%E8%A9%95%E8%AB%96
     # reports = Report.objects.all()
     #
     # return Response({
