@@ -88,6 +88,7 @@ class Report(models.Model):
     subject_detail = models.CharField(max_length=50)
 
     class Meta:
+        get_latest_by = 'no'
         managed = False
         db_table = 'report'
 

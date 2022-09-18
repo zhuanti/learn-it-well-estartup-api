@@ -11,7 +11,8 @@ urlpatterns = [
     path('test/', get_all_reviews_test),
     path('inside/', get_reviews_insideshow),
     path('recordtime/', report_recordtime_edit),
-
+    path('testsearch/', get_reviews_reportdata),
+    path('reporttest/', get_reviews_report_test),
     # 學姊的範例測試
     # path('get/<int:pk>/', get_review),
     # path('get_critic_reviews/', get_critic_reviews),

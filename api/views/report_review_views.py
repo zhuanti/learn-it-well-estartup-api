@@ -136,49 +136,104 @@ def get_reviews_insideshow(request):
 
         ]
     })
-#取得fk內容寫法(按照學姊的寫)https://hsinyi-lin.gitbook.io/django-rest-api-orm/book-reviews/1.%E6%96%B0%E5%A2%9E%E8%A9%95%E8%AB%96
-    # reports = Report.objects.all()
-    #
-    # return Response({
-    #     'success': True,
-    #     'data': [
-    #         {
-    #             'no': report.pk,
-    #             'user_id': report.user_id,
-    #             'classroom_type_no': report.classroom_type_no.pk,
-    #             'subject_no_id': report.subject_no.pk,
-    #             'set_time': report.settime_no.pk,
-    #             'subject_detail': report.subject_detail,
-    #         }
-    #         for report in reports
-    #     ]
-    # })
+
+
+# 取得fk內容寫法(按照學姊的寫)https://hsinyi-lin.gitbook.io/django-rest-api-orm/book-reviews/1.%E6%96%B0%E5%A2%9E%E8%A9%95%E8%AB%96
+# reports = Report.objects.all()
+#
+# return Response({
+#     'success': True,
+#     'data': [
+#         {
+#             'no': report.pk,
+#             'user_id': report.user_id,
+#             'classroom_type_no': report.classroom_type_no.pk,
+#             'subject_no_id': report.subject_no.pk,
+#             'set_time': report.settime_no.pk,
+#             'subject_detail': report.subject_detail,
+#         }
+#         for report in reports
+#     ]
+# })
+# data = request.data
+# user_id = data.get('user_id')
+#
+# user_id = str(user_id).strip()
+#
+# informations = Reports.objects.filter(user_id=user_id)
+#
+# # informations = Reports.objects.all()
+# if not informations.exists():
+#     return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
+#
+# return Response({
+#     'success': True,
+#     'data': [
+#         {
+#             'no': information.pk,
+#             'user_id': information.user_id,
+#             'classroom_type_no_id': information.classroom_type_no_id,
+#             'subject_no_id': information.subject_no_id,
+#             'settime_no_id': information.settime_no_id,
+#             'subject_detail': information.subject_detail,
+#         }
+#         for information in informations
+#
+#     ]
+# })
+
+# 抓取所有report裡面的資料
+@api_view()
+@user_login_required
+def get_reviews_reportdata(request):
+    informations = Report.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': information.pk,
+                'user_id': information.user_id,
+                'classroom_type_no': information.classroom_type_no.pk,
+                'subject_no': information.subject_no.pk,
+                'settime_no': information.settime_no.pk,
+                'subject_detail': information.subject_detail,
+            }
+            for information in informations
+
+        ]
+    })
+
+
+# 抓取特定使用者report裡面的資料(若使用者同時具有多筆紀錄會失敗)
+@api_view()
+@user_login_required
+def get_reviews_report_test(request):
     # data = request.data
-    # user_id = data.get('user_id')
-    #
-    # user_id = str(user_id).strip()
-    #
-    # informations = Reports.objects.filter(user_id=user_id)
-    #
-    # # informations = Reports.objects.all()
-    # if not informations.exists():
-    #     return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
-    #
-    # return Response({
-    #     'success': True,
-    #     'data': [
-    #         {
-    #             'no': information.pk,
-    #             'user_id': information.user_id,
-    #             'classroom_type_no_id': information.classroom_type_no_id,
-    #             'subject_no_id': information.subject_no_id,
-    #             'settime_no_id': information.settime_no_id,
-    #             'subject_detail': information.subject_detail,
-    #         }
-    #         for information in informations
-    #
-    #     ]
-    # })
+    data = request.query_params
+    # data = request.GET
+    user_id = data.get('user_id')
+    no = data.get('no')
+
+    # 透過特定使用者帳號抓取
+    # informations = Report.objects.get(user_id=user_id)
+    # 抓取最新的那筆資料
+    informations = Report.objects.latest()
+    # 透過特定no抓取
+    # informations = Report.objects.get(no=no)
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': informations.pk,
+                'user_id': informations.user_id,
+                'classroom_type_no': informations.classroom_type_no.pk,
+                'subject_no': informations.subject_no.pk,
+                'settime_no': informations.settime_no.pk,
+                'subject_detail': informations.subject_detail,
+            }
+        ]
+    })
 
 
 # 開始結束時間資料編輯
