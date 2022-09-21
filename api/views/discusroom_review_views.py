@@ -84,9 +84,6 @@ def get_all_reviews_test(request):
     })
 
 
-
-
-
 # 討論室提問答案測試
 @api_view(['POST'])
 # @user_login_required
@@ -119,12 +116,12 @@ def addroom(request):
         Discussroom.objects.create(subject_no_id=data['subject_no_id'],
                                    name=data['name'], total_people=data['total_people'], )
 
-
         return Response({'success': True, 'message': '新增成功'})
 
 
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
+
 
 # 顯示加入房間編號、問題列表
 @api_view()
@@ -132,8 +129,9 @@ def addroom(request):
 def get_room_no(request, pk):
     try:
         discussroom = Discussroom.objects.get(pk=pk)
+        # discussroom.discussroom_question = Discussroom_question.object.get(pk=pk)
     except:
-        return Response ({'success': False, 'message':'查無此房間'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
     return Response({
         'success': True,
         'data':
@@ -144,16 +142,27 @@ def get_room_no(request, pk):
                 'name': discussroom.name,
                 'pwd': discussroom.pwd,
                 'total_people': discussroom.total_people,
-                'discussroom_qus_lists':[
+                'discussroom_qus_lists': [
                     {
                         'discussroom_no': discussroom_question.pk,
                         'title': discussroom_question.title,
                         'quser_id': discussroom_question.quser.pk,
+                        'discussroom_ans_lists': [
+                            {
+
+                                'question_no': discussroom_ans.pk,
+                                'auser_id': discussroom_ans.auser.pk,
+                                'comment': discussroom_ans.comment,
+                            }
+                            for discussroom_ans in Discussroom_ans.objects.filter(question_no=discussroom_question.pk)
+                        ],
                     }
                     for discussroom_question in Discussroom_question.objects.filter(discussroom_no=discussroom.pk)
                 ],
+
             }
     })
+
 
 
 # 討論室提問
@@ -163,15 +172,15 @@ def add_qus(request):
     # 注意：因使用POST，data
     data = request.data
     try:
-        Discussroom_question.objects.create(no=data['no'],discussroom_no_id=data['discussroom_no_id'],
-                                            title=data['title'],quser_id=data['quser_id'],datetime=data['datetime'] )
-
+        Discussroom_question.objects.create(discussroom_no_id=data['discussroom_no_id'],
+                                            title=data['title'], quser_id=data['quser_id'], datetime=data['datetime'])
 
         return Response({'success': True, 'message': '新增成功'})
 
 
     except IntegrityError:
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
 
 # 討論室回答
 @api_view(['POST'])
@@ -180,9 +189,8 @@ def add_ans(request):
     # 注意：因使用POST，data
     data = request.data
     try:
-        Discussroom_ans.objects.create(no=data['no'],question_no_id=data['question_no_id'],
-                                            auser_id=data['auser_id'],comment=data['comment'],datetime=data['datetime'] )
-
+        Discussroom_ans.objects.create(question_no_id=data['question_no_id'],
+                                       auser_id=data['auser_id'], comment=data['comment'], datetime=data['datetime'])
 
         return Response({'success': True, 'message': '新增成功'})
 
@@ -211,6 +219,7 @@ def getuser(request, pk):
     except JSONDecodeError:
         return Response({'success': False, 'message': '查無此人'}, status=status.HTTP_404_NOT_FOUND)
 
+
 # 查詢
 @api_view()
 @user_login_required
@@ -237,10 +246,6 @@ def get_critic_reviews(request):
             for discussroom in discussrooms
         ]
     })
-
-
-
-
 
 # 討論室房間新增-科目
 # @api_view()

@@ -2,7 +2,6 @@ from django.urls import path
 
 from api.views.discusroom_review_views import *
 
-
 app_name = 'discusroom'
 
 urlpatterns = [
@@ -11,15 +10,13 @@ urlpatterns = [
     path('addroom/', addroom),  # 新增房間
     path('qus/', add_qus),  # 問題
     path('ans/', add_ans),  # 回答
-    path('get_critic_reviews/', get_critic_reviews), # 搜尋
+    path('get_critic_reviews/', get_critic_reviews),  # 搜尋
     path('get/<int:pk>', get_room_no),  # 加入房間編號
-
 
     # 下面test/ 供討論室相關表格進行測試
     path('test/', get_all_reviews_test),
     path('getuser/<pk>', getuser),
     # path('addroom_subject/',get_subject_reviews), # 新增房間時顯示科目名稱
-
 
     path('test/', get_all_reviews_test),  # 文字記錄
 
