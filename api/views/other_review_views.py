@@ -121,7 +121,7 @@ def get_all_reviews_studyroom_test(request):
 
 # 自習室查詢
 @api_view()
-# @user_login_required
+@user_login_required
 def Sserch(request):
     # 注意：因使用GET，使用query_params
     data = request.query_params
