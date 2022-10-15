@@ -73,6 +73,45 @@ def addsub(request):
             }
     })
 
+@api_view(['POST'])
+@user_login_required
+def disinout(request):
+    data = request.data
+    user_id = request.session['user_id']
+    # try:
+    report = Report.objects.create(no=data['no'],
+                                   user_id=user_id,
+                                   classroom_type_no_id=data['classroom_type_no_id'],
+                                   # subject_no_id=data['subject_no_id'],
+                                   # subject_detail=data['subject_detail'],
+                                   entry_time=data['entry_time'],
+                                   exit_time=data['exit_time'],
+                                   total_time=data['total_time'],)
+
+    return Response({'success': True, 'message': '新增成功'})
+    report = Report.objects.filter(user_id=report.user_id)
+    return Response({
+        'success': True,
+        'data':
+            {
+                'no': report.pk,
+                'user_id': report.user_id,
+                'classroom_type_no': report.classroom_type_no.pk,
+                # 'subject_no': report.subject_no.pk,
+                # 'settime_no': report.settime_no.pk,
+                # 'subject_detail': report.subject_detail,
+                'subject': [
+                    {
+                        'sub_no': subject.no,
+                        'sub_name': subject.name
+                    } for subject in subjects
+                ],
+                'entry_time': report.entry_time,
+                'exit_time': report.exit_time,
+                'total_time': report.total_time,
+            }
+    })
+
 
 # 照著其他人寫的新增所寫的，postman成功
 # data = request.data
