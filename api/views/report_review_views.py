@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject
+from api.models import Report, Subject, User
 
 from utils.decorators import user_login_required
 
@@ -293,3 +293,40 @@ def report_recordtime_edit(request):
         return Response({'success': True, 'message': '編輯成功'})
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
+
+# 報表個人資料顯示頁面
+@api_view()
+@user_login_required
+def get_report_usernameweek(request):
+    # users = User.objects.all()
+    data = request.query_params
+    user_id = data.get('user_id')
+
+    # data = request.data
+
+    users = User.objects.get(user_id=user_id)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'name': user.name,
+                'id': user.pk,
+                'gender': user.gender,
+                'live': user.live,
+                'borth': user.borth,
+            }
+            for user in users
+        ]
+    })
+# user detail那邊寫法
+    # return Response({
+    #                     'success': True,
+    #                     'data': {
+    #                         'name': user.name,
+    #                         'id': user.pk,
+    #                         'gender': user.gender,
+    #                         'live': user.live,
+    #                         'borth': user.borth,
+    #                     }
+    # })
