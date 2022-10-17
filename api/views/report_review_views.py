@@ -304,20 +304,18 @@ def get_report_usernameweek(request):
 
     # data = request.data
 
-    users = User.objects.get(user_id=user_id)
+    users = User.objects.get(pk=user_id)
 
     return Response({
         'success': True,
-        'data': [
+        'data':
             {
-                'name': user.name,
-                'id': user.pk,
-                'gender': user.gender,
-                'live': user.live,
-                'borth': user.borth,
+                'name': users.name,
+                'id': users.pk,
+                'gender': users.gender,
+                'live': users.live,
+                'borth': users.borth,
             }
-            for user in users
-        ]
     })
 # user detail那邊寫法
     # return Response({
