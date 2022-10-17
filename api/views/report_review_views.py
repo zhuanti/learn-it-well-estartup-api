@@ -299,10 +299,33 @@ def report_recordtime_edit(request):
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
-# 報表個人資料顯示頁面
+# 報表個人資料周顯示頁面
 @api_view()
 @user_login_required
 def get_report_usernameweek(request):
+    # users = User.objects.all()
+    data = request.query_params
+    user_id = data.get('user_id')
+    # data = request.data
+
+    user = User.objects.get(pk=user_id)
+
+    return Response({
+        'success': True,
+        'data':
+            {
+                'name': user.name,
+                'id': user.pk,
+                'gender': user.gender,
+                'live': user.live,
+                'borth': user.borth,
+            }
+    })
+
+# 報表個人資料日顯示頁面
+@api_view()
+@user_login_required
+def get_report_usernameday(request):
     # users = User.objects.all()
     data = request.query_params
     user_id = data.get('user_id')
