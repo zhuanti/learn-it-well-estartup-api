@@ -181,6 +181,23 @@ def add_qus(request):
     except IntegrityError:
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
+# # 新增房間
+# @api_view(['POST'])
+# # @user_login_required
+# def addroom(request):
+#     data = request.data
+#     # Subjects = Subject.objects.all()
+#     # 新增
+#     try:
+#         Discussroom.objects.create(subject_no_id=data['subject_no_id'],
+#                                    name=data['name'], total_people=data['total_people'], )
+#
+#         return Response({'success': True, 'message': '新增成功'})
+#
+#
+#     except IntegrityError:
+#         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
+
 
 # 討論室回答
 @api_view(['POST'])
