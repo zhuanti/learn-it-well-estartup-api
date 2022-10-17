@@ -44,8 +44,7 @@ def addsub(request):
     user_id = request.session['user_id']
     # 新增
     # try:
-    report = Report.objects.create(no=data['no'],
-                                   user_id=user_id,
+    report = Report.objects.create(user_id=user_id,
                                    classroom_type_no_id=data['classroom_type_no_id'],
                                    subject_no_id=data['subject_no_id'],
                                    settime_no_id=data['settime_no_id'],
