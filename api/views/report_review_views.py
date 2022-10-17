@@ -245,32 +245,38 @@ def get_reviews_reportdata(request):
 
 
 # 抓取特定使用者report裡面的資料(若使用者同時具有多筆紀錄會失敗)
+# mydata = Members.objects.all().order_by('firstname').values()
+# SELECT * FROM members ORDER BY firstname;
+# select * from report where user_id = 'test@gmail.com' order by "no"  desc limit 1
 @api_view()
 @user_login_required
 def get_reviews_report_test(request):
     # data = request.data
     data = request.query_params
-    # data = request.GET
     user_id = data.get('user_id')
-    no = data.get('no')
+    # no = data.get('no')
+    user_id = str(user_id).strip()
+    informations = Report.objects.filter(user_id=user_id)
+    information = informations.latest()
 
     # 透過特定使用者帳號抓取
     # informations = Report.objects.get(user_id=user_id)
     # 抓取最新的那筆資料
-    informations = Report.objects.latest()
+    # informations = Report.objects.latest()
     # 透過特定no抓取
     # informations = Report.objects.get(no=no)
     return Response({
         'success': True,
         'data': [
             {
-                'no': informations.pk,
-                'user_id': informations.user_id,
-                'classroom_type_no': informations.classroom_type_no.pk,
-                'subject_no': informations.subject_no.pk,
-                'settime_no': informations.settime_no.pk,
-                'subject_detail': informations.subject_detail,
+                'no': information.pk,
+                'user_id': information.user_id,
+                'classroom_type_no': information.classroom_type_no.pk,
+                'subject_no': information.subject_no.pk,
+                'settime_no': information.settime_no.pk,
+                'subject_detail': information.subject_detail,
             }
+            # for information in informations
         ]
     })
 
