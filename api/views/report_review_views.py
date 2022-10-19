@@ -250,33 +250,37 @@ def get_reviews_reportdata(request):
 @api_view()
 @user_login_required
 def get_reviews_report_test(request):
-    # data = request.data
     data = request.query_params
-    user_id = data.get('user_id')
-    # no = data.get('no')
-    user_id = str(user_id).strip()
-    informations = Report.objects.filter(user_id=user_id)
-    information = informations.latest()
 
-    # 透過特定使用者帳號抓取
-    # informations = Report.objects.get(user_id=user_id)
-    # 抓取最新的那筆資料
-    # informations = Report.objects.latest()
-    # 透過特定no抓取
-    # informations = Report.objects.get(no=no)
+    user_id = data.get('user_id')
+    user_id = str(user_id).strip()
+
+    reports = Report.objects.filter(user_id=user_id)
+
+    if not reports.exists():
+        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+
+    report = reports.latest()
+
     return Response({
         'success': True,
-        'data': [
+        'data':
             {
-                'no': information.pk,
-                'user_id': information.user_id,
-                'classroom_type_no': information.classroom_type_no.pk,
-                'subject_no': information.subject_no.pk,
-                'settime_no': information.settime_no.pk,
-                'subject_detail': information.subject_detail,
+                'no': report.pk,
+                'user_id': report.user_id,
+                'classroom_type_no': report.classroom_type_no.pk,
+                'subject_no': report.subject_no.pk,
+                'subject_no_lists': [
+                    {
+
+                        'sub_no': subject.pk,
+                        'sub_name': subject.name,
+                    }
+                    for subject in Subject.objects.filter(no=report.subject_no.pk)
+                ],
+                'settime_no': report.settime_no.pk,
+                'subject_detail': report.subject_detail,
             }
-            # for information in informations
-        ]
     })
 
 
