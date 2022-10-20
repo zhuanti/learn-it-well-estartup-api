@@ -44,11 +44,11 @@ def addsub(request):
     user_id = request.session['user_id']
     # 新增
     try:
-        report = Report.objects.create(user_id=user_id,
-                                   classroom_type_no_id=2,
-                                   subject_no_id=data['subject_no_id'],
-                                   settime_no_id=data['settime_no_id'],
-                                   subject_detail=data['subject_detail'], )
+        Report.objects.create(user_id=user_id,
+                              classroom_type_no_id=2,
+                              subject_no_id=data['subject_no_id'],
+                              settime_no_id=data['settime_no_id'],
+                              subject_detail=data['subject_detail'], )
 
         return Response({'success': True, 'message': '新增成功'})
     except IntegrityError:
@@ -74,6 +74,7 @@ def addsub(request):
             }
     })
 
+
 @api_view(['POST'])
 @user_login_required
 def disinout(request):
@@ -87,7 +88,7 @@ def disinout(request):
                                    # subject_detail=data['subject_detail'],
                                    entry_time=data['entry_time'],
                                    exit_time=data['exit_time'],
-                                   total_time=data['total_time'],)
+                                   total_time=data['total_time'], )
 
     return Response({'success': True, 'message': '新增成功'})
     report = Report.objects.filter(user_id=report.user_id)
@@ -305,6 +306,7 @@ def report_recordtime_edit(request):
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 # 報表個人資料周顯示頁面
 @api_view()
 @user_login_required
@@ -327,6 +329,7 @@ def get_report_usernameweek(request):
                 'borth': user.borth,
             }
     })
+
 
 # 報表個人資料日顯示頁面
 @api_view()
