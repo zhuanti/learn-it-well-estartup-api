@@ -4,7 +4,7 @@ from rest_framework import status
 from django.db import IntegrityError
 
 from api.models import Plan
-
+import datetime
 # 每一個測試的api_view,一次只能取消註解一個
 
 from utils.decorators import user_login_required
@@ -15,14 +15,15 @@ from utils.decorators import user_login_required
 @user_login_required
 def addplan(request):
     data = request.data
+    user_id = request.session['user_id']
     # 新增
     try:
-        Plan.objects.create(no=data['no'],
-                            user_id=data['user_id'],
-                            name=data['name'],
-                            pace=0,
-                            # 0為未完成,1為完成
-                            datetime=data['datetime'], )
+        Plan.objects.create(
+            user_id=user_id,
+            name=data['name'],
+            pace=0,
+            # 0為未完成,1為完成
+            datetime=datetime.datetime.now())
 
         return Response({'success': True, 'message': '新增成功'})
 
@@ -72,6 +73,7 @@ def get_all_reviews_test(request):
         ]
     })
 
+
 # 學習規劃刪除
 @api_view(['POST'])
 @user_login_required
@@ -89,4 +91,3 @@ def deleteplan(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '刪除失敗'}, status=status.HTTP_400_BAD_REQUEST)
-

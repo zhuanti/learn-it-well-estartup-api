@@ -99,8 +99,8 @@ class Plan(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
     pace = models.IntegerField()
-    datetime = models.DateTimeField(blank=True, null=True)
-    ftime = models.DateField(blank=True, null=True)
+    datetime = models.DateTimeField()
+    ftime = models.DateField()
 
     class Meta:
         managed = False

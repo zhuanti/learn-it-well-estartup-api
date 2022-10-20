@@ -35,7 +35,7 @@ def get_all_reviews_test(request):
     })
 
 
-# 新增科目
+# 新增科目(根據登入的使用帳號做新增)
 @api_view(['POST'])
 @user_login_required
 def addsub(request):
@@ -43,14 +43,16 @@ def addsub(request):
     data = request.data
     user_id = request.session['user_id']
     # 新增
-    # try:
-    report = Report.objects.create(user_id=user_id,
-                                   classroom_type_no_id=data['classroom_type_no_id'],
+    try:
+        report = Report.objects.create(user_id=user_id,
+                                   classroom_type_no_id=2,
                                    subject_no_id=data['subject_no_id'],
                                    settime_no_id=data['settime_no_id'],
                                    subject_detail=data['subject_detail'], )
 
-    return Response({'success': True, 'message': '新增成功'})
+        return Response({'success': True, 'message': '新增成功'})
+    except IntegrityError:
+        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
     subjects = Subject.objects.filter(subject_no_id=report.subject_no)
     return Response({
