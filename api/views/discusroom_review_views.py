@@ -84,27 +84,6 @@ def get_all_reviews_test(request):
     })
 
 
-# 討論室提問答案測試
-@api_view(['POST'])
-# @user_login_required
-def get_ans(request):
-    discussroom_anss = Discussroom_ans.objects.all()
-    data = request.data
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': discussroom_ans.pk,
-                'comment': discussroom_ans.comment
-            }
-            for discussroom_ans in discussroom_anss
-
-        ]
-        # json.dumps(discussrooms, cls=MyEncoder)
-    })
-
-
 # 新增房間
 @api_view(['POST'])
 # @user_login_required
@@ -164,22 +143,25 @@ def get_room_no(request, pk):
     })
 
 
-
 # 討論室提問
 @api_view(['POST'])
-def add_qus(request):
+def add_qus(request, pk):
+    # discussroom = Discussroom.objects.get(pk=pk)
     # discussroom_questions = Discussroom_question.objects.all()
     # 注意：因使用POST，data
     data = request.data
     try:
         Discussroom_question.objects.create(discussroom_no_id=data['discussroom_no_id'],
-                                            title=data['title'], quser_id=data['quser_id'], datetime=data['datetime'])
+                                            title=data['title'], quser_id=data['quser_id'],
+                                            # datetime=data['datetime']
+                                            )
 
         return Response({'success': True, 'message': '新增成功'})
 
 
     except IntegrityError:
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
 
 # # 新增房間
 # @api_view(['POST'])
@@ -197,6 +179,38 @@ def add_qus(request):
 #
 #     except IntegrityError:
 #         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
+
+
+# 討論室問題、回答列表
+@api_view()
+def get_ans_list(request, pk):
+    try:
+        discussroom = Discussroom.objects.get(pk=pk)
+    except:
+        return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'data':
+            {
+                'discussroom_qus_lists': [
+                    {
+                        'discussroom_no': discussroom_question.pk,
+                        'title': discussroom_question.title,
+                        'quser_id': discussroom_question.quser.pk,
+                        'discussroom_ans_lists': [
+                            {
+
+                                'question_no': discussroom_ans.pk,
+                                'auser_id': discussroom_ans.auser.pk,
+                                'comment': discussroom_ans.comment,
+                            }
+                            for discussroom_ans in Discussroom_ans.objects.filter(question_no=discussroom_question.pk)
+                        ],
+                    }
+                    for discussroom_question in Discussroom_question.objects.filter(discussroom_no=discussroom.pk)
+                ],
+            }
+    })
 
 
 # 討論室回答
