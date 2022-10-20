@@ -177,7 +177,8 @@ class Discussroom_ans(models.Model):
     question_no = models.ForeignKey(Discussroom_question, models.DO_NOTHING)
     auser = models.ForeignKey(User, models.DO_NOTHING)
     comment = models.CharField(max_length=1000)
-    datetime = models.DateField(blank=True, null=True)
+    datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    # datetime = models.DateField(blank=True, null=True)
 
     class Meta:
         managed = False
