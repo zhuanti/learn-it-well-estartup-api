@@ -144,13 +144,14 @@ def get_room_no(request, pk):
                 'total_people': discussroom.total_people,
                 'discussroom_qus_lists': [
                     {
-                        'discussroom_no': discussroom_question.pk,
+                        'dis_ques_no': discussroom_question.pk,
                         'title': discussroom_question.title,
                         'quser_id': discussroom_question.quser.pk,
                         'discussroom_ans_lists': [
                             {
 
-                                'question_no': discussroom_ans.pk,
+                                'dis_ans_no': discussroom_ans.pk,
+                                'dis_ans_ques_no': discussroom_ans.question_no.pk,
                                 'auser_id': discussroom_ans.auser.pk,
                                 'comment': discussroom_ans.comment,
                             }
@@ -167,12 +168,16 @@ def get_room_no(request, pk):
 
 # 討論室提問
 @api_view(['POST'])
-def add_qus(request):
+def add_qus(request, pk):
+    data = request.data
+    # try:
+    #     discussroom = Discussroom_question.objects.get(discussroom_no_id=pk)
+    # except:
+    #     return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
     # discussroom_questions = Discussroom_question.objects.all()
     # 注意：因使用POST，data
-    data = request.data
     try:
-        Discussroom_question.objects.create(discussroom_no_id=data['discussroom_no_id'],
+        Discussroom_question.objects.create(discussroom_no_id=pk,
                                             title=data['title'], quser_id=data['quser_id'], datetime=data['datetime'])
 
         return Response({'success': True, 'message': '新增成功'})
@@ -201,12 +206,12 @@ def add_qus(request):
 
 # 討論室回答
 @api_view(['POST'])
-def add_ans(request):
+def add_ans(request, pk):
     # discussroom_questions = Discussroom_question.objects.all()
     # 注意：因使用POST，data
     data = request.data
     try:
-        Discussroom_ans.objects.create(question_no_id=data['question_no_id'],
+        Discussroom_ans.objects.create(question_no_id=pk,
                                        auser_id=data['auser_id'], comment=data['comment'], datetime=data['datetime'])
 
         return Response({'success': True, 'message': '新增成功'})
