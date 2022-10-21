@@ -88,9 +88,10 @@ def setthings(request):
     # 新增
     try:
         Report.objects.create(user_id=data['user_id'],
-                              classroom_type_no_id=data['classroom_type_no_id'],
+                              classroom_type_no_id="1",
                               subject_no_id=data['subject_no_id'],
-                              settime_no_id=data['settime_no_id'])
+                              settime_no_id=data['settime_no_id'],
+                              subject_detail=data['subject_detail'])
 
         return Response({'success': True, 'message': '新增成功'})
 
