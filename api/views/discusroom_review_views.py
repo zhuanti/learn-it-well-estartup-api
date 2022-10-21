@@ -146,6 +146,7 @@ def get_room_no(request, pk):
 
 # 討論室提問
 @api_view(['POST'])
+@user_login_required
 def add_qus(request, pk):
     data = request.data
     # try:
@@ -217,6 +218,7 @@ def get_ans_list(request, pk):
 
 # 討論室回答
 @api_view(['POST'])
+@user_login_required
 def add_ans(request, pk):
     # discussroom_questions = Discussroom_question.objects.all()
     # 注意：因使用POST，data
@@ -234,7 +236,7 @@ def add_ans(request, pk):
 
 # 討論室抓使用者
 @api_view()
-# @user_login_required
+@user_login_required
 def getuser(request, pk):
     # users = User.objects.all()
     try:
