@@ -75,7 +75,7 @@ class Settime(models.Model):
 
 # 讀書時長報表
 class Report(models.Model):
-    no = models.AutoField(primary_key=True,auto_created=True)
+    no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     classroom_type_no = models.ForeignKey(Classroom, models.DO_NOTHING)
     subject_no = models.ForeignKey(Subject, models.DO_NOTHING)
@@ -95,7 +95,7 @@ class Report(models.Model):
 
 # 學習規劃
 class Plan(models.Model):
-    no = models.AutoField(primary_key=True,auto_created=True)
+    no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
     pace = models.IntegerField()
