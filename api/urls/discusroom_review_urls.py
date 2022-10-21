@@ -12,7 +12,8 @@ urlpatterns = [
     path('ans/<int:pk>', add_ans),  # 回答
     path('ans_list/', get_ans_list),  # 問題、回答列表
     path('get_critic_reviews/', get_critic_reviews),  # 搜尋
-    path('get/<int:pk>', get_room_no),  # 加入房間編號
+    path('get/<int:pk>', get_room_no),  # 顯示資訊
+    path('getqus/<int:pk>', get_qus_no),  # 加入房間編號
 
     # 下面test/ 供討論室相關表格進行測試
     path('test/', get_all_reviews_test),

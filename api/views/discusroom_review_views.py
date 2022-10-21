@@ -143,6 +143,24 @@ def get_room_no(request, pk):
             }
     })
 
+# 顯示問題編號
+@api_view()
+@user_login_required
+def get_qus_no(request, pk):
+    try:
+        discussroom_qus = Discussroom_question.objects.get(pk=pk)
+    except:
+        return Response({'success': False, 'message': '查無此問題'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'data':
+            {
+                'no': discussroom_qus.pk,
+                'dis_no': discussroom_qus.discussroom_no.pk,
+                'title': discussroom_qus.title,
+            }
+    })
+
 
 # 討論室提問
 @api_view(['POST'])
