@@ -35,6 +35,7 @@ def get_all_reviews(request):
     # user = User.objects.filter(pk=user_id)
     success_lists = Success_list.objects.all()
     successs = Success.objects.all()
+    request.session['user_id'] = user_id
 
     return Response({
         'success': True,
@@ -55,19 +56,20 @@ def get_all_reviews(request):
                     # for success_list in Success_list.objects.all()
                 ],
 
-                # 'no': success_list.pk,
-                # 'user_id': success_list.user.pk,
-                # 'success': [
-                #     {
-                #         'success_no': success.pk,
-                #         'name': success.name,
-                #         'pace': success.pace,
-                #     }
-                #     for success in Success.objects.filter(success_no=success_list.pk)
-                # ],
-                # 'pace': success_list.pace,
-                # 'lockif': success_list.lockif
+            #     'no': success_list.pk,
+            #     'user_id': success_list.user.pk,
+            #     'success': [
+            #         {
+            #             'success_no': success.pk,
+            #             'name': success.name,
+            #             'pace': success.pace,
+            #         }
+            #         for success in Success.objects.filter(no=success_list.pk)
+            #     ],
+            #     'pace': success_list.pace,
+            #     'lockif': success_list.lockif
             }
+            # for success_list in success_lists
             for success in successs
         ]
     })
