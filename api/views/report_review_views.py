@@ -7,6 +7,8 @@ from api.models import Report, Subject, User
 
 from utils.decorators import user_login_required
 
+import datetime
+
 from django.db.models import Max
 
 
@@ -291,17 +293,19 @@ def get_reviews_report_test(request):
 @api_view(['POST'])
 @user_login_required
 def report_recordtime_edit(request):
-    data = request.data
+    data = request.query_params
     # data = request.query_params
     user_id = data.get('user_id')
+    user_id = str(user_id).strip()
 
-    record = Report.objects.filter(user_id=user_id)
+    records = Report.objects.filter(user_id=user_id)
 
-    if not record.exists():
+    if not records.exists():
         return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
 
+    record = records.latest()
     try:
-        record.update(entry_time=data['entry_time'], exit_time=data['exit_time'])
+        record.update(entry_time=datetime.datetime.now(), exit_time=datetime.datetime.now())
         return Response({'success': True, 'message': '編輯成功'})
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
