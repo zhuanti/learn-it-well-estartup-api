@@ -174,7 +174,8 @@ def News(request):
     data = request.query_params
 
     user_id = data.get('user_id')
-    plans = Plan.objects.filter(user_id=user_id)
+    # 過濾使用者+完成度
+    plans = Plan.objects.filter(user_id=user_id, pace=0)
     if not plans.exists():
         return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
     # if not in2.exists():
@@ -183,9 +184,18 @@ def News(request):
         'data': [
             {
                 'no': plan.pk,
-                'user': plan.user.pk,
+                # 'user': plan.user.pk,
                 'name': plan.name,
                 'pace': plan.pace,
+                'user': plan.user_id,
+                'user_lists': [
+                    {
+
+                        'user_no': user.pk,
+                        'user_name': user.name,
+                    }
+                    for user in User.objects.filter(id=plan.user_id)
+                ],
             }
             for plan in plans
         ]
