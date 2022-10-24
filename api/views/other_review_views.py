@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Impeach, Studyroom, Settime, Subject, Report
+from api.models import Impeach, Studyroom, Settime, Subject, Report, Plan, User
 
 from utils.decorators import user_login_required
 
@@ -165,3 +165,71 @@ def Sserch(request):
             for studyroom in studyrooms
         ]
     })
+
+
+# 跑馬燈
+@api_view()
+@user_login_required
+def News(request):
+    data = request.data
+    user_id = data.get('user_id')
+    plans = Plan.objects.filter(user_id=user_id)
+    if not plans.exists():
+        return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'user_id': plan.user_id,
+                'name': plan.name,
+                'pace': plan.pace,
+            }
+            for plan in plans
+
+        ]
+    })
+    # data = request.query_params
+    # user_id = data.get('user_id')
+    # plan = Plan.objects.filter(user_id=user_id)
+    # if not plan.exists():
+    #     return Response({'success': False, 'message': '沒有此帳號讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+    # return Response({
+    #     'success': True,
+    #     'data': {
+    #         'no': plan.pk,
+    #         'user_id': plan.user_id,
+    #         'name': plan.name,
+    #         'pace': plan.pace,
+    #     }
+    # })
+    # data = request.query_params
+    #
+    # user_id = data.get('user_id')
+    # user_id = str(user_id).strip()
+    #
+    # plans = Plan.objects.filter(user_id=user_id)
+    #
+    # if not plans.exists():
+    #     return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+    #
+    #
+    # return Response({
+    #     'success': True,
+    #     'data':
+    #         {
+    #             'no': plans.no,
+    #             'user_id': plans.user_id,
+    #             'name': plans.name,
+    #             'pace': plans.pace,
+    #             'user_id_lists': [
+    #                 {
+    #
+    #                     'id': user.pk,
+    #                     'name': user.name,
+    #                 }
+    #                 for user in User.objects.filter(user_id=User.id.pk)
+    #             ],
+    #         }
+    # })
+
