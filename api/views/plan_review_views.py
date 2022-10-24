@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
 
-from api.models import Plan
+from api.models import Plan, User
 import datetime
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -54,7 +54,8 @@ def editplan(request):
 @user_login_required
 def get_all_reviews_test(request):
     # plans = Plan.objects.all()
-    data = request.data
+    #data = request.data
+    data = request.query_params
 
     user_id = data.get('user_id')
     plans = Plan.objects.filter(user_id=user_id)
@@ -67,6 +68,7 @@ def get_all_reviews_test(request):
             {
                 'no': plan.pk,
                 'user': plan.user.pk,
+                'name': plan.name,
                 'pace': plan.pace,
             }
             for plan in plans
