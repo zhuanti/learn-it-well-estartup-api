@@ -171,23 +171,22 @@ def Sserch(request):
 @api_view()
 @user_login_required
 def News(request):
-    data = request.data
+    data = request.query_params
     user_id = data.get('user_id')
-    plans = Plan.objects.filter(user_id=user_id)
-    if not plans.exists():
+    plan = Plan.objects.filter(user_id=user_id)
+    if not plan.exists():
         return Response({'success': False, 'message': '沒有此帳號最新讀書設定'}, status=status.HTTP_404_NOT_FOUND)
 
     return Response({
         'success': True,
-        'data': [
+        'data':
             {
+                'plan': plan.pk,
                 'user_id': plan.user_id,
                 'name': plan.name,
                 'pace': plan.pace,
+                'datetime': plan.datetime,
             }
-            for plan in plans
-
-        ]
     })
     # data = request.query_params
     # user_id = data.get('user_id')
