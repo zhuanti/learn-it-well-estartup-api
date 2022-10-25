@@ -63,11 +63,11 @@ def showeditplan(request, pk):
 
 @api_view(['POST'])
 @user_login_required
-def editplan(request, pk):
+def editplan(request):
     data = request.data
 
     no = data.get('no')
-    plans = Plan.objects.filter(pk=pk)
+    plans = Plan.objects.filter(pk=no)
     if not plans.exists():
         return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
 

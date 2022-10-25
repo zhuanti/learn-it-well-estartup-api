@@ -12,7 +12,7 @@ urlpatterns = [
     path('get/', get_all_reviews_test),
     path('add/', addplan),
     path('edit/<int:pk>', showeditplan),
-    path('editplan/<int:pk>', editplan),
+    path('editplan/', editplan),
     path('delete/', deleteplan),
 
     # 學姊的範例測試
