@@ -15,14 +15,14 @@ from utils.decorators import user_login_required
 @user_login_required
 def addplan(request):
     data = request.data
-    # data = request.query_params
-    user_id = request.session['user_id']
     # 新增
     try:
         Plan.objects.create(
-            user_id=user_id,
+            user_id=data['user_id'],
             name=data['name'],
-            pace=0)
+            pace=0,
+            datetime=data['datetime']
+        )
         # 0為未完成,1為完成
 
         return Response({'success': True, 'message': '新增成功'})

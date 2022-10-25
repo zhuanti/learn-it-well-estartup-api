@@ -99,8 +99,8 @@ class Plan(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
     pace = models.IntegerField()
-    datetime = models.DateTimeField()
-    ftime = models.DateField()
+    datetime = models.DateTimeField(auto_now_add=True)
+    ftime = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -109,7 +109,7 @@ class Plan(models.Model):
 
 # 成就輔助
 class Success(models.Model):
-    no = models.AutoField(primary_key=True,auto_created=True)
+    no = models.AutoField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=40)
     pace = models.IntegerField()
 
@@ -164,7 +164,7 @@ class Discussroom_question(models.Model):
     discussroom_no = models.ForeignKey(Discussroom, models.DO_NOTHING)
     quser = models.ForeignKey(User, models.DO_NOTHING)
     title = models.CharField(max_length=1000)
-    datetime = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         managed = False
