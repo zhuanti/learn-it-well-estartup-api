@@ -39,8 +39,6 @@ def get_user_detail(request):
     data = request.query_params
     user_id = data.get('user_id')
 
-    # data = request.data
-
     user = User.objects.get(pk=user_id)
 
     return Response({
@@ -60,7 +58,6 @@ def get_user_detail(request):
 @user_login_required
 def user_detail_edit(request):
     data = request.data
-    # data = request.query_params
     user_id = data.get('user_id')
 
     user = User.objects.filter(pk=user_id)

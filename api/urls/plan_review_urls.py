@@ -11,8 +11,8 @@ urlpatterns = [
     # 下面test/ 供成就相關表格進行測試
     path('get/', get_all_reviews_test),
     path('add/', addplan),
-    path('edit/<int:pk>', showeditplan),
-    path('editplan/', editplan),
+    path('showedit/', showeditplan),
+    path('editplan/', editplan), # 編輯
     path('delete/', deleteplan),
 
     # 學姊的範例測試

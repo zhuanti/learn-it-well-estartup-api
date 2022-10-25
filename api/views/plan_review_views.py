@@ -34,12 +34,15 @@ def addplan(request):
 # 學習規劃抓取特定編號
 @api_view()
 @user_login_required
-def showeditplan(request, pk):
+def showeditplan(request):
+    data = request.query_params
+    no = data.get('no')
+    user_id = data.get('user_id')
     try:
-        plan = Plan.objects.get(pk=pk)
-        # discussroom.discussroom_question = Discussroom_question.object.get(pk=pk)
+        plan = Plan.objects.get(pk=no, user_id=user_id)
     except:
         return Response({'success': False, 'message': '查無此規劃'}, status=status.HTTP_404_NOT_FOUND)
+
     return Response({
         'success': True,
         'data': {
@@ -47,33 +50,23 @@ def showeditplan(request, pk):
             'name': plan.name
         }
     })
-    # data = request.data
-
-    # no = data.get('no')
-    # plans = Plan.objects.filter(pk=no)
-    # if not plans.exists():
-    #    return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
-
-    # try:
-    #    plans.update(name=data['name'])
-    #    return Response({'success': True, 'message': '編輯成功'})
-    # except:
-    #    return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 @user_login_required
 def editplan(request):
-    data = request.data
 
+    data = request.data
     no = data.get('no')
-    plans = Plan.objects.filter(pk=no)
-    if not plans.exists():
+    plan = Plan.objects.filter(pk=no)
+
+    if not plan.exists():
         return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
 
     try:
-        plans.update(name=data['name'])
+        plan.update(name=data['name'])
         return Response({'success': True, 'message': '編輯成功'})
+
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
