@@ -32,21 +32,33 @@ def addplan(request):
 
 
 # 學習規劃編輯
-@api_view(['POST'])
+@api_view()
 @user_login_required
-def editplan(request):
-    data = request.data
-
-    no = data.get('no')
-    plans = Plan.objects.filter(pk=no)
-    if not plans.exists():
-        return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
-
+def showeditplan(request, pk):
     try:
-        plans.update(name=data['name'])
-        return Response({'success': True, 'message': '編輯成功'})
+        plan = Plan.objects.get(pk=pk)
+        # discussroom.discussroom_question = Discussroom_question.object.get(pk=pk)
     except:
-        return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'success': False, 'message': '查無此規劃'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'data': {
+            'no': plan.pk,
+            'name': plan.name
+        }
+    })
+    # data = request.data
+
+    #no = data.get('no')
+    #plans = Plan.objects.filter(pk=no)
+    #if not plans.exists():
+    #    return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+
+    #try:
+    #    plans.update(name=data['name'])
+    #    return Response({'success': True, 'message': '編輯成功'})
+    #except:
+    #    return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # 學習規劃測試
