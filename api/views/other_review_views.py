@@ -172,13 +172,12 @@ def Sserch(request):
 @user_login_required
 def News(request):
     data = request.query_params
-
     user_id = data.get('user_id')
     # 過濾使用者+完成度
     plans = Plan.objects.filter(user_id=user_id, pace=0)
     if not plans.exists():
         return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
-    # if not in2.exists():
+
     return Response({
         'success': True,
         'data': [

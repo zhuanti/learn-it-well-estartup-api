@@ -31,9 +31,7 @@ def get_all_reviews(request):
                 'total_people': discussroom.total_people,
             }
             for discussroom in discussrooms
-
         ]
-        # json.dumps(discussrooms, cls=MyEncoder)
     })
 
 
