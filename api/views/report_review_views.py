@@ -252,6 +252,7 @@ def get_reviews_reportdata(request):
 # mydata = Members.objects.all().order_by('firstname').values()
 # SELECT * FROM members ORDER BY firstname;
 # select * from report where user_id = 'test@gmail.com' order by "no"  desc limit 1
+# 個人自習室顯示
 @api_view()
 @user_login_required
 def get_reviews_report_test(request):

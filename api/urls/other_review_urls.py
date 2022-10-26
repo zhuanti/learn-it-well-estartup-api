@@ -10,7 +10,7 @@ urlpatterns = [
     path('studyroom/getinfo/', get_studyroom_info),  # 個人自習室抓取資訊
     # path('studyroom/getminfo/', get_mstudyroom_info),  # 多人自習室抓取資訊
     path('studyroom/self/', setthings),  # 個人自習室寫入讀書資訊到report
-    path('studyroom/many/', msetthings),  # 多人自習室寫入讀書資訊到report
+    # path('studyroom/many/', msetthings),  # 多人自習室寫入讀書資訊到report
     # 下面test/ 供其他細項相關表格進行測試
     path('impeach/test/', get_all_reviews_impeach_test),
     path('studyroom/test/', get_all_reviews_studyroom_test),
