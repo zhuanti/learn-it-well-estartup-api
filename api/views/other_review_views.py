@@ -38,6 +38,16 @@ def get_room_no(request, pk):
         studyroom = Studyroom.objects.get(pk=pk)
     except:
         return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
+    data = request.query_params
+
+    user_id = data.get('user_id')
+    user_id = str(user_id).strip()
+
+    reports = Report.objects.filter(user_id=user_id)
+    if not reports.exists():
+        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+
+    report = reports.latest()
     return Response({
         'success': True,
         'data':
@@ -45,6 +55,20 @@ def get_room_no(request, pk):
                 'no': studyroom.pk,
                 'name': studyroom.name,
                 'total_people': studyroom.total_people,
+                'rep_no': report.pk,
+                'user_id': report.user_id,
+                'classroom_type_no': report.classroom_type_no.pk,
+                'subject_no': report.subject_no.pk,
+                'subject_no_lists': [
+                    {
+
+                        'sub_no': subject.pk,
+                        'sub_name': subject.name,
+                    }
+                    for subject in Subject.objects.filter(no=report.subject_no.pk)
+                ],
+                'settime_no': report.settime_no.pk,
+                'subject_detail': report.subject_detail,
             }
     })
 
