@@ -10,7 +10,7 @@ import datetime
 from utils.decorators import user_login_required
 
 
-# 學習規劃新增
+# 新增讀書規劃
 @api_view(['POST'])
 @user_login_required
 def addplan(request):
@@ -31,7 +31,7 @@ def addplan(request):
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
 
-# 學習規劃抓取特定編號
+# 抓取特定讀書規劃
 @api_view()
 @user_login_required
 def showeditplan(request):
@@ -52,10 +52,10 @@ def showeditplan(request):
     })
 
 
+# 編輯讀書規劃
 @api_view(['POST'])
 @user_login_required
 def editplan(request):
-
     data = request.data
     no = data.get('no')
     plan = Plan.objects.filter(pk=no)
@@ -71,7 +71,7 @@ def editplan(request):
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# 學習規劃測試
+# 抓取要顯示的讀書規劃
 @api_view()
 @user_login_required
 def get_all_reviews_test(request):
@@ -98,7 +98,7 @@ def get_all_reviews_test(request):
     })
 
 
-# 學習規劃刪除
+# 刪除讀書規劃
 @api_view(['POST'])
 @user_login_required
 def deleteplan(request):
