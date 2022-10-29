@@ -10,7 +10,7 @@ from utils.decorators import user_login_required
 # 將被auth_views取代
 # 每一個測試的api_view,一次只能取消註解一個
 
-# 使用者列表測試
+# 測試使用者列表顯示
 @api_view()
 @user_login_required
 def get_user_detail_test(request):
@@ -32,7 +32,7 @@ def get_user_detail_test(request):
     })
 
 
-# 個人資料顯示頁面
+# 顯示使用者個人資料
 @api_view()
 @user_login_required
 def get_user_detail(request):
@@ -53,7 +53,7 @@ def get_user_detail(request):
     })
 
 
-# 個人資料編輯
+# 編輯使用者個人資料
 @api_view(['POST'])
 @user_login_required
 def user_detail_edit(request):
