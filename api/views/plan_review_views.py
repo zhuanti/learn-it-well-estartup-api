@@ -10,6 +10,33 @@ import datetime
 from utils.decorators import user_login_required
 
 
+# 抓取要顯示的讀書規劃
+@api_view()
+@user_login_required
+def get_all_reviews_test(request):
+    # plans = Plan.objects.all()
+    # data = request.data
+    data = request.query_params
+
+    user_id = data.get('user_id')
+    plans = Plan.objects.filter(user_id=user_id)
+    if not plans.exists():
+        return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
+    # if not in2.exists():
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': plan.pk,
+                'user': plan.user.pk,
+                'name': plan.name,
+                'pace': plan.pace,
+            }
+            for plan in plans
+        ]
+    })
+
+
 # 新增讀書規劃
 @api_view(['POST'])
 @user_login_required
@@ -69,33 +96,6 @@ def editplan(request):
 
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-# 抓取要顯示的讀書規劃
-@api_view()
-@user_login_required
-def get_all_reviews_test(request):
-    # plans = Plan.objects.all()
-    # data = request.data
-    data = request.query_params
-
-    user_id = data.get('user_id')
-    plans = Plan.objects.filter(user_id=user_id)
-    if not plans.exists():
-        return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
-    # if not in2.exists():
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': plan.pk,
-                'user': plan.user.pk,
-                'name': plan.name,
-                'pace': plan.pace,
-            }
-            for plan in plans
-        ]
-    })
 
 
 # 刪除讀書規劃
