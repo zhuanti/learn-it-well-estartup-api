@@ -13,6 +13,7 @@ urlpatterns = [
     path('showedit/', showeditplan),  # 顯示特定讀書規劃
     path('editplan/', editplan),  # 編輯讀書規劃
     path('delete/', deleteplan),  # 刪除讀書規劃
+    # path('delete/<int:id>', deleteplan),  # 刪除讀書規劃
 
     # 學姊的範例測試
     # path('get/<int:pk>/', get_review),
