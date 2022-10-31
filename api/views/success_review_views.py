@@ -34,7 +34,6 @@ def get_all_reviews(request):
     user_id = data.get('user_id')
 
     success_lists = Success_list.objects.filter(user_id=user_id)
-    # print(user_id)
     return Response({
         'success': True,
         'data': [
@@ -44,14 +43,11 @@ def get_all_reviews(request):
                 'success_no': success_list.success_no.pk,
                 'pace': success_list.pace,
                 'lockif': success_list.lockif,
-                # 'no': success.pk,
-                # 'name': success.name,
-                # 'pace': success.pace,
-                'success_name': [
+                'success_names': [
                     {
-                        'success_no':success.no,
-                        'success_name': success.name,
-                        'success_pace': success.pace,
+                        'suc_no': success.no,
+                        'suc_name': success.name,
+                        'suc_pace': success.pace,
                     }
                     for success in Success.objects.filter(pk=success_list.success_no.pk)
                 ],
