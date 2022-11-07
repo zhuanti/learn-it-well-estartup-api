@@ -50,7 +50,6 @@ def get_all_reviews(request, pk):
                     }
                     for subject in subjects
                 ],
-
             }
 
     })
