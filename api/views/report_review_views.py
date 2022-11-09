@@ -37,6 +37,29 @@ def get_all_reviews_test(request):
     })
 
 
+# 取得使用者填寫讀書資訊
+# @api_view()
+# @user_login_required
+# def get_report_day(request):
+#     data = request.data
+#     user_id = data.get('user_id')
+#     rinfos = Dayreport.objects.filter(user_id=user_id)
+#     if not rinfos.exists():
+#         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'user_id': rinfo.user_id,
+#                 'subject_no_id': rinfo.subject_no_id,
+#                 'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
+#             }
+#             for rinfo in rinfos
+#
+#         ]
+#     })
+
 # 新增科目(根據登入的使用帳號做新增)
 @api_view(['POST'])
 @user_login_required
