@@ -15,7 +15,8 @@ urlpatterns = [
     path('reporttest/', get_reviews_report_test),
     path('reportweek/', get_report_usernameweek),
     path('reportday/', get_report_usernameday),
-    # path('reportdayin/', get_report_day),
+    path('reportplan/', get_plan_day),
+    path('reportdayin/', get_report_day),
     # 學姊的範例測試
     # path('get/<int:pk>/', get_review),
     # path('get_critic_reviews/', get_critic_reviews),

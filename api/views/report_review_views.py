@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User
+from api.models import Report, Subject, User, Dayplan_filter_view, Day_subinterval_view
 
 from utils.decorators import user_login_required
 
@@ -36,29 +36,51 @@ def get_all_reviews_test(request):
         ]
     })
 
+# 日報表讀書規劃
+@api_view()
+@user_login_required
+def get_plan_day(request):
+    data = request.query_params
 
-# 取得使用者填寫讀書資訊
-# @api_view()
-# @user_login_required
-# def get_report_day(request):
-#     data = request.data
-#     user_id = data.get('user_id')
-#     rinfos = Dayreport.objects.filter(user_id=user_id)
-#     if not rinfos.exists():
-#         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
-#
-#     return Response({
-#         'success': True,
-#         'data': [
-#             {
-#                 'user_id': rinfo.user_id,
-#                 'subject_no_id': rinfo.subject_no_id,
-#                 'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
-#             }
-#             for rinfo in rinfos
-#
-#         ]
-#     })
+    user_id = data.get('user_id')
+    plans = Dayplan_filter_view.objects.filter(user_id=user_id)
+    if not plans.exists():
+        return Response({'success': False, 'message': '本日無讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': plan.pk,
+                'user': plan.user.pk,
+                'name': plan.name,
+                'pace': plan.pace,
+            }
+            for plan in plans
+        ]
+    })
+
+# 日報表圖表資訊取得
+@api_view()
+@user_login_required
+def get_report_day(request):
+    data = request.query_params
+    user_id = data.get('user_id')
+    rinfos = Day_subinterval_view.objects.filter(user_id=user_id)
+    if not rinfos.exists():
+        return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'user_id': rinfo.user_id,
+                'subject_no_id': rinfo.subject_no_id,
+                'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
+            }
+            for rinfo in rinfos
+
+        ]
+    })
 
 # 新增科目(根據登入的使用帳號做新增)
 @api_view(['POST'])

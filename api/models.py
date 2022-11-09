@@ -208,6 +208,29 @@ class Impeach(models.Model):
         managed = False
         db_table = 'impeach'
 
+# 日報表圖表資訊
+class Day_subinterval_view(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19,decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'day_subinterval_view'
+
+# 日報表讀書規劃
+class Dayplan_filter_view(models.Model):
+    no = models.AutoField(primary_key=True, auto_created=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    name = models.CharField(max_length=100)
+    pace = models.IntegerField()
+    datetime = models.DateTimeField(auto_now_add=True)
+    ftime = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'dayplan_filter_view'
+
 # 以下為學姊範例程式碼
 # class Account(models.Model):
 #     id = models.CharField(primary_key=True, max_length=100)
