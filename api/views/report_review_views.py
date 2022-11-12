@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User, Dayplan_filter_view, Day_subinterval_view
+from api.models import Report, Subject, User, Dayplan_filter_view, Day_subinterval_view, Weekplan_fliter_view, Week_subinterval_view
 
 from utils.decorators import user_login_required
 
@@ -59,6 +59,29 @@ def get_plan_day(request):
         ]
     })
 
+# 週報表讀書規劃
+@api_view()
+@user_login_required
+def get_plan_week(request):
+    data = request.query_params
+
+    user_id = data.get('user_id')
+    plans = Weekplan_fliter_view.objects.filter(user_id=user_id)
+    if not plans.exists():
+        return Response({'success': False, 'message': '本週無讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': plan.pk,
+                'user': plan.user.pk,
+                'name': plan.name,
+                'pace': plan.pace,
+            }
+            for plan in plans
+        ]
+    })
+
 # 日報表圖表資訊取得
 @api_view()
 @user_login_required
@@ -66,6 +89,29 @@ def get_report_day(request):
     data = request.query_params
     user_id = data.get('user_id')
     rinfos = Day_subinterval_view.objects.filter(user_id=user_id)
+    if not rinfos.exists():
+        return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'user_id': rinfo.user_id,
+                'subject_no_id': rinfo.subject_no_id,
+                'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
+            }
+            for rinfo in rinfos
+
+        ]
+    })
+
+# 週報表圖表資訊取得
+@api_view()
+@user_login_required
+def get_report_week(request):
+    data = request.query_params
+    user_id = data.get('user_id')
+    rinfos = Week_subinterval_view.objects.filter(user_id=user_id)
     if not rinfos.exists():
         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
 
