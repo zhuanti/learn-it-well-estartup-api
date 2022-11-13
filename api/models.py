@@ -107,6 +107,15 @@ class Plan(models.Model):
         db_table = 'plan'
 
 # 讀書規劃test
+class Pace:
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 'pace'
+
+
 class Plantest(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
@@ -118,15 +127,6 @@ class Plantest(models.Model):
     class Meta:
         managed = False
         db_table = 'plantest'
-
-# 讀書規劃狀態
-class Pace(models.Model):
-    no = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'pace'
 
 
 # 成就輔助
