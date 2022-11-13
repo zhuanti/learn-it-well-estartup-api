@@ -58,6 +58,27 @@ def addplan(request):
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
 
+# # 新增讀書規劃
+# @api_view(['POST'])
+# @user_login_required
+# def addplantest(request):
+#     data = request.data
+#     # 新增
+#     try:
+#         Plantest.objects.create(
+#             user_id=data['user_id'],
+#             name=data['name'],
+#             pace=data['pace'],
+#             datetime=data['datetime']
+#         )
+#         # 0為未完成,1為完成
+#
+#         return Response({'success': True, 'message': '新增成功'})
+#
+#     except IntegrityError:
+#         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
+
 # 抓取特定讀書規劃
 @api_view()
 @user_login_required
@@ -151,3 +172,5 @@ def deleteplantest(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '刪除失敗'}, status=status.HTTP_400_BAD_REQUEST)
+
+

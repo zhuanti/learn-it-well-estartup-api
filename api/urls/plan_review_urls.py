@@ -15,7 +15,7 @@ urlpatterns = [
     path('delete/', deleteplan),  # 刪除讀書規劃
     # path('delete/<int:id>', deleteplan),  # 刪除讀書規劃
 
-
+    # path('addplantest/', addplantest),
     path('editplantest/', editplantest),  # 編輯讀書規劃
     path('deletetest/', deleteplantest),  # 刪除讀書規劃
     # path('showedittest/', showeditplantest),  # test顯示特定讀書規劃
