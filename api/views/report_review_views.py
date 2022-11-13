@@ -434,6 +434,7 @@ def get_report_week(request):
                         'user': wplan.user.pk,
                         'name': wplan.name,
                         'pace': wplan.pace,
+                        'datetime': wplan.datetime,
                     }
                     for wplan in wplans
                 ],
@@ -471,6 +472,7 @@ def get_report_day(request):
                         'user': dplan.user.pk,
                         'name': dplan.name,
                         'pace': dplan.pace,
+                        'datetime': dplan.datetime,
                     }
                     for dplan in dplans
                 ],
