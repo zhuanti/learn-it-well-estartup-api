@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
 
-from api.models import Plan, User
+from api.models import Plan, User, Plantest
 import datetime
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -115,3 +115,25 @@ def deleteplan(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '刪除失敗'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# 抓取特定讀書規劃
+@api_view()
+@user_login_required
+def showeditplantest(request):
+    data = request.query_params
+    no = data.get('no')
+    user_id = data.get('user_id')
+    try:
+        plan = Plantest.objects.get(pk=no, user_id=user_id)
+    except:
+        return Response({'success': False, 'message': '查無此規劃'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({
+        'success': True,
+        'data': {
+            'no': plan.pk,
+            'name': plan.name
+        }
+    })

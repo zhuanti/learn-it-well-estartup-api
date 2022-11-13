@@ -107,7 +107,7 @@ class Plan(models.Model):
         db_table = 'plan'
 
 # 讀書規劃test
-class Pace:
+class Pace(models.Model):
     no = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20)
 
