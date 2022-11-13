@@ -116,24 +116,38 @@ def deleteplan(request):
     except IntegrityError:
         return Response({'success': False, 'message': '刪除失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-# 抓取特定讀書規劃
-@api_view()
+# 編輯讀書規劃
+@api_view(['POST'])
 @user_login_required
-def showeditplantest(request):
-    data = request.query_params
+def editplantest(request):
+    data = request.data
     no = data.get('no')
-    user_id = data.get('user_id')
-    try:
-        plan = Plantest.objects.get(pk=no, user_id=user_id)
-    except:
-        return Response({'success': False, 'message': '查無此規劃'}, status=status.HTTP_404_NOT_FOUND)
+    plan = Plantest.objects.filter(pk=no)
 
-    return Response({
-        'success': True,
-        'data': {
-            'no': plan.pk,
-            'name': plan.name
-        }
-    })
+    if not plan.exists():
+        return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        plan.update(name=data['name'])
+        return Response({'success': True, 'message': '編輯成功'})
+
+    except:
+        return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
+
+# 刪除讀書規劃
+@api_view(['POST'])
+@user_login_required
+def deleteplantest(request):
+    data = request.data
+
+    no = data.get('no')
+    plans = Plantest.objects.filter(no=no)
+
+    if not plans.exists():
+        return Response({'success': False, 'message': '沒有此讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+    try:
+        plans.delete()
+        return Response({'success': True, 'message': '刪除成功'})
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '刪除失敗'}, status=status.HTTP_400_BAD_REQUEST)
