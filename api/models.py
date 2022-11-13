@@ -93,7 +93,7 @@ class Report(models.Model):
         db_table = 'report'
 
 
-# 學習規劃
+# 讀書規劃
 class Plan(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
@@ -105,6 +105,15 @@ class Plan(models.Model):
     class Meta:
         managed = False
         db_table = 'plan'
+
+# 讀書規劃狀態
+class Pace(models.Model):
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 'pace'
 
 
 # 成就輔助
