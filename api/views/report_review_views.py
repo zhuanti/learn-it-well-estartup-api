@@ -37,55 +37,55 @@ def get_all_reviews_test(request):
     })
 
 # 日報表讀書規劃
-@api_view()
-@user_login_required
-def get_plan_day(request):
-    data = request.query_params
-
-    user_id = data.get('user_id')
-    plans = Dayplan_filter_view.objects.filter(user_id=user_id)
-    if not plans.exists():
-        return Response({'success': False, 'message': '本日無讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': plan.pk,
-                'user': plan.user.pk,
-                'name': plan.name,
-                'pace': plan.pace,
-            }
-            for plan in plans
-        ]
-    })
+# @api_view()
+# @user_login_required
+# def get_plan_day(request):
+#     data = request.query_params
+#
+#     user_id = data.get('user_id')
+#     plans = Dayplan_filter_view.objects.filter(user_id=user_id)
+#     if not plans.exists():
+#         return Response({'success': False, 'message': '本日無讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': plan.pk,
+#                 'user': plan.user.pk,
+#                 'name': plan.name,
+#                 'pace': plan.pace,
+#             }
+#             for plan in plans
+#         ]
+#     })
 
 # 週報表讀書規劃
-@api_view()
-@user_login_required
-def get_plan_week(request):
-    data = request.query_params
-
-    user_id = data.get('user_id')
-    plans = Weekplan_fliter_view.objects.filter(user_id=user_id)
-    if not plans.exists():
-        return Response({'success': False, 'message': '本週無讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': plan.pk,
-                'user': plan.user.pk,
-                'name': plan.name,
-                'pace': plan.pace,
-            }
-            for plan in plans
-        ]
-    })
+# @api_view()
+# @user_login_required
+# def get_plan_week(request):
+#     data = request.query_params
+#
+#     user_id = data.get('user_id')
+#     plans = Weekplan_fliter_view.objects.filter(user_id=user_id)
+#     if not plans.exists():
+#         return Response({'success': False, 'message': '本週無讀書規劃'}, status=status.HTTP_404_NOT_FOUND)
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'no': plan.pk,
+#                 'user': plan.user.pk,
+#                 'name': plan.name,
+#                 'pace': plan.pace,
+#             }
+#             for plan in plans
+#         ]
+#     })
 
 # 日報表圖表資訊取得
 @api_view()
 @user_login_required
-def get_report_day(request):
+def get_chartreport_day(request):
     data = request.query_params
     user_id = data.get('user_id')
     rinfos = Day_subinterval_view.objects.filter(user_id=user_id)
@@ -108,7 +108,7 @@ def get_report_day(request):
 # 週報表圖表資訊取得
 @api_view()
 @user_login_required
-def get_report_week(request):
+def get_chartreport_week(request):
     data = request.query_params
     user_id = data.get('user_id')
     rinfos = Week_subinterval_view.objects.filter(user_id=user_id)
@@ -406,43 +406,19 @@ def report_recordtime_edit(request):
 # 報表個人資料週顯示頁面
 @api_view()
 @user_login_required
-def get_report_usernameweek(request):
+def get_report_week(request):
     # users = User.objects.all()
     data = request.query_params
     user_id = data.get('user_id')
     # data = request.data
 
     user = User.objects.get(pk=user_id)
-
+    wplans = Weekplan_fliter_view.objects.filter(user_id=user_id)
     return Response({
         'success': True,
         'data':
             {
-                'name': user.name,
-                'id': user.pk,
-                'gender': user.gender,
-                'live': user.live,
-                'borth': user.borth,
-            }
-    })
-
-
-# 報表個人資料日顯示頁面
-@api_view()
-@user_login_required
-def get_report_usernameday(request):
-    # users = User.objects.all()
-    data = request.query_params
-    user_id = data.get('user_id')
-    # data = request.data
-
-    user = User.objects.get(pk=user_id)
-    plans = Dayplan_filter_view.objects.filter(user_id=user_id)
-    return Response({
-        'success': True,
-        'data':
-            {
-                'user_lists': [
+                'wuser_lists': [
                     {
                         'name': user.name,
                         'id': user.pk,
@@ -451,14 +427,52 @@ def get_report_usernameday(request):
                         'borth': user.borth,
                     }
                 ],
-                'plan_lists': [
+
+                'wplan_lists': [
                     {
-                        'no': plan.pk,
-                        'user': plan.user.pk,
-                        'name': plan.name,
-                        'pace': plan.pace,
+                        'no': wplan.pk,
+                        'user': wplan.user.pk,
+                        'name': wplan.name,
+                        'pace': wplan.pace,
                     }
-                    for plan in plans
+                    for wplan in wplans
+                ],
+
+            }
+    })
+
+# 報表個人資料日顯示頁面
+@api_view()
+@user_login_required
+def get_report_day(request):
+    # users = User.objects.all()
+    data = request.query_params
+    user_id = data.get('user_id')
+    # data = request.data
+
+    user = User.objects.get(pk=user_id)
+    dplans = Dayplan_filter_view.objects.filter(user_id=user_id)
+    return Response({
+        'success': True,
+        'data':
+            {
+                'duser_lists': [
+                    {
+                        'name': user.name,
+                        'id': user.pk,
+                        'gender': user.gender,
+                        'live': user.live,
+                        'borth': user.borth,
+                    }
+                ],
+                'dplan_lists': [
+                    {
+                        'no': dplan.pk,
+                        'user': dplan.user.pk,
+                        'name': dplan.name,
+                        'pace': dplan.pace,
+                    }
+                    for dplan in dplans
                 ],
 
             }
