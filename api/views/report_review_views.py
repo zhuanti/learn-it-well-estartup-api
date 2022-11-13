@@ -403,7 +403,7 @@ def report_recordtime_edit(request):
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# 報表個人資料周顯示頁面
+# 報表個人資料週顯示頁面
 @api_view()
 @user_login_required
 def get_report_usernameweek(request):
@@ -437,15 +437,30 @@ def get_report_usernameday(request):
     # data = request.data
 
     user = User.objects.get(pk=user_id)
-
+    plans = Dayplan_filter_view.objects.filter(user_id=user_id)
     return Response({
         'success': True,
         'data':
             {
-                'name': user.name,
-                'id': user.pk,
-                'gender': user.gender,
-                'live': user.live,
-                'borth': user.borth,
+                'user_lists': [
+                    {
+                        'name': user.name,
+                        'id': user.pk,
+                        'gender': user.gender,
+                        'live': user.live,
+                        'borth': user.borth,
+                    }
+                ],
+                'plan_lists': [
+                    {
+                        'no': plan.pk,
+                        'user': plan.user.pk,
+                        'name': plan.name,
+                        'pace': plan.pace,
+                    }
+                    for plan in plans
+                ],
+
             }
     })
+
