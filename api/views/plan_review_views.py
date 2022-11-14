@@ -58,27 +58,6 @@ def addplan(request):
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
 
-# # 新增讀書規劃
-# @api_view(['POST'])
-# @user_login_required
-# def addplantest(request):
-#     data = request.data
-#     # 新增
-#     try:
-#         Plantest.objects.create(
-#             user_id=data['user_id'],
-#             name=data['name'],
-#             pace=data['pace'],
-#             datetime=data['datetime']
-#         )
-#         # 0為未完成,1為完成
-#
-#         return Response({'success': True, 'message': '新增成功'})
-#
-#     except IntegrityError:
-#         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
-
-
 # 抓取特定讀書規劃
 @api_view()
 @user_login_required
@@ -136,6 +115,73 @@ def deleteplan(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '刪除失敗'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# 新增讀書規劃test
+@api_view(['POST'])
+@user_login_required
+def addplantest(request):
+    data = request.data
+    # 新增
+    try:
+        Plantest.objects.create(
+            user_id=data['user_id'],
+            name=data['name'],
+            pace_no_id=0,
+            datetime=data['datetime']
+        )
+        # 0為未完成,1為完成
+
+        return Response({'success': True, 'message': '新增成功'})
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
+# 抓取要顯示的讀書規劃test
+@api_view()
+@user_login_required
+def get_all_reviews_testtest(request):
+    # plans = Plan.objects.all()
+    # data = request.data
+    data = request.query_params
+
+    user_id = data.get('user_id')
+    plans = Plantest.objects.filter(user_id=user_id)
+    if not plans.exists():
+        return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
+    # if not in2.exists():
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'no': plan.pk,
+                'user': plan.user.pk,
+                'name': plan.name,
+                'pace_no': plan.pace_no.pk,
+            }
+            for plan in plans
+        ]
+    })
+
+# 抓取特定讀書規劃test
+@api_view()
+@user_login_required
+def showeditplantest(request):
+    data = request.query_params
+    no = data.get('no')
+    user_id = data.get('user_id')
+    try:
+        plan = Plantest.objects.get(pk=no, user_id=user_id)
+    except:
+        return Response({'success': False, 'message': '查無此規劃'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({
+        'success': True,
+        'data': {
+            'no': plan.pk,
+            'name': plan.name
+        }
+    })
 
 # 編輯讀書規劃
 @api_view(['POST'])

@@ -120,7 +120,7 @@ class Plantest(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
-    pace = models.ForeignKey(Pace, models.DO_NOTHING)
+    pace_no = models.ForeignKey(Pace, models.DO_NOTHING)
     datetime = models.DateTimeField(auto_now_add=True)
     ftime = models.DateTimeField()
 
@@ -230,13 +230,24 @@ class Impeach(models.Model):
         managed = False
         db_table = 'impeach'
 
+# # 日報表圖表資訊
+# class Day_subinterval_view(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+#     subject_no_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+#     user_daysubtotal_hours = models.DecimalField(max_digits=19,decimal_places=2)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'day_subinterval_view'
+
 # 日報表圖表資訊
 class Day_subinterval_view(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    subject_no_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
-    user_daysubtotal_hours = models.DecimalField(max_digits=19,decimal_places=2)
+    user = models.CharField( max_length=100)
+    subject_no_id = models.IntegerField()
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
 
     class Meta:
+        unique_together = (("user", "subject_no_id"),)
         managed = False
         db_table = 'day_subinterval_view'
 
