@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User, Dayplan_filter_view, Day_subcinterval_view, Weekplan_fliter_view, Week_subinterval_view
+from api.models import Report, Subject, User, Dayplan_filter_view, Day_subcinterval_view, Weekplan_fliter_view, Week_subinterval_view, Success_list, Success
 
 from utils.decorators import user_login_required
 
@@ -415,6 +415,7 @@ def get_report_week(request):
 
     user = User.objects.get(pk=user_id)
     wplans = Weekplan_fliter_view.objects.filter(user_id=user_id)
+    wsuccesslists = Success_list.objects.filter(user_id=user_id)
     return Response({
         'success': True,
         'data':
@@ -439,6 +440,24 @@ def get_report_week(request):
                     }
                     for wplan in wplans
                 ],
+                'wsuccess_lists': [
+                    {
+                        'no': wsuccesslist.pk,
+                        'user_id': wsuccesslist.user.pk,
+                        'success_no': wsuccesslist.success_no.pk,
+                        'pace': wsuccesslist.pace,
+                        'lockif': wsuccesslist.lockif,
+                        'success_names': [
+                            {
+                                'suc_no': success.no,
+                                'suc_name': success.name,
+                                'suc_pace': success.pace,
+                            }
+                            for success in Success.objects.filter(pk=wsuccesslist.success_no.pk)
+                        ],
+                    }
+                    for wsuccesslist in wsuccesslists
+                ],
 
             }
     })
@@ -454,6 +473,7 @@ def get_report_day(request):
 
     user = User.objects.get(pk=user_id)
     dplans = Dayplan_filter_view.objects.filter(user_id=user_id)
+    dsuccesslists = Success_list.objects.filter(user_id=user_id)
     return Response({
         'success': True,
         'data':
@@ -476,6 +496,24 @@ def get_report_day(request):
                         'datetime': dplan.datetime,
                     }
                     for dplan in dplans
+                ],
+                'dsuccess_lists': [
+                    {
+                        'no': dsuccesslist.pk,
+                        'user_id': dsuccesslist.user.pk,
+                        'success_no': dsuccesslist.success_no.pk,
+                        'pace': dsuccesslist.pace,
+                        'lockif': dsuccesslist.lockif,
+                        'success_names': [
+                            {
+                                'suc_no': success.no,
+                                'suc_name': success.name,
+                                'suc_pace': success.pace,
+                            }
+                            for success in Success.objects.filter(pk=dsuccesslist.success_no.pk)
+                        ],
+                    }
+                    for dsuccesslist in dsuccesslists
                 ],
 
             }
