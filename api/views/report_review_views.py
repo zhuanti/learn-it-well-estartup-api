@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User, Dayplan_filter_view, Day_subinterval_view, Weekplan_fliter_view, Week_subinterval_view
+from api.models import Report, Subject, User, Dayplan_filter_view, Day_subcinterval_view, Weekplan_fliter_view, Week_subinterval_view
 
 from utils.decorators import user_login_required
 
@@ -88,7 +88,7 @@ def get_all_reviews_test(request):
 def get_chartreport_day(request):
     data = request.query_params
     user_id = data.get('user_id')
-    rinfos = Day_subinterval_view.objects.filter(user_id=user_id)
+    rinfos = Day_subcinterval_view.objects.filter(user_id=user_id)
     if not rinfos.exists():
         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -96,7 +96,8 @@ def get_chartreport_day(request):
         'success': True,
         'data': [
             {
-                'user_id': rinfo.user_id,
+                'combinef': rinfo.combinef.pk,
+                'user_id': rinfo.user,
                 'subject_no_id': rinfo.subject_no_id,
                 'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
             }

@@ -240,16 +240,29 @@ class Impeach(models.Model):
 #         managed = False
 #         db_table = 'day_subinterval_view'
 
-# 日報表圖表資訊
+# 日報表圖表資訊(old)
 class Day_subinterval_view(models.Model):
-    user = models.CharField( max_length=100)
+    user = models.CharField(max_length=100)
     subject_no_id = models.IntegerField()
     user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
 
     class Meta:
-        unique_together = (("user", "subject_no_id"),)
+        unique_together = [['user', 'subject_no_id']]
+        # unique_together = (("user", "subject_no_id"),)
         managed = False
         db_table = 'day_subinterval_view'
+
+
+# 日報表圖表資訊
+class Day_subcinterval_view(models.Model):
+    combinef = models.TextField(primary_key=True,max_length=100)
+    user = models.CharField(max_length=100)
+    subject_no_id = models.IntegerField()
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'day_subcinterval_view'
 
 # 日報表讀書規劃
 class Dayplan_filter_view(models.Model):
