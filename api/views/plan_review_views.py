@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
 
-from api.models import Plan, User, Plantest
+from api.models import Plan, User, Plantest, Pace
 import datetime
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -158,6 +158,13 @@ def get_all_reviews_testtest(request):
                 'user': plan.user.pk,
                 'name': plan.name,
                 'pace_no': plan.pace_no.pk,
+                'pace_names': [
+                    {
+                        'no': pace.pk,
+                        'name': pace.name,
+                    }
+                    for pace in Pace.objects.filter(pk=plan.pace_no.pk)
+                ],
             }
             for plan in plans
         ]
@@ -179,7 +186,14 @@ def showeditplantest(request):
         'success': True,
         'data': {
             'no': plan.pk,
-            'name': plan.name
+            'name': plan.name,
+            'pace_names': [
+                {
+                    'no': pace.pk,
+                    'name': pace.name,
+                }
+                for pace in Pace.objects.filter(pk=plan.pace_no.pk)
+            ],
         }
     })
 
