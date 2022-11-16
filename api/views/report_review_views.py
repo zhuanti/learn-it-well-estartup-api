@@ -500,17 +500,18 @@ def get_report_day(request):
     # users = User.objects.all()
     data = request.query_params
     user_id = data.get('user_id')
-    user = str(user_id).strip()
+    user_id = str(user_id).strip()
     # data = request.data
 
     user = User.objects.get(pk=user_id)
-    dplans = Dplan_filter_view.objects.filter(user_id=user_id)
-    dsuccesslists = Success_list.objects.filter(user_id=user_id)
-    rinfos = Day_subcinterval_view.objects.filter(user=user)
+    dplans = Dplan_filter_view.objects.filter(user=user_id)
+    dsuccesslists = Success_list.objects.filter(user=user_id)
+    rinfos = Day_subcinterval_view.objects.filter(user=user_id)
     return Response({
         'success': True,
         'data':
             {
+
                 'duser_lists': [
                     {
                         'name': user.name,
