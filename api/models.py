@@ -279,15 +279,26 @@ class Dayplan_filter_view(models.Model):
         managed = False
         db_table = 'dayplan_filter_view'
 
+# # 週報表圖表資訊
+# class Week_subinterval_view(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+#     subject_no_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+#     user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'week_subinterval_view'
+
 # 週報表圖表資訊
-class Week_subinterval_view(models.Model):
+class Weekreport_subinterval_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    subject_no_id = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
-    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_total_hours = models.DecimalField(max_digits=19, decimal_places=2)
 
     class Meta:
         managed = False
-        db_table = 'week_subinterval_view'
+        db_table = 'weekreport_subinterval_view'
 
 # 週報表讀書規劃
 class Weekplan_fliter_view(models.Model):

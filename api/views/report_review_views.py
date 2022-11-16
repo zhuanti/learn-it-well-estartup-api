@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User, Dayplan_filter_view, Day_subcinterval_view, Weekplan_fliter_view, Week_subinterval_view, Success_list, Success
+from api.models import Report, Subject, User, Dayplan_filter_view, Day_subcinterval_view, Weekplan_fliter_view, Weekreport_subinterval_view, Success_list, Success
 
 from utils.decorators import user_login_required
 
@@ -83,53 +83,56 @@ def get_all_reviews_test(request):
 #     })
 
 # 日報表圖表資訊取得
-@api_view()
-@user_login_required
-def get_chartreport_day(request):
-    data = request.query_params
-    user = data.get('user_id')
-    user = str(user).strip()
-
-    rinfos = Day_subcinterval_view.objects.filter(user=user)
-
-    if not rinfos.exists():
-        return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'combinef': rinfo.pk,
-                'user_id': rinfo.user.pk,
-                'subject_no_id': rinfo.subject_no.pk,
-                'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
-            }
-            for rinfo in rinfos
-        ]
-    })
+# @api_view()
+# @user_login_required
+# def get_chartreport_day(request):
+#     data = request.query_params
+#     user = data.get('user_id')
+#     user = str(user).strip()
+#
+#     rinfos = Day_subcinterval_view.objects.filter(user=user)
+#
+#     if not rinfos.exists():
+#         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'combinef': rinfo.pk,
+#                 'user_id': rinfo.user.pk,
+#                 'subject_no_id': rinfo.subject_no.pk,
+#                 'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
+#             }
+#             for rinfo in rinfos
+#         ]
+#     })
 
 # 週報表圖表資訊取得
-@api_view()
-@user_login_required
-def get_chartreport_week(request):
-    data = request.query_params
-    user_id = data.get('user_id')
-    rinfos = Week_subinterval_view.objects.filter(user_id=user_id)
-    if not rinfos.exists():
-        return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'user_id': rinfo.user_id,
-                'subject_no_id': rinfo.subject_no_id,
-                'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
-            }
-            for rinfo in rinfos
-
-        ]
-    })
+# @api_view()
+# @user_login_required
+# def get_chartreport_week(request):
+#     data = request.query_params
+#     user = data.get('user_id')
+#     user = str(user).strip()
+#
+#     rinfos = Weekreport_subinterval_view.objects.filter(user=user)
+#
+#     if not rinfos.exists():
+#         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'combinef': rinfo.pk,
+#                 'user_id': rinfo.user.pk,
+#                 'subject_no_id': rinfo.subject_no.pk,
+#                 'user_total_hours': rinfo.user_total_hours
+#             }
+#             for rinfo in rinfos
+#         ]
+#     })
 
 # 新增科目(根據登入的使用帳號做新增)
 @api_view(['POST'])
@@ -413,11 +416,13 @@ def get_report_week(request):
     # users = User.objects.all()
     data = request.query_params
     user_id = data.get('user_id')
+    user = str(user_id).strip()
     # data = request.data
 
     user = User.objects.get(pk=user_id)
     wplans = Weekplan_fliter_view.objects.filter(user_id=user_id)
     wsuccesslists = Success_list.objects.filter(user_id=user_id)
+    rinfos = Weekreport_subinterval_view.objects.filter(user=user)
     return Response({
         'success': True,
         'data':
@@ -460,9 +465,19 @@ def get_report_week(request):
                     }
                     for wsuccesslist in wsuccesslists
                 ],
+                'wchart_lists': [
+                    {
+                        'combinef': rinfo.pk,
+                        'user_id': rinfo.user.pk,
+                        'subject_no_id': rinfo.subject_no.pk,
+                        'user_total_hours': rinfo.user_total_hours
+                    }
+                    for rinfo in rinfos
+                ],
 
             }
     })
+
 
 # 報表個人資料日顯示頁面
 @api_view()
@@ -471,11 +486,13 @@ def get_report_day(request):
     # users = User.objects.all()
     data = request.query_params
     user_id = data.get('user_id')
+    user = str(user_id).strip()
     # data = request.data
 
     user = User.objects.get(pk=user_id)
     dplans = Dayplan_filter_view.objects.filter(user_id=user_id)
     dsuccesslists = Success_list.objects.filter(user_id=user_id)
+    rinfos = Day_subcinterval_view.objects.filter(user=user)
     return Response({
         'success': True,
         'data':
@@ -517,7 +534,15 @@ def get_report_day(request):
                     }
                     for dsuccesslist in dsuccesslists
                 ],
+                'dchart_lists': [
+                    {
+                        'combinef': rinfo.pk,
+                        'user_id': rinfo.user.pk,
+                        'subject_no_id': rinfo.subject_no.pk,
+                        'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
+                    }
+                    for rinfo in rinfos
+                ],
 
             }
     })
-
