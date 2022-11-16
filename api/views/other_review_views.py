@@ -122,6 +122,37 @@ def setthings(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已寫入'}, status=status.HTTP_409_CONFLICT)
 
+# 個人自習室更新進入時間
+@api_view(['POST'])
+@user_login_required
+def self_entrytime(request):
+    data = request.data
+    user = data.get('user')
+
+    reports = Report.objects.filter(user=user)
+
+    if not reports.exists():
+        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+
+    report = reports.latest()
+
+    reportupdate = Report.objects.filter(pk=report.no)
+
+
+    if not reportupdate.exists():
+        return Response({'success': False, 'message': '沒有此資料'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    # 新增
+    try:
+        reportupdate.update(entry_time=data['entry_time'])
+        return Response({'success': True, 'message': '新增成功'})
+
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
+
 # 檢舉測試
 @api_view()
 @user_login_required
