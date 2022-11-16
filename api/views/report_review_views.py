@@ -87,8 +87,11 @@ def get_all_reviews_test(request):
 @user_login_required
 def get_chartreport_day(request):
     data = request.query_params
-    user_id = data.get('user_id')
-    rinfos = Day_subcinterval_view.objects.filter(user_id=user_id)
+    user = data.get('user_id')
+    user = str(user).strip()
+
+    rinfos = Day_subcinterval_view.objects.filter(user=user)
+
     if not rinfos.exists():
         return Response({'success': False, 'message': '未查詢到'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -96,13 +99,12 @@ def get_chartreport_day(request):
         'success': True,
         'data': [
             {
-                'combinef': rinfo.combinef.pk,
-                'user_id': rinfo.user,
-                'subject_no_id': rinfo.subject_no_id,
+                'combinef': rinfo.pk,
+                'user_id': rinfo.user.pk,
+                'subject_no_id': rinfo.subject_no.pk,
                 'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
             }
             for rinfo in rinfos
-
         ]
     })
 

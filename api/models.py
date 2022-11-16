@@ -142,7 +142,7 @@ class Success(models.Model):
 
 # 成就列表
 class Success_list(models.Model):
-    no = models.AutoField(primary_key=True,auto_created=True)
+    no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     success_no = models.ForeignKey(Success, models.DO_NOTHING)
     pace = models.IntegerField()
@@ -255,9 +255,11 @@ class Day_subinterval_view(models.Model):
 
 # 日報表圖表資訊
 class Day_subcinterval_view(models.Model):
-    combinef = models.TextField(primary_key=True,max_length=100)
-    user = models.CharField(max_length=100)
-    subject_no_id = models.IntegerField()
+    combinef = models.TextField(primary_key=True, max_length=100)
+    # user_id = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    # subject_no_id = models.IntegerField()
     user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
 
     class Meta:
