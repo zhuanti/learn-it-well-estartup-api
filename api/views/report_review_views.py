@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User, Dayplan_filter_view, Day_subcinterval_view, Weekplan_fliter_view, Weekreport_subinterval_view, Success_list, Success
+from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, Weekreport_subinterval_view, Success_list, Success,Pace
 
 from utils.decorators import user_login_required
 
@@ -420,7 +420,7 @@ def get_report_week(request):
     # data = request.data
 
     user = User.objects.get(pk=user_id)
-    wplans = Weekplan_fliter_view.objects.filter(user_id=user_id)
+    wplans = Wplan_fliter_view.objects.filter(user_id=user_id)
     wsuccesslists = Success_list.objects.filter(user_id=user_id)
     rinfos = Weekreport_subinterval_view.objects.filter(user=user)
     return Response({
@@ -442,8 +442,15 @@ def get_report_week(request):
                         'no': wplan.pk,
                         'user': wplan.user.pk,
                         'name': wplan.name,
-                        'pace': wplan.pace,
+                        'pace_no': wplan.pace_no.pk,
                         'datetime': wplan.datetime,
+                        'pace_names': [
+                            {
+                                'no': pace.pk,
+                                'name': pace.name,
+                            }
+                            for pace in Pace.objects.filter(pk=wplan.pace_no.pk)
+                        ],
                     }
                     for wplan in wplans
                 ],
@@ -470,7 +477,14 @@ def get_report_week(request):
                         'combinef': rinfo.pk,
                         'user_id': rinfo.user.pk,
                         'subject_no_id': rinfo.subject_no.pk,
-                        'user_total_hours': rinfo.user_total_hours
+                        'user_total_hours': rinfo.user_total_hours,
+                        'subject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=rinfo.subject_no.pk)
+                        ],
                     }
                     for rinfo in rinfos
                 ],
@@ -490,7 +504,7 @@ def get_report_day(request):
     # data = request.data
 
     user = User.objects.get(pk=user_id)
-    dplans = Dayplan_filter_view.objects.filter(user_id=user_id)
+    dplans = Dplan_filter_view.objects.filter(user_id=user_id)
     dsuccesslists = Success_list.objects.filter(user_id=user_id)
     rinfos = Day_subcinterval_view.objects.filter(user=user)
     return Response({
@@ -511,8 +525,15 @@ def get_report_day(request):
                         'no': dplan.pk,
                         'user': dplan.user.pk,
                         'name': dplan.name,
-                        'pace': dplan.pace,
+                        'pace_no': dplan.pace_no.pk,
                         'datetime': dplan.datetime,
+                        'pace_names': [
+                            {
+                                'no': pace.pk,
+                                'name': pace.name,
+                            }
+                            for pace in Pace.objects.filter(pk=dplan.pace_no.pk)
+                        ],
                     }
                     for dplan in dplans
                 ],
@@ -539,7 +560,14 @@ def get_report_day(request):
                         'combinef': rinfo.pk,
                         'user_id': rinfo.user.pk,
                         'subject_no_id': rinfo.subject_no.pk,
-                        'user_daysubtotal_hours': rinfo.user_daysubtotal_hours
+                        'user_daysubtotal_hours': rinfo.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=rinfo.subject_no.pk)
+                        ],
                     }
                     for rinfo in rinfos
                 ],
