@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Impeach, Studyroom, Settime, Subject, Report, Plan, User
+from api.models import Impeach, Studyroom, Settime, Subject, Report, Plan, User, Plantest
 
 from utils.decorators import user_login_required
 
@@ -223,7 +223,7 @@ def News(request):
     data = request.query_params
     user_id = data.get('user_id')
     # 過濾使用者+完成度
-    plans = Plan.objects.filter(user_id=user_id, pace=0)
+    plans = Plantest.objects.filter(user_id=user_id, pace_no_id=0)
     if not plans.exists():
         return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -234,7 +234,7 @@ def News(request):
                 'no': plan.pk,
                 # 'user': plan.user.pk,
                 'name': plan.name,
-                'pace': plan.pace,
+                'pace': plan.pace_no.pk,
                 'user': plan.user_id,
                 'user_lists': [
                     {
