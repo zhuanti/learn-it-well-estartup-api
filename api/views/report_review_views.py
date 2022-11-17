@@ -416,13 +416,13 @@ def get_report_week(request):
     # users = User.objects.all()
     data = request.query_params
     user_id = data.get('user_id')
-    user = str(user_id).strip()
+    user_id = str(user_id).strip()
     # data = request.data
 
     user = User.objects.get(pk=user_id)
-    wplans = Wplan_fliter_view.objects.filter(user_id=user_id)
-    wsuccesslists = Success_list.objects.filter(user_id=user_id)
-    rinfos = Weekreport_subinterval_view.objects.filter(user=user)
+    wplans = Wplan_fliter_view.objects.filter(user=user_id)
+    wsuccesslists = Success_list.objects.filter(user=user_id)
+    rinfos = Weekreport_subinterval_view.objects.filter(user=user_id)
     return Response({
         'success': True,
         'data':

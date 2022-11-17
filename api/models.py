@@ -317,7 +317,7 @@ class Wplan_fliter_view(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
-    pace = models.IntegerField()
+    pace_no = models.ForeignKey(Pace, models.DO_NOTHING)
     datetime = models.DateTimeField(auto_now_add=True)
     ftime = models.DateTimeField()
 
