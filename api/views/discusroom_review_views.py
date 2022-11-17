@@ -104,6 +104,11 @@ def addroom(request):
 @api_view()
 @user_login_required
 def get_room_no(request, pk):
+    data = request.query_params
+    user_id = data.get('user_id')
+
+    user = str(user_id).strip()
+
     try:
         discussroom = Discussroom.objects.get(pk=pk)
         # discussroom.discussroom_question = Discussroom_question.object.get(pk=pk)
@@ -113,6 +118,12 @@ def get_room_no(request, pk):
         'success': True,
         'data':
             {
+                'user': [
+                    {
+                        'user_name': user_name.name,
+                    }
+                    for user_name in User.objects.filter(pk=user)
+                ],
                 'no': discussroom.pk,
                 # 'schoolsys_no': discussroom.schoolsys_no.pk,
                 'subject_no': discussroom.subject_no.pk,
