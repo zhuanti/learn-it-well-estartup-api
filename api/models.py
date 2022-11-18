@@ -93,18 +93,18 @@ class Report(models.Model):
         db_table = 'report'
 
 
-# 讀書規劃
-class Plan(models.Model):
-    no = models.AutoField(primary_key=True, auto_created=True)
-    user = models.ForeignKey(User, models.DO_NOTHING)
-    name = models.CharField(max_length=100)
-    pace = models.IntegerField()
-    datetime = models.DateTimeField(auto_now_add=True)
-    ftime = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'plan'
+# # 讀書規劃(舊)
+# class Plan(models.Model):
+#     no = models.AutoField(primary_key=True, auto_created=True)
+#     user = models.ForeignKey(User, models.DO_NOTHING)
+#     name = models.CharField(max_length=100)
+#     pace = models.IntegerField()
+#     datetime = models.DateTimeField(auto_now_add=True)
+#     ftime = models.DateTimeField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'plan'
 
 # 讀書規劃test
 class Pace(models.Model):
@@ -116,7 +116,7 @@ class Pace(models.Model):
         db_table = 'pace'
 
 
-class Plantest(models.Model):
+class Plan(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     name = models.CharField(max_length=100)
@@ -126,7 +126,7 @@ class Plantest(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'plantest'
+        db_table = 'plan'
 
 
 # 成就輔助

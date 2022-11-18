@@ -15,11 +15,12 @@ urlpatterns = [
     path('delete/', deleteplan),  # 刪除讀書規劃
     # path('delete/<int:id>', deleteplan),  # 刪除讀書規劃
 
-    path('addplantest/', addplantest),
-    path('editplantest/', editplantest),  # 編輯讀書規劃
-    path('deletetest/', deleteplantest),  # 刪除讀書規劃
-    path('showedittest/', showeditplantest),  # test顯示特定讀書規劃
-    path('gettest/', get_all_reviews_testtest),  # 顯示讀書規劃
+    #plantest測試
+    # path('addplantest/', addplantest),
+    # path('editplantest/', editplantest),  # 編輯讀書規劃
+    # path('deletetest/', deleteplantest),  # 刪除讀書規劃
+    # path('showedittest/', showeditplantest),  # test顯示特定讀書規劃
+    # path('gettest/', get_all_reviews_testtest),  # 顯示讀書規劃
     # 學姊的範例測試
     # path('get/<int:pk>/', get_review),
     # path('get_critic_reviews/', get_critic_reviews),
