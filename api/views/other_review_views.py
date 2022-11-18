@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Impeach, Studyroom, Settime, Subject, Report, Plan, User, Plantest
+from api.models import Impeach, Studyroom, Settime, Subject, Report, Plan, User, Plantest, Countnum_view
 
 from utils.decorators import user_login_required
 
@@ -42,7 +42,7 @@ def get_room_no(request, pk):
 
     user_id = data.get('user_id')
     user_id = str(user_id).strip()
-
+    nums = Countnum_view.objects.all()
     reports = Report.objects.filter(user_id=user_id)
     if not reports.exists():
         return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
@@ -66,6 +66,12 @@ def get_room_no(request, pk):
                         'sub_name': subject.name,
                     }
                     for subject in Subject.objects.filter(no=report.subject_no.pk)
+                ],
+                'countnum_lists': [
+                    {
+                        'num': num.pk,
+                    }
+                    for num in nums
                 ],
                 'settime_no': report.settime_no.pk,
                 'subject_detail': report.subject_detail,

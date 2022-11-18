@@ -325,6 +325,36 @@ class Wplan_fliter_view(models.Model):
         managed = False
         db_table = 'wplan_filter_view'
 
+# 今日日期
+class Day_view(models.Model):
+    current_date = models.DateField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'day_view'
+
+# 本週日期
+class Weekdate_view(models.Model):
+    startdate = models.DateField(primary_key=True)
+    secdate = models.DateField()
+    thirddate = models.DateField()
+    forthdate = models.DateField()
+    fifdate = models.DateField()
+    sixdate = models.DateField()
+    enddate = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'weekdate_view'
+
+# 多人自習室本日累積人數
+class Countnum_view(models.Model):
+    num = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'countnum_view'
+
 # 以下為學姊範例程式碼
 # class Account(models.Model):
 #     id = models.CharField(primary_key=True, max_length=100)

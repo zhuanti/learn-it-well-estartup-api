@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, Weekreport_subinterval_view, Success_list, Success,Pace
+from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, \
+    Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view
 
 from utils.decorators import user_login_required
 
@@ -423,6 +424,7 @@ def get_report_week(request):
     wplans = Wplan_fliter_view.objects.filter(user=user_id)
     wsuccesslists = Success_list.objects.filter(user=user_id)
     rinfos = Weekreport_subinterval_view.objects.filter(user=user_id)
+    weekdates = Weekdate_view.objects.all()
     return Response({
         'success': True,
         'data':
@@ -488,10 +490,137 @@ def get_report_week(request):
                     }
                     for rinfo in rinfos
                 ],
+                'startdate_lists': [
+                    {
+                        'startdate': wdate.startdate,
+                    }
+                    for wdate in weekdates
+                ],
+                'secdate_lists': [
+                    {
+                        'secdate': wdate.secdate,
+                    }
+                    for wdate in weekdates
+                ],
+                'thirddate_lists': [
+                    {
+                        'thirddate': wdate.thirddate,
+                    }
+                    for wdate in weekdates
+                ],
+                'forthdate_lists': [
+                    {
+                        'forthdate': wdate.forthdate,
+                    }
+                    for wdate in weekdates
+                ],
+                'fifdate_lists': [
+                    {
+                        'fifdate': wdate.fifdate,
+                    }
+                    for wdate in weekdates
+                ],
+                'sixdate_lists': [
+                    {
+                        'sixdate': wdate.sixdate,
+                    }
+                    for wdate in weekdates
+                ],
+                'enddate_lists': [
+                    {
+                        'enddate': wdate.enddate,
+                    }
+                    for wdate in weekdates
+                ]
 
             }
     })
-
+# 今日日期
+# @api_view()
+# @user_login_required
+# def get_day(request):
+#     days = Day_view.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'current_date': day.current_date,
+#             }
+#             for day in days
+#         ]
+#
+#     })
+# 本週日期
+# @api_view()
+# @user_login_required
+# def get_week(request):
+#     weekdates = Weekdate_view.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': {
+#             'startdate_lists': [
+#                 {
+#                     'startdate': wdate.startdate,
+#                 }
+#                 for wdate in weekdates
+#             ],
+#             'secdate_lists': [
+#                 {
+#                     'secdate': wdate.secdate,
+#                 }
+#                 for wdate in weekdates
+#             ],
+#             'thirddate_lists': [
+#                 {
+#                     'thirddate': wdate.thirddate,
+#                 }
+#                 for wdate in weekdates
+#             ],
+#             'forthdate_lists': [
+#                 {
+#                     'forthdate': wdate.forthdate,
+#                 }
+#                 for wdate in weekdates
+#             ],
+#             'fifdate_lists': [
+#                 {
+#                     'fifdate': wdate.fifdate,
+#                 }
+#                 for wdate in weekdates
+#             ],
+#             'sixdate_lists': [
+#                 {
+#                     'sixdate': wdate.sixdate,
+#                 }
+#                 for wdate in weekdates
+#             ],
+#             'enddate_lists': [
+#                 {
+#                     'enddate': wdate.enddate,
+#                 }
+#                 for wdate in weekdates
+#             ]
+#         }
+#
+#     })
+# 多人自習室本日累積人數
+# @api_view()
+# @user_login_required
+# def get_countnum_reviews(request):
+#     nums = Countnum_view.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data': [
+#             {
+#                 'num': num.pk,
+#             }
+#             for num in nums
+#
+#         ]
+#     })
 
 # 報表個人資料日顯示頁面
 @api_view()
@@ -507,6 +636,7 @@ def get_report_day(request):
     dplans = Dplan_filter_view.objects.filter(user=user_id)
     dsuccesslists = Success_list.objects.filter(user=user_id)
     rinfos = Day_subcinterval_view.objects.filter(user=user_id)
+    days = Day_view.objects.all()
     return Response({
         'success': True,
         'data':
@@ -572,6 +702,12 @@ def get_report_day(request):
                     }
                     for rinfo in rinfos
                 ],
+                'day_lists': [
+                    {
+                        'current_date': day.current_date,
+                    }
+                    for day in days
+                ]
 
             }
     })
