@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import User
+from api.models import User, Success_list, Success
 
 from utils.decorators import user_login_required
 
@@ -40,6 +40,7 @@ def get_user_detail(request):
     user_id = data.get('user_id')
 
     user = User.objects.get(pk=user_id)
+    dsuccesslists = Success_list.objects.filter(user=user_id)
 
     return Response({
         'success': True,
@@ -49,6 +50,24 @@ def get_user_detail(request):
             'gender': user.gender,
             'live': user.live,
             'borth': user.borth,
+            'dsuccess_lists': [
+                {
+                    'no': dsuccesslist.pk,
+                    'user_id': dsuccesslist.user.pk,
+                    'success_no': dsuccesslist.success_no.pk,
+                    'pace': dsuccesslist.pace,
+                    'lockif': dsuccesslist.lockif,
+                    'success_names': [
+                        {
+                            'suc_no': success.no,
+                            'suc_name': success.name,
+                            'suc_pace': success.pace,
+                        }
+                        for success in Success.objects.filter(pk=dsuccesslist.success_no.pk)
+                    ],
+                }
+                for dsuccesslist in dsuccesslists
+            ]
         }
     })
 
