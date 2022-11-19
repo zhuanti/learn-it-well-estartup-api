@@ -40,7 +40,7 @@ def get_user_detail(request):
     user_id = data.get('user_id')
 
     user = User.objects.get(pk=user_id)
-    dsuccesslists = Success_list.objects.filter(user=user_id)
+    usersuccesslists = Success_list.objects.filter(user=user_id)
 
     return Response({
         'success': True,
@@ -50,23 +50,23 @@ def get_user_detail(request):
             'gender': user.gender,
             'live': user.live,
             'borth': user.borth,
-            'dsuccess_lists': [
+            'usersuccess_lists': [
                 {
-                    'no': dsuccesslist.pk,
-                    'user_id': dsuccesslist.user.pk,
-                    'success_no': dsuccesslist.success_no.pk,
-                    'pace': dsuccesslist.pace,
-                    'lockif': dsuccesslist.lockif,
+                    'no': usersuccesslist.pk,
+                    'user_id': usersuccesslist.user.pk,
+                    'success_no': usersuccesslist.success_no.pk,
+                    'pace': usersuccesslist.pace,
+                    'lockif': usersuccesslist.lockif,
                     'success_names': [
                         {
                             'suc_no': success.no,
                             'suc_name': success.name,
                             'suc_pace': success.pace,
                         }
-                        for success in Success.objects.filter(pk=dsuccesslist.success_no.pk)
+                        for success in Success.objects.filter(pk=usersuccesslist.success_no.pk)
                     ],
                 }
-                for dsuccesslist in dsuccesslists
+                for usersuccesslist in usersuccesslists
             ]
         }
     })
