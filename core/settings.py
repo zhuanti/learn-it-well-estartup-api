@@ -26,12 +26,12 @@ SECRET_KEY = 'django-insecure-0n537xapk)821+*%ea3jo7zz@dxxg$x=h^%3c!q2(9!ol3$@h)
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # 在本地時使用的連線資訊
-# DEBUG = True
-# ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []
 
 # 在Heroku用的連線資訊
-DEBUG = False
-ALLOWED_HOSTS = ['learn-it-well-estartup-api.herokuapp.com']
+# DEBUG = False
+# ALLOWED_HOSTS = ['learn-it-well-estartup-api.herokuapp.com']
 
 
 INSTALLED_APPS = [
@@ -85,11 +85,16 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     'default': dj_database_url.parse('postgres://ynzuancxnazqqu:fe850b210541dc452da3889638113db2875237cc8640a2783457259848f830ba@ec2-54-226-18-238.compute-1.amazonaws.com:5432/dcva7o0i9ts64b')
 # }
 
-
+# heroku DB
+# DATABASES = {
+#     'default': dj_database_url.parse(
+#         'postgres://jqmsrgmhtxptlh:4c20dd702edb8e0daed50224151899cd72b8126394f31980ff1715a4c587cf14@ec2-3-229-11-55.compute-1.amazonaws.com:5432/db3hnp2s2n3lbs')
+# }
 DATABASES = {
     'default': dj_database_url.parse(
-        'postgres://jqmsrgmhtxptlh:4c20dd702edb8e0daed50224151899cd72b8126394f31980ff1715a4c587cf14@ec2-3-229-11-55.compute-1.amazonaws.com:5432/db3hnp2s2n3lbs')
+        'postgres://ftcxumpb:dgIbX5hFUKZLaCDz8EBMZUxu0H8bnKyU@arjuna.db.elephantsql.com/ftcxumpb')
 }
+
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
