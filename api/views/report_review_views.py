@@ -4,7 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, \
-    Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view
+    Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view, Chinese_day_view, \
+    English_day_view, Math_day_view, Science_day_view, Social_day_view, Other_day_view
 
 from utils.decorators import user_login_required
 
@@ -636,6 +637,12 @@ def get_report_day(request):
     dplans = Dplan_filter_view.objects.filter(user=user_id)
     dsuccesslists = Success_list.objects.filter(user=user_id)
     rinfos = Day_subcinterval_view.objects.filter(user=user_id)
+    chineses = Chinese_day_view.objects.filter(user=user_id)
+    englishs = English_day_view.objects.filter(user=user_id)
+    maths = Math_day_view.objects.filter(user=user_id)
+    sciences = Science_day_view.objects.filter(user=user_id)
+    socials = Social_day_view.objects.filter(user=user_id)
+    others = Other_day_view.objects.filter(user=user_id)
     days = Day_view.objects.all()
     return Response({
         'success': True,
@@ -707,7 +714,103 @@ def get_report_day(request):
                         'current_date': day.current_date,
                     }
                     for day in days
-                ]
+                ],
+                'chinese_lists': [
+                    {
+                        'combinef': chinese.pk,
+                        'user_id': chinese.user.pk,
+                        'subject_no_id': chinese.subject_no.pk,
+                        'user_daysubtotal_hours': chinese.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=chinese.subject_no.pk)
+                        ],
+                    }
+                    for chinese in chineses
+                ],
+                'english_lists': [
+                    {
+                        'combinef': english.pk,
+                        'user_id': english.user.pk,
+                        'subject_no_id': english.subject_no.pk,
+                        'user_daysubtotal_hours': english.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=english.subject_no.pk)
+                        ],
+                    }
+                    for english in englishs
+                ],
+                'math_lists': [
+                    {
+                        'combinef': math.pk,
+                        'user_id': math.user.pk,
+                        'subject_no_id': math.subject_no.pk,
+                        'user_daysubtotal_hours': math.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=math.subject_no.pk)
+                        ],
+                    }
+                    for math in maths
+                ],
+                'science_lists': [
+                    {
+                        'combinef': science.pk,
+                        'user_id': science.user.pk,
+                        'subject_no_id': science.subject_no.pk,
+                        'user_daysubtotal_hours': science.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=science.subject_no.pk)
+                        ],
+                    }
+                    for science in sciences
+                ],
+                'social_lists': [
+                    {
+                        'combinef': social.pk,
+                        'user_id': social.user.pk,
+                        'subject_no_id': social.subject_no.pk,
+                        'user_daysubtotal_hours': social.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=social.subject_no.pk)
+                        ],
+                    }
+                    for social in socials
+                ],
+                'other_lists': [
+                    {
+                        'combinef': other.pk,
+                        'user_id': other.user.pk,
+                        'subject_no_id': other.subject_no.pk,
+                        'user_daysubtotal_hours': other.user_daysubtotal_hours,
+                        'dsubject_name': [
+                            {
+                                'sub_no': subject.no,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(pk=other.subject_no.pk)
+                        ],
+                    }
+                    for other in others
+                ],
 
             }
     })

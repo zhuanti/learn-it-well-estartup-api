@@ -266,6 +266,83 @@ class Day_subcinterval_view(models.Model):
         managed = False
         db_table = 'day_subcinterval_view'
 
+# 日報表國文直條圖
+class Chinese_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'chinese_day_view'
+
+# 日報表英文直條圖
+class English_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'english_day_view'
+
+# 日報表數學直條圖
+class Math_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'math_day_view'
+
+# 日報表自然直條圖
+class Science_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'science_day_view'
+
+# 日報表自然直條圖
+class Science_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'science_day_view'
+
+# 日報表社會直條圖
+class Social_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'social_day_view'
+
+# 日報表社會直條圖
+class Other_day_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    user_daysubtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'other_day_view'
+
 # 日報表讀書規劃
 class Dplan_filter_view(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
