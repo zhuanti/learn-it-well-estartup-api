@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject
+from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject, Schoolsys
 
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -17,12 +17,28 @@ from utils.decorators import user_login_required
 @user_login_required
 def get_all_reviews(request):
     discussrooms = Discussroom.objects.all()
+    subjects = Subject.objects.all()
+    schoolsyss = Schoolsys.objects.all()
     # print(discussrooms)
 
     return Response({
         'success': True,
         'data': [
             {
+                'sch_lists': [
+                    {
+                        'sch_no': schoolsys.pk,
+                        'sch_name': schoolsys.name,
+                    }
+                    for schoolsys in schoolsyss
+                ],
+                'sub_lists': [
+                    {
+                        'sub_no': subject.pk,
+                        'sub_name': subject.name,
+                    }
+                    for subject in subjects
+                ],
                 'no': discussroom.pk,
                 # 'schoolsys_no': discussroom.schoolsys_no.pk,
                 'subject_no': discussroom.subject_no.pk,
@@ -35,6 +51,7 @@ def get_all_reviews(request):
     })
 
 
+
 # 討論室聊天內容
 @api_view()
 @user_login_required
@@ -44,6 +61,7 @@ def rec_reviews(request):
     user_id = data.get('user_id')
 
     user_id = str(user_id).strip()
+
 
     # get 後面加東西，可能部會成功，故fileter 方便
     discussroom_recs = Discussroom_record.objects.filter(user_id=user_id)
@@ -91,7 +109,9 @@ def addroom(request):
     # 新增
     try:
         Discussroom.objects.create(subject_no_id=data['subject_no_id'],
-                                   name=data['name'], total_people=data['total_people'], )
+                                   schoolsys_no_id=data['schoolsys_no_id'],
+                                   name=data['name'],
+                                   total_people=data['total_people'], )
 
         return Response({'success': True, 'message': '新增成功'})
 
@@ -99,6 +119,34 @@ def addroom(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
+# 討論室抓取科目以及學制
+@api_view()
+@user_login_required
+def get_dis_info(request):
+    subjects = Subject.objects.all()
+    schoolsyss = Schoolsys.objects.all()
+
+    return Response({
+        'success': True,
+        'data':
+            {
+                'sch_lists': [
+                    {
+                        'sch_no': schoolsys.pk,
+                        'sch_name': schoolsys.name,
+                    }
+                    for schoolsys in schoolsyss
+                ],
+                'sub_lists': [
+                    {
+                        'sub_no': subject.pk,
+                        'sub_name': subject.name,
+                    }
+                    for subject in subjects
+                ],
+
+            }
+    })
 
 # 顯示加入房間編號、問題列表
 @api_view()
@@ -126,7 +174,14 @@ def get_room_no(request, pk):
                 ],
                 'no': discussroom.pk,
                 # 'schoolsys_no': discussroom.schoolsys_no.pk,
-                'subject_no': discussroom.subject_no.pk,
+                'subject_no_lists': [
+                    {
+
+                        'sub_no': subject.pk,
+                        'sub_name': subject.name,
+                    }
+                    for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
+                ],
                 'name': discussroom.name,
                 'pwd': discussroom.pwd,
                 'total_people': discussroom.total_people,
@@ -151,6 +206,7 @@ def get_room_no(request, pk):
 
             }
     })
+
 
 # 顯示問題編號
 @api_view()

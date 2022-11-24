@@ -50,7 +50,7 @@ class Schoolsys(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'school_sys'
+        db_table = 'schoolsys'
 
 
 # 科目

@@ -14,6 +14,7 @@ urlpatterns = [
     path('get_critic_reviews/', get_critic_reviews),  # 搜尋
     path('get/<int:pk>/', get_room_no),  # 顯示資訊
     path('getqus/<int:pk>', get_qus_no),  # 加入房間編號
+    path('getdisinfo/', get_dis_info),  # 加入房間編號
 
     # 下面test/ 供討論室相關表格進行測試
     path('test/', get_all_reviews_test),
