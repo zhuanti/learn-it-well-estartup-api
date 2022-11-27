@@ -25,22 +25,36 @@ def get_all_reviews(request):
         'success': True,
         'data': [
             {
+                'sch_lists_alls': [
+                    {
+                        'sch_no_all': schoolsys.pk,
+                        'sch_name_all': schoolsys.name,
+                    }
+                    for schoolsys in schoolsyss
+                ],
+                'sub_lists_alls': [
+                    {
+                        'sub_no_all': subject.pk,
+                        'sub_name_all': subject.name,
+                    }
+                    for subject in subjects
+                ],
                 'sch_lists': [
                     {
                         'sch_no': schoolsys.pk,
                         'sch_name': schoolsys.name,
                     }
-                    for schoolsys in schoolsyss
+                    for schoolsys in Schoolsys.objects.filter(no=discussroom.schoolsys_no.pk)
                 ],
                 'sub_lists': [
                     {
                         'sub_no': subject.pk,
                         'sub_name': subject.name,
                     }
-                    for subject in subjects
+                    for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
                 ],
                 'no': discussroom.pk,
-                # 'schoolsys_no': discussroom.schoolsys_no.pk,
+                'schoolsys_no': discussroom.schoolsys_no.pk,
                 'subject_no': discussroom.subject_no.pk,
                 'name': discussroom.name,
                 'pwd': discussroom.pwd,
