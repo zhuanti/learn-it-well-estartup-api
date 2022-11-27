@@ -39,31 +39,34 @@ def get_all_reviews(request):
                     }
                     for subject in subjects
                 ],
-                'sch_lists': [
+                'dis_datas': [
                     {
-                        'sch_no': schoolsys.pk,
-                        'sch_name': schoolsys.name,
+                        'no': discussroom.pk,
+                        # 'schoolsys_no': discussroom.schoolsys_no.pk,
+                        'sch_lists': [
+                            {
+                                'sch_no': schoolsys.pk,
+                                'sch_name': schoolsys.name,
+                            }
+                            for schoolsys in Schoolsys.objects.filter(no=discussroom.schoolsys_no.pk)
+                        ],
+                        # 'subject_no': discussroom.subject_no.pk,
+                        'sub_lists': [
+                            {
+                                'sub_no': subject.pk,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
+                        ],
+                        'name': discussroom.name,
+                        'pwd': discussroom.pwd,
+                        'total_people': discussroom.total_people,
                     }
-                    for schoolsys in Schoolsys.objects.filter(no=discussroom.schoolsys_no.pk)
+                    for discussroom in discussrooms
                 ],
-                'sub_lists': [
-                    {
-                        'sub_no': subject.pk,
-                        'sub_name': subject.name,
-                    }
-                    for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
-                ],
-                'no': discussroom.pk,
-                'schoolsys_no': discussroom.schoolsys_no.pk,
-                'subject_no': discussroom.subject_no.pk,
-                'name': discussroom.name,
-                'pwd': discussroom.pwd,
-                'total_people': discussroom.total_people,
             }
-            for discussroom in discussrooms
         ]
     })
-
 
 
 # 討論室聊天內容
@@ -75,7 +78,6 @@ def rec_reviews(request):
     user_id = data.get('user_id')
 
     user_id = str(user_id).strip()
-
 
     # get 後面加東西，可能部會成功，故fileter 方便
     discussroom_recs = Discussroom_record.objects.filter(user_id=user_id)
@@ -133,6 +135,7 @@ def addroom(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
+
 # 討論室抓取科目以及學制
 @api_view()
 @user_login_required
@@ -161,6 +164,7 @@ def get_dis_info(request):
 
             }
     })
+
 
 # 顯示加入房間編號、問題列表
 @api_view()
