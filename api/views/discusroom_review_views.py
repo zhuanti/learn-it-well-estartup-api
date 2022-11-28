@@ -127,7 +127,8 @@ def addroom(request):
         Discussroom.objects.create(subject_no_id=data['subject_no_id'],
                                    schoolsys_no_id=data['schoolsys_no_id'],
                                    name=data['name'],
-                                   total_people=data['total_people'], )
+                                   # total_people=data['total_people'],
+                                   )
 
         return Response({'success': True, 'message': '新增成功'})
 
