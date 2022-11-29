@@ -1,3 +1,4 @@
+from datetime import datetime
 from json import JSONDecodeError
 
 from django.db import IntegrityError
@@ -5,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject, Schoolsys
+from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject, Schoolsys, Report
 
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -135,6 +136,25 @@ def addroom(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
+
+# 個人自習室寫入讀書資訊到report
+@api_view(['POST'])
+@user_login_required
+def addinfo(request):
+    data = request.data
+    # 新增
+    try:
+        Report.objects.create(user_id=data['user_id'],
+                              classroom_type_no_id="2",
+                              subject_no_id=data['subject_no_id'],
+                              entry_time=datetime.now(),
+                              )
+
+        return Response({'success': True, 'message': '新增成功'})
+
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '此房間已寫入'}, status=status.HTTP_409_CONFLICT)
 
 
 # 討論室抓取科目以及學制
