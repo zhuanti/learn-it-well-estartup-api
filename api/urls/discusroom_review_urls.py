@@ -9,9 +9,12 @@ urlpatterns = [
     path('rec/', rec_reviews),  # 聊天內容
     path('addroom/', addroom),  # 新增房間
     path('add/info/', addinfo),  # 新增使用者個資到report表
+    path('add/info/Leavetime/', addLT),  # 新增使用者個資到report表
+
     path('qus/<int:pk>', add_qus),  # 問題
     path('ans/<int:pk>', add_ans),  # 回答
     path('ans_list/', get_ans_list),  # 問題、回答列表
+
     path('get_critic_reviews/', get_critic_reviews),  # 搜尋
     path('get/<int:pk>/', get_room_no),  # 顯示資訊
     path('getqus/<int:pk>', get_qus_no),  # 加入房間編號
