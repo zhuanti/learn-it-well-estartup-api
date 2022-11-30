@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import django_filters
 from django import forms
 from django.db import IntegrityError
@@ -151,7 +153,7 @@ def self_entrytime(request):
 
     # 新增
     try:
-        reportupdate.update(entry_time=data['entry_time'])
+        reportupdate.update(entry_time=datetime.now())
         return Response({'success': True, 'message': '新增成功'})
 
 
