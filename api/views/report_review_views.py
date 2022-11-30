@@ -5,7 +5,8 @@ from rest_framework.response import Response
 
 from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, \
     Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view, Chinese_day_view, \
-    English_day_view, Math_day_view, Science_day_view, Social_day_view, Other_day_view
+    English_day_view, Math_day_view, Science_day_view, Social_day_view, Other_day_view, Chinese_week_view, \
+    English_week_view, Math_week_view, Science_week_view, Social_week_view, Other_week_view
 
 from utils.decorators import user_login_required
 
@@ -425,6 +426,12 @@ def get_report_week(request):
     wplans = Wplan_fliter_view.objects.filter(user=user_id)
     wsuccesslists = Success_list.objects.filter(user=user_id)
     rinfos = Weekreport_subinterval_view.objects.filter(user=user_id)
+    cinfos = Chinese_week_view.objects.filter(user=user_id)
+    einfos = English_week_view.objects.filter(user=user_id)
+    minfos = Math_week_view.objects.filter(user=user_id)
+    sinfos = Science_week_view.objects.filter(user=user_id)
+    soinfos = Social_week_view.objects.filter(user=user_id)
+    oinfos = Other_week_view.objects.filter(user=user_id)
     weekdates = Weekdate_view.objects.all()
     return Response({
         'success': True,
@@ -532,8 +539,61 @@ def get_report_week(request):
                         'enddate': wdate.enddate,
                     }
                     for wdate in weekdates
-                ]
-
+                ],
+                'chinese_lists': [
+                    {
+                        'combinef': cinfo.pk,
+                        'user_id': cinfo.user.pk,
+                        'subject_no_id': cinfo.subject_no.pk,
+                        'subtotal_hours': cinfo.subtotal_hours,
+                    }
+                    for cinfo in cinfos
+                ],
+                'english_lists': [
+                    {
+                        'combinef': einfo.pk,
+                        'user_id': einfo.user.pk,
+                        'subject_no_id': einfo.subject_no.pk,
+                        'subtotal_hours': einfo.subtotal_hours,
+                    }
+                    for einfo in einfos
+                ],
+                'math_lists': [
+                    {
+                        'combinef': minfo.pk,
+                        'user_id': minfo.user.pk,
+                        'subject_no_id': minfo.subject_no.pk,
+                        'subtotal_hours': minfo.subtotal_hours,
+                    }
+                    for minfo in minfos
+                ],
+                'science_lists': [
+                    {
+                        'combinef': sinfo.pk,
+                        'user_id': sinfo.user.pk,
+                        'subject_no_id': sinfo.subject_no.pk,
+                        'subtotal_hours': sinfo.subtotal_hours,
+                    }
+                    for sinfo in sinfos
+                ],
+                'social_lists': [
+                    {
+                        'combinef': soinfo.pk,
+                        'user_id': soinfo.user.pk,
+                        'subject_no_id': soinfo.subject_no.pk,
+                        'subtotal_hours': soinfo.subtotal_hours,
+                    }
+                    for soinfo in soinfos
+                ],
+                'other_lists': [
+                    {
+                        'combinef': oinfo.pk,
+                        'user_id': oinfo.user.pk,
+                        'subject_no_id': oinfo.subject_no.pk,
+                        'subtotal_hours': oinfo.subtotal_hours,
+                    }
+                    for oinfo in oinfos
+                ],
             }
     })
 # 今日日期

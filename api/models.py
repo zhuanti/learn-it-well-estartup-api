@@ -421,6 +421,71 @@ class Countnum_view(models.Model):
         managed = False
         db_table = 'countnum_view'
 
+# 週報表國文堆疊圖
+class Chinese_week_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'chinese_final_view'
+
+# 週報表英文堆疊圖
+class English_week_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'english_final_view'
+
+# 週報表數學堆疊圖
+class Math_week_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'math_final_view'
+
+# 週報表社會堆疊圖
+class Social_week_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'social_final_view'
+
+# 週報表自然堆疊圖
+class Science_week_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'science_final_view'
+
+# 週報表其他堆疊圖
+class Other_week_view(models.Model):
+    combinef = models.TextField(primary_key=True, max_length=100)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    subject_no = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subtotal_hours = models.DecimalField(max_digits=19, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'other_final_view'
 # 以下為學姊範例程式碼
 # class Account(models.Model):
 #     id = models.CharField(primary_key=True, max_length=100)

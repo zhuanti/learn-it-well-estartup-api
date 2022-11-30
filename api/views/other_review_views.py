@@ -181,7 +181,8 @@ def setthings(request):
                               classroom_type_no_id="1",
                               subject_no_id=data['subject_no_id'],
                               settime_no_id=data['settime_no_id'],
-                              subject_detail=data['subject_detail'])
+                              subject_detail=data['subject_detail'],
+                              entry_time=datetime.now())
 
         return Response({'success': True, 'message': '新增成功'})
 
@@ -189,44 +190,44 @@ def setthings(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已寫入'}, status=status.HTTP_409_CONFLICT)
 
-# 個人自習室更新開始時間
-@api_view(['POST'])
-@user_login_required
-def self_entrytime(request):
-    data = request.data
-    user = data.get('user')
-
-    reports = Report.objects.filter(user=user)
-
-    if not reports.exists():
-        return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
-
-    report = reports.latest()
-
-    reportupdate = Report.objects.filter(pk=report.no)
-
-
-    if not reportupdate.exists():
-        return Response({'success': False, 'message': '沒有此資料'}, status=status.HTTP_404_NOT_FOUND)
-
-
-    # 新增
-    try:
-        reportupdate.update(entry_time=datetime.now())
-        return Response({'success': True, 'message': '新增成功'})
-
-
-    except IntegrityError:
-        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+# # 個人自習室更新開始時間
+# @api_view(['POST'])
+# @user_login_required
+# def self_entrytime(request):
+#     data = request.data
+#     user = data.get('user')
+#
+#     reports = Report.objects.filter(user=user)
+#
+#     if not reports.exists():
+#         return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
+#
+#     report = reports.latest()
+#
+#     reportupdate = Report.objects.filter(pk=report.no)
+#
+#
+#     if not reportupdate.exists():
+#         return Response({'success': False, 'message': '沒有此資料'}, status=status.HTTP_404_NOT_FOUND)
+#
+#
+#     # 新增
+#     try:
+#         reportupdate.update(entry_time=datetime.now())
+#         return Response({'success': True, 'message': '新增成功'})
+#
+#
+#     except IntegrityError:
+#         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
 # 個人自習室更新結束時間
 @api_view(['POST'])
 @user_login_required
 def self_exittime(request):
     data = request.data
-    user = data.get('user')
+    user_id = data.get('user_id')
 
-    reports = Report.objects.filter(user=user)
+    reports = Report.objects.filter(user_id=user_id)
 
     if not reports.exists():
         return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)

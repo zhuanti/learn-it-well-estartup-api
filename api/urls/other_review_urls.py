@@ -11,7 +11,7 @@ urlpatterns = [
     path('studyroom/Sserch/', Sserch),
     path('studyroom/getinfo/', get_studyroom_info),  # 個人自習室抓取資訊
     path('studyroom/self/', setthings),  # 個人自習室寫入讀書資訊到report
-    path('studyroom/self/update/entrytime/', self_entrytime),  # 個人自習室更新開始時間
+    # path('studyroom/self/update/entrytime/', self_entrytime),  # 個人自習室更新開始時間
     path('studyroom/self/update/exittime/', self_exittime),  # 個人自習室更新結束時間
 
     # 移到subject寫
