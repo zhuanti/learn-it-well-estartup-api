@@ -148,7 +148,13 @@ def get_all_reviews_test(request):
     user_id = data.get('user_id')
     plans = Plan.objects.filter(user_id=user_id)
     if not plans.exists():
-        return Response({'success': False, 'message': '沒有此帳號讀書計畫'}, status=status.HTTP_404_NOT_FOUND)
+        Plan.objects.create(
+            user_id=data['user_id'],
+            name="快來建立你的第一筆讀書規劃吧！",
+            pace_no_id=0,
+        )
+        # 0為未完成,1為完成
+        return Response({'success': False, 'message': '請重新整理頁面'}, status=status.HTTP_404_NOT_FOUND)
     # if not in2.exists():
     return Response({
         'success': True,
