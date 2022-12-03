@@ -217,33 +217,33 @@ def addLT(request):
 
 
 # 討論室抓取科目以及學制
-@api_view()
-@user_login_required
-def get_dis_info(request):
-    subjects = Subject.objects.all()
-    schoolsyss = Schoolsys.objects.all()
-
-    return Response({
-        'success': True,
-        'data':
-            {
-                'sch_lists': [
-                    {
-                        'sch_no': schoolsys.pk,
-                        'sch_name': schoolsys.name,
-                    }
-                    for schoolsys in schoolsyss
-                ],
-                'sub_lists': [
-                    {
-                        'sub_no': subject.pk,
-                        'sub_name': subject.name,
-                    }
-                    for subject in subjects
-                ],
-
-            }
-    })
+# @api_view()
+# @user_login_required
+# def get_dis_info(request):
+#     subjects = Subject.objects.all()
+#     schoolsyss = Schoolsys.objects.all()
+#
+#     return Response({
+#         'success': True,
+#         'data':
+#             {
+#                 'sch_lists': [
+#                     {
+#                         'sch_no': schoolsys.pk,
+#                         'sch_name': schoolsys.name,
+#                     }
+#                     for schoolsys in schoolsyss
+#                 ],
+#                 'sub_lists': [
+#                     {
+#                         'sub_no': subject.pk,
+#                         'sub_name': subject.name,
+#                     }
+#                     for subject in subjects
+#                 ],
+#
+#             }
+#     })
 
 
 # 顯示加入房間編號、問題列表
@@ -287,13 +287,26 @@ def get_room_no(request, pk):
                     {
                         'dis_ques_no': discussroom_question.pk,
                         'title': discussroom_question.title,
-                        'quser_id': discussroom_question.quser.pk,
+                        # 'quser_id': discussroom_question.quser.pk,
+                        'quser_id_lists': [
+                            {
+                                'quser_id':quser.pk,
+                                'quser_name':quser.name,
+                            }
+                            for quser in User.objects.filter(id=discussroom_question.quser_id)
+                        ],
                         'discussroom_ans_lists': [
                             {
 
                                 'dis_ans_no': discussroom_ans.pk,
                                 'dis_ans_ques_no': discussroom_ans.question_no.pk,
-                                'auser_id': discussroom_ans.auser.pk,
+                                'auser_id_lists':[
+                                    {
+                                        'auser_id':auser.pk,
+                                        'auser_name':auser.name,
+                                    }
+                                    for auser in User.objects.filter(id=discussroom_ans.auser_id)
+                                ],
                                 'comment': discussroom_ans.comment,
                             }
                             for discussroom_ans in Discussroom_ans.objects.filter(question_no=discussroom_question.pk)
