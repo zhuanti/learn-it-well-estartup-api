@@ -6,7 +6,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject, Schoolsys, Report
+from api.models import Discussroom, Discussroom_record, Discussroom_question, Discussroom_ans, User, Subject, Schoolsys, \
+    Report
 
 # 每一個測試的api_view,一次只能取消註解一個
 
@@ -137,6 +138,7 @@ def addroom(request):
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已被創建'}, status=status.HTTP_409_CONFLICT)
 
+
 # 討論室寫入讀書資訊到report
 @api_view(['POST'])
 @user_login_required
@@ -155,6 +157,7 @@ def addinfo(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '此房間已寫入'}, status=status.HTTP_409_CONFLICT)
+
 
 # 討論室更新進入時間
 @api_view(['POST'])
@@ -175,7 +178,6 @@ def addLT(request):
     if not reportupdate.exists():
         return Response({'success': False, 'message': '沒有此資料'}, status=status.HTTP_404_NOT_FOUND)
 
-
     # 新增
     try:
         reportupdate.update(exit_time=datetime.now())
@@ -184,6 +186,7 @@ def addLT(request):
 
     except IntegrityError:
         return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
 
 # 個人自習室更新進入時間
 # @api_view(['POST'])
@@ -290,8 +293,8 @@ def get_room_no(request, pk):
                         # 'quser_id': discussroom_question.quser.pk,
                         'quser_id_lists': [
                             {
-                                'quser_id':quser.pk,
-                                'quser_name':quser.name,
+                                'quser_id': quser.pk,
+                                'quser_name': quser.name,
                             }
                             for quser in User.objects.filter(id=discussroom_question.quser_id)
                         ],
@@ -300,10 +303,10 @@ def get_room_no(request, pk):
 
                                 'dis_ans_no': discussroom_ans.pk,
                                 'dis_ans_ques_no': discussroom_ans.question_no.pk,
-                                'auser_id_lists':[
+                                'auser_id_lists': [
                                     {
-                                        'auser_id':auser.pk,
-                                        'auser_name':auser.name,
+                                        'auser_id': auser.pk,
+                                        'auser_name': auser.name,
                                     }
                                     for auser in User.objects.filter(id=discussroom_ans.auser_id)
                                 ],
@@ -453,6 +456,9 @@ def getuser(request, pk):
 @api_view()
 @user_login_required
 def get_critic_reviews(request):
+    subjects = Subject.objects.all()
+    schoolsyss = Schoolsys.objects.all()
+
     # 注意：因使用GET，使用query_params
     data = request.query_params
     name = data.get('name')
@@ -465,14 +471,46 @@ def get_critic_reviews(request):
         'success': True,
         'data': [
             {
-                'no': discussroom.pk,
-                # 'schoolsys_no': discussroom.schoolsys_no.pk,
-                'subject_no': discussroom.subject_no.pk,
-                'name': discussroom.name,
-                'pwd': discussroom.pwd,
-                'total_people': discussroom.total_people,
+                'sch_lists_alls': [
+                    {
+                        'sch_no_all': schoolsys.pk,
+                        'sch_name_all': schoolsys.name,
+                    }
+                    for schoolsys in schoolsyss
+                ],
+                'sub_lists_alls': [
+                    {
+                        'sub_no_all': subject.pk,
+                        'sub_name_all': subject.name,
+                    }
+                    for subject in subjects
+                ],
+                'dis_datas': [
+                    {
+                        'no': discussroom.pk,
+                        # 'schoolsys_no': discussroom.schoolsys_no.pk,
+                        'sch_lists': [
+                            {
+                                'sch_no': schoolsys.pk,
+                                'sch_name': schoolsys.name,
+                            }
+                            for schoolsys in Schoolsys.objects.filter(no=discussroom.schoolsys_no.pk)
+                        ],
+                        # 'subject_no': discussroom.subject_no.pk,
+                        'sub_lists': [
+                            {
+                                'sub_no': subject.pk,
+                                'sub_name': subject.name,
+                            }
+                            for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
+                        ],
+                        'name': discussroom.name,
+                        'pwd': discussroom.pwd,
+                        'total_people': discussroom.total_people,
+                    }
+                    for discussroom in discussrooms
+                ],
             }
-            for discussroom in discussrooms
         ]
     })
 
