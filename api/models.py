@@ -519,7 +519,7 @@ class Dis_tot_time_view(models.Model):
 # 成就study總讀書時長
 class Study_tot_time_view(models.Model):
     user_id = models.TextField(primary_key=True, max_length=100)
-    dis_total_min = models.DecimalField(max_digits=19, decimal_places=2)
+    study_total_min = models.DecimalField(max_digits=19, decimal_places=2)
 
 
     class Meta:
