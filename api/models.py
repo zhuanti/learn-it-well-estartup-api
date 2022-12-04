@@ -134,6 +134,7 @@ class Success(models.Model):
     no = models.AutoField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=40)
     pace = models.IntegerField()
+    classroom_no = models.ForeignKey(Classroom, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -486,6 +487,37 @@ class Other_week_view(models.Model):
     class Meta:
         managed = False
         db_table = 'other_final_view'
+
+# 成就總讀書時長
+class All_tot_time_view(models.Model):
+    user_id = models.TextField(primary_key=True, max_length=100)
+    total_min = models.DecimalField(max_digits=19, decimal_places=2)
+
+
+    class Meta:
+        managed = False
+        db_table = 'all_tot_time_view'
+
+# 成就dis總讀書時長
+class Dis_tot_time_view(models.Model):
+    user_id = models.TextField(primary_key=True, max_length=100)
+    dis_total_min = models.DecimalField(max_digits=19, decimal_places=2)
+
+
+    class Meta:
+        managed = False
+        db_table = 'dis_tot_time_view'
+
+# 成就study總讀書時長
+class Study_tot_time_view(models.Model):
+    user_id = models.TextField(primary_key=True, max_length=100)
+    dis_total_min = models.DecimalField(max_digits=19, decimal_places=2)
+
+
+    class Meta:
+        managed = False
+        db_table = 'study_tot_time_view'
+
 # 以下為學姊範例程式碼
 # class Account(models.Model):
 #     id = models.CharField(primary_key=True, max_length=100)
