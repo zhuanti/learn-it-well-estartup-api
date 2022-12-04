@@ -413,6 +413,14 @@ class Weekdate_view(models.Model):
         managed = False
         db_table = 'weekdate_view'
 
+#本週日期時間
+class Weekdatetime_final_view(models.Model):
+    startdate = models.DateTimeField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'weekdatetime_final_view'
+
 # 多人自習室本日累積人數
 class Countnum_view(models.Model):
     num = models.IntegerField(primary_key=True)

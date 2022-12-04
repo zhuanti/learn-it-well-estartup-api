@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, \
     Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view, Chinese_day_view, \
     English_day_view, Math_day_view, Science_day_view, Social_day_view, Other_day_view, Chinese_week_view, \
-    English_week_view, Math_week_view, Science_week_view, Social_week_view, Other_week_view
+    English_week_view, Math_week_view, Science_week_view, Social_week_view, Other_week_view, Weekdatetime_final_view
 
 from utils.decorators import user_login_required
 
@@ -411,6 +411,28 @@ def report_recordtime_edit(request):
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
+# 報表每周基底測試
+@api_view(['POST'])
+@user_login_required
+def add_report_week(request):
+    data = request.query_params
+    subject_nos = Subject.objects.all()
+    week_days = Weekdatetime_final_view.objects.all()
+    try:
+        for subject_no in subject_nos:
+            for week_day in week_days:
+                Report.objects.create(user_id=data['user_id'],
+                                      classroom_type_no_id="4",
+                                      subject_no_id=subject_no.no,
+                                      settime_no_id="5",
+                                      entry_time=week_day,
+                                      exit_time=week_day)
+
+                return Response({'success': True, 'message': '新增成功'})
+
+    except IntegrityError:
+        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+
 
 # 報表個人資料週顯示頁面
 @api_view()
@@ -433,6 +455,18 @@ def get_report_week(request):
     soinfos = Social_week_view.objects.filter(user=user_id)
     oinfos = Other_week_view.objects.filter(user=user_id)
     weekdates = Weekdate_view.objects.all()
+
+    subject_nos = Subject.objects.all()
+    week_days = Weekdate_view.objects.all()
+    for subject_no in subject_nos:
+        for week_day in week_days:
+            Report.objects.create(user_id=data['user_id'],
+                                classroom_type_no_id="1",
+                                subject_no_id=subject_no,
+                                settime_no_id="5",
+                                entry_time=week_day,
+                                exit_time=week_day)
+
     return Response({
         'success': True,
         'data':
