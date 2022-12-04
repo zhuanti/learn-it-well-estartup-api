@@ -292,26 +292,28 @@ def get_all_reviews_studyroom_test(request):
 @api_view()
 @user_login_required
 def Sserch(request):
-    # 注意：因使用GET，使用query_params
-    data = request.query_params
-    name = data.get('name')
+    try:
+        # 注意：因使用GET，使用query_params
+        data = request.query_params
+        name = data.get('name')
 
-    # 去除前後空白
-    name = str(name).strip()
-    studyrooms = Studyroom.objects.filter(name=name)
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'no': studyroom.pk,
-                'name': studyroom.name,
-                'total_people': studyroom.total_people,
-            }
-            for studyroom in studyrooms
-        ]
-    })
-
+        # 去除前後空白
+        name = str(name).strip()
+        # studyrooms = Studyroom.objects.filter(name=name)
+        studyrooms = Studyroom.objects.filter(name__icontains=name)
+        return Response({
+            'success': True,
+            'data': [
+                {
+                    'no': studyroom.pk,
+                    'name': studyroom.name,
+                    'total_people': studyroom.total_people,
+                }
+                for studyroom in studyrooms
+            ]
+        })
+    except:
+        return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
 
 # 跑馬燈
 @api_view()
