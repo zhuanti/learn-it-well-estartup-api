@@ -458,61 +458,64 @@ def getuser(request, pk):
 def get_critic_reviews(request):
     subjects = Subject.objects.all()
     schoolsyss = Schoolsys.objects.all()
+    try:
+        # 注意：因使用GET，使用query_params
+        data = request.query_params
+        name = data.get('name')
 
-    # 注意：因使用GET，使用query_params
-    data = request.query_params
-    name = data.get('name')
+        # 去除前後空白
+        name = str(name).strip()
+        discussrooms = Discussroom.objects.filter(name__icontains=name)
+        # discussrooms = Discussroom.objects.filter(name=name)
 
-    # 去除前後空白
-    name = str(name).strip()
-    discussrooms = Discussroom.objects.filter(name=name)
-
-    return Response({
-        'success': True,
-        'data': [
-            {
-                'sch_lists_alls': [
-                    {
-                        'sch_no_all': schoolsys.pk,
-                        'sch_name_all': schoolsys.name,
-                    }
-                    for schoolsys in schoolsyss
-                ],
-                'sub_lists_alls': [
-                    {
-                        'sub_no_all': subject.pk,
-                        'sub_name_all': subject.name,
-                    }
-                    for subject in subjects
-                ],
-                'dis_datas': [
-                    {
-                        'no': discussroom.pk,
-                        # 'schoolsys_no': discussroom.schoolsys_no.pk,
-                        'sch_lists': [
-                            {
-                                'sch_no': schoolsys.pk,
-                                'sch_name': schoolsys.name,
-                            }
-                            for schoolsys in Schoolsys.objects.filter(no=discussroom.schoolsys_no.pk)
-                        ],
-                        # 'subject_no': discussroom.subject_no.pk,
-                        'sub_lists': [
-                            {
-                                'sub_no': subject.pk,
-                                'sub_name': subject.name,
-                            }
-                            for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
-                        ],
-                        'name': discussroom.name,
-                        'pwd': discussroom.pwd,
-                        'total_people': discussroom.total_people,
-                    }
-                    for discussroom in discussrooms
-                ],
-            }
-        ]
-    })
+        return Response({
+            'success': True,
+            'data': [
+                {
+                    'sch_lists_alls': [
+                        {
+                            'sch_no_all': schoolsys.pk,
+                            'sch_name_all': schoolsys.name,
+                        }
+                        for schoolsys in schoolsyss
+                    ],
+                    'sub_lists_alls': [
+                        {
+                            'sub_no_all': subject.pk,
+                            'sub_name_all': subject.name,
+                        }
+                        for subject in subjects
+                    ],
+                    'dis_datas': [
+                        {
+                            'no': discussroom.pk,
+                            # 'schoolsys_no': discussroom.schoolsys_no.pk,
+                            'sch_lists': [
+                                {
+                                    'sch_no': schoolsys.pk,
+                                    'sch_name': schoolsys.name,
+                                }
+                                for schoolsys in Schoolsys.objects.filter(no=discussroom.schoolsys_no.pk)
+                            ],
+                            # 'subject_no': discussroom.subject_no.pk,
+                            'sub_lists': [
+                                {
+                                    'sub_no': subject.pk,
+                                    'sub_name': subject.name,
+                                }
+                                for subject in Subject.objects.filter(no=discussroom.subject_no.pk)
+                            ],
+                            'name': discussroom.name,
+                            'pwd': discussroom.pwd,
+                            'total_people': discussroom.total_people,
+                        }
+                        for discussroom in discussrooms
+                    ],
+                }
+            ]
+        })
+    except:
+        return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
 
 # 討論室房間新增-科目
 # @api_view()
