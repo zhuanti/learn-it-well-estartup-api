@@ -418,20 +418,20 @@ def add_report_week(request):
     data = request.query_params
     subject_nos = Subject.objects.all()
     week_days = Weekdatetime_final_view.objects.all()
-    try:
-        for subject_no in subject_nos:
-            for week_day in week_days:
-                Report.objects.create(user_id=data['user_id'],
-                                      classroom_type_no_id="4",
-                                      subject_no_id=subject_no.no,
-                                      settime_no_id="5",
-                                      entry_time=week_day,
-                                      exit_time=week_day)
+    # try:
+    for subject_no in subject_nos:
+        for week_day in week_days:
+            Report.objects.create(user_id=data['user_id'],
+                                  classroom_type_no_id="4",
+                                  subject_no_id=subject_no.pk,
+                                  settime_no_id="5",
+                                  entry_time=week_day.pk,
+                                  exit_time=week_day.pk)
 
-                return Response({'success': True, 'message': '新增成功'})
+    return Response({'success': True, 'message': '新增成功'})
 
-    except IntegrityError:
-        return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
+    # except IntegrityError:
+    #     return Response({'success': False, 'message': '新增失敗'}, status=status.HTTP_409_CONFLICT)
 
 
 # 報表個人資料週顯示頁面
@@ -454,18 +454,18 @@ def get_report_week(request):
     sinfos = Science_week_view.objects.filter(user=user_id)
     soinfos = Social_week_view.objects.filter(user=user_id)
     oinfos = Other_week_view.objects.filter(user=user_id)
-    weekdates = Weekdate_view.objects.all()
+    # weekdates = Weekdate_view.objects.all()
 
     subject_nos = Subject.objects.all()
-    week_days = Weekdate_view.objects.all()
+    week_days = Weekdatetime_final_view.objects.all()
     for subject_no in subject_nos:
         for week_day in week_days:
             Report.objects.create(user_id=data['user_id'],
-                                classroom_type_no_id="1",
-                                subject_no_id=subject_no,
-                                settime_no_id="5",
-                                entry_time=week_day,
-                                exit_time=week_day)
+                                  classroom_type_no_id="4",
+                                  subject_no_id=subject_no.pk,
+                                  settime_no_id="5",
+                                  entry_time=week_day.pk,
+                                  exit_time=week_day.pk)
 
     return Response({
         'success': True,
@@ -532,48 +532,48 @@ def get_report_week(request):
                     }
                     for rinfo in rinfos
                 ],
-                'startdate_lists': [
-                    {
-                        'startdate': wdate.startdate,
-                    }
-                    for wdate in weekdates
-                ],
-                'secdate_lists': [
-                    {
-                        'secdate': wdate.secdate,
-                    }
-                    for wdate in weekdates
-                ],
-                'thirddate_lists': [
-                    {
-                        'thirddate': wdate.thirddate,
-                    }
-                    for wdate in weekdates
-                ],
-                'forthdate_lists': [
-                    {
-                        'forthdate': wdate.forthdate,
-                    }
-                    for wdate in weekdates
-                ],
-                'fifdate_lists': [
-                    {
-                        'fifdate': wdate.fifdate,
-                    }
-                    for wdate in weekdates
-                ],
-                'sixdate_lists': [
-                    {
-                        'sixdate': wdate.sixdate,
-                    }
-                    for wdate in weekdates
-                ],
-                'enddate_lists': [
-                    {
-                        'enddate': wdate.enddate,
-                    }
-                    for wdate in weekdates
-                ],
+                # 'startdate_lists': [
+                #     {
+                #         'startdate': wdate.startdate,
+                #     }
+                #     for wdate in weekdates
+                # ],
+                # 'secdate_lists': [
+                #     {
+                #         'secdate': wdate.secdate,
+                #     }
+                #     for wdate in weekdates
+                # ],
+                # 'thirddate_lists': [
+                #     {
+                #         'thirddate': wdate.thirddate,
+                #     }
+                #     for wdate in weekdates
+                # ],
+                # 'forthdate_lists': [
+                #     {
+                #         'forthdate': wdate.forthdate,
+                #     }
+                #     for wdate in weekdates
+                # ],
+                # 'fifdate_lists': [
+                #     {
+                #         'fifdate': wdate.fifdate,
+                #     }
+                #     for wdate in weekdates
+                # ],
+                # 'sixdate_lists': [
+                #     {
+                #         'sixdate': wdate.sixdate,
+                #     }
+                #     for wdate in weekdates
+                # ],
+                # 'enddate_lists': [
+                #     {
+                #         'enddate': wdate.enddate,
+                #     }
+                #     for wdate in weekdates
+                # ],
                 'chinese_lists': [
                     {
                         'combinef': cinfo.pk,
