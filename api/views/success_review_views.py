@@ -34,6 +34,38 @@ def get_all_reviews(request):
     user_id = data.get('user_id')
 
     success_lists = Success_list.objects.filter(user_id=user_id)
+
+    success_nos = Success.objects.all()
+
+    if not success_lists.exists():
+        for success_no in success_nos:
+            Success_list.objects.create(user_id=data['user_id'], success_no=success_no, pace=0,
+                                        lockif=0)
+
+        success_lists = Success_list.objects.filter(user_id=user_id)
+        return Response({
+            'success': True,
+            'data': [
+                {
+                    'no': success_list.pk,
+                    'user_id': success_list.user.pk,
+                    'success_no': success_list.success_no.pk,
+                    'pace': success_list.pace,
+                    'lockif': success_list.lockif,
+                    'success_names': [
+                        {
+                            'suc_no': success.no,
+                            'suc_name': success.name,
+                            'suc_pace': success.pace,
+                        }
+                        for success in Success.objects.filter(pk=success_list.success_no.pk)
+                    ],
+                }
+                for success_list in success_lists
+            ]
+        })
+
+
     return Response({
         'success': True,
         'data': [
