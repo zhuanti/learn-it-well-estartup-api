@@ -147,7 +147,7 @@ def addinfo(request):
     # 新增
     try:
         Report.objects.create(user_id=data['user_id'],
-                              classroom_type_no_id="2",
+                              classroom_type_no_id="3",
                               subject_no_id=data['subject_no_id'],
                               entry_time=datetime.now(),
                               )

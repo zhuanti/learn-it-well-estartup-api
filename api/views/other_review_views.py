@@ -40,6 +40,7 @@ def get_room_no(request, pk):
         studyroom = Studyroom.objects.get(pk=pk)
     except:
         return Response({'success': False, 'message': '查無此房間'}, status=status.HTTP_404_NOT_FOUND)
+
     data = request.query_params
 
     user_id = data.get('user_id')

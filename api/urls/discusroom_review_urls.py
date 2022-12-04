@@ -9,7 +9,7 @@ urlpatterns = [
     path('rec/', rec_reviews),  # 聊天內容
     path('addroom/', addroom),  # 新增房間
     path('add/info/', addinfo),  # 新增使用者個資到report表
-    path('add/info/Leavetime/', addLT),  # 新增使用者個資到report表
+    path('add/info/Leavetime/', addLT),  # 新增使用者leave time to report表
 
     path('qus/<int:pk>', add_qus),  # 問題
     path('ans/<int:pk>', add_ans),  # 回答
