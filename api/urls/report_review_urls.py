@@ -15,6 +15,7 @@ urlpatterns = [
     path('reporttest/', get_reviews_report_test),
     path('reportweek/', get_report_week),
     path('reportday/', get_report_day),
+    path('addbase/', add_report_week)
     # path('day/', get_day),
     # path('wdate/', get_week),
     # path('countnum/', get_countnum_reviews)
