@@ -26,8 +26,12 @@ SECRET_KEY = 'django-insecure-0n537xapk)821+*%ea3jo7zz@dxxg$x=h^%3c!q2(9!ol3$@h)
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # 在本地時使用的連線資訊
+# DEBUG = True
+# ALLOWED_HOSTS = []
+
+# on school's server
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['140.131.114.169']
 
 # 在Heroku用的連線資訊
 # DEBUG = False
