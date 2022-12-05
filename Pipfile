@@ -14,6 +14,7 @@ djangorestframework = "*"
 django-filter = "*"
 channels = "*"
 channels-redis = "*"
+cryptocode = "*"
 
 [dev-packages]
 

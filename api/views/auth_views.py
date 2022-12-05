@@ -1,5 +1,6 @@
 import base64
 
+import cryptocode as cryptocode
 from django.db import IntegrityError
 
 from rest_framework import status
@@ -30,13 +31,24 @@ def login(request):
         return Response({'success': False, 'message': '已登入過'}, status=status.HTTP_403_FORBIDDEN)
 
     try:
-        user = User.objects.get(pk=data['id'], pwd=data['pwd'])
+        user = User.objects.get(pk=data['id'])
     except:
         return Response({'success': False, 'message': '登入失敗，帳號或密碼錯誤'}, status=status.HTTP_404_NOT_FOUND)
 
-    request.session['user_id'] = user.id
-    request.session.save()
-    return Response({'success': True, 'message': '登入成功', 'sessionid': request.session.session_key})
+    # request.session['user_id'] = user.id
+    # request.session.save()
+    # return Response({'success': True, 'message': '登入成功', 'sessionid': request.session.session_key})
+
+    # 解密
+    decrypted = cryptocode.decrypt(user.pwd, '93842')
+
+    # 資料表解密後的密碼是否跟使用者傳入的密碼相同
+    if decrypted == data['pwd']:
+        request.session['user_id'] = user.id
+        request.session.save()
+        return Response({'success': True, 'message': '登入成功', 'sessionid': request.session.session_key})
+    else:
+        return Response({'success': False, 'message': '登入失敗，帳號或密碼錯誤'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # 註冊
@@ -50,7 +62,9 @@ def register(request):
 
     # 新增使用者資料
     try:
-        User.objects.create(id=data['id'], pwd=data['pwd'], name=data['name'],
+        # 這邊 encrypt 是雜湊的名稱 (密碼資料,加密形式) 加密形式在登入與註冊的設定要一樣
+        pwd = cryptocode.encrypt(data['pwd'], '93842')
+        User.objects.create(id=data['id'], pwd=pwd, name=data['name'],
                             gender=data['gender'], live=data['live'],
                             # photo=data['photo'],
                             # photo=photo_string,
@@ -72,27 +86,9 @@ def register(request):
 @api_view(['POST'])
 def forget(request):
     data = request.data
-    # # 注意：因使用POST，data
-    # data = request.data
-    #
-    # user_id = data.get('user_id')
-    # # get 後面加東西，可能部會成功，故fileter 方便
-    #
-    # user = User.objects.filter(pk=user_id)
-    #
-    # if not user.exists():
-    #     return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
-    #
-    # return Response({'success': True, 'message': '成功找到此帳號'})
 
     try:
         user = User.objects.get(id=data['id'])
-
-        # User.objects.create(id=data['id'], pwd=data['pwd'], name=data['name'],
-        #                     gender=data['gender'], live=data['live'],
-        #                     # photo=data['photo'],
-        #                     # photo=photo_string,
-        #                     borth=data['borth'], purview=data['purview'])
 
     except:
         return Response({'success': False, 'message': '查無資料'}, status=status.HTTP_404_NOT_FOUND)
@@ -118,7 +114,8 @@ def forget_rest(request):
         return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
 
     try:
-        user.update(pwd=data['pwd'])
+        pwd = cryptocode.encrypt(data['pwd'], '93842')
+        user.update(pwd=pwd)
         return Response({'success': True, 'message': '編輯成功'})
 
     except:

@@ -1,3 +1,4 @@
+import cryptocode
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -85,7 +86,8 @@ def user_detail_edit(request):
         return Response({'success': False, 'message': '沒有此帳號'}, status=status.HTTP_404_NOT_FOUND)
 
     try:
-        user.update(pwd=data['pwd'], name=data['name'], live=data['live'], borth=data['borth'])
+        pwd = cryptocode.encrypt(data['pwd'], '93842')
+        user.update(pwd=pwd, name=data['name'], live=data['live'], borth=data['borth'])
         return Response({'success': True, 'message': '編輯成功'})
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
