@@ -35,7 +35,7 @@ def get_all_reviews(request):
     data = request.query_params
     user_id = data.get('user_id')
 
-    success_lists = Success_list.objects.filter(user_id=user_id).order_by('success_no_id') # user's success
+    success_lists = Success_list.objects.filter(user_id=user_id).order_by('success_no_id')  # user's success
     all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
     dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
     study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)

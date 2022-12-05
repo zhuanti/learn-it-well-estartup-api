@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterval_view, Wplan_fliter_view, \
     Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view, Chinese_day_view, \
     English_day_view, Math_day_view, Science_day_view, Social_day_view, Other_day_view, Chinese_week_view, \
-    English_week_view, Math_week_view, Science_week_view, Social_week_view, Other_week_view, Weekdatetime_final_view
+    English_week_view, Math_week_view, Science_week_view, Social_week_view, Other_week_view, Weekdatetime_final_view, \
+    All_tot_time_view, Dis_tot_time_view, Study_tot_time_view
 
 from utils.decorators import user_login_required
 
@@ -38,6 +39,7 @@ def get_all_reviews_test(request):
             for report in reports
         ]
     })
+
 
 # 日報表讀書規劃
 # @api_view()
@@ -411,6 +413,7 @@ def report_recordtime_edit(request):
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 # 報表每周基底測試
 @api_view(['POST'])
 @user_login_required
@@ -446,7 +449,7 @@ def get_report_week(request):
 
     user = User.objects.get(pk=user_id)
     wplans = Wplan_fliter_view.objects.filter(user=user_id)
-    wsuccesslists = Success_list.objects.filter(user=user_id)
+    wsuccesslists = Success_list.objects.filter(user=user_id).order_by('success_no_id')  # user's success
     rinfos = Weekreport_subinterval_view.objects.filter(user=user_id)
     cinfos = Chinese_week_view.objects.filter(user=user_id)
     einfos = English_week_view.objects.filter(user=user_id)
@@ -454,6 +457,11 @@ def get_report_week(request):
     sinfos = Science_week_view.objects.filter(user=user_id)
     soinfos = Social_week_view.objects.filter(user=user_id)
     oinfos = Other_week_view.objects.filter(user=user_id)
+
+    all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
+    dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
+    study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
+
     # weekdates = Weekdate_view.objects.all()
 
     subject_nos = Subject.objects.all()
@@ -510,11 +518,30 @@ def get_report_week(request):
                                 'suc_no': success.no,
                                 'suc_name': success.name,
                                 'suc_pace': success.pace,
+                                'suc_classroom': success.classroom_no.pk,
                             }
                             for success in Success.objects.filter(pk=wsuccesslist.success_no.pk)
                         ],
                     }
                     for wsuccesslist in wsuccesslists
+                ],
+                'all_tot_time': [
+                    {
+                        'total_min': all_tot_time.total_min
+                    }
+                    for all_tot_time in all_tot_time
+                ],
+                'dis_tot_time': [
+                    {
+                        'dis_total_min': dis_tot_time.dis_total_min
+                    }
+                    for dis_tot_time in dis_tot_time
+                ],
+                'study_tot_time': [
+                    {
+                        'study_total_min': study_tot_time.study_total_min
+                    }
+                    for study_tot_time in study_tot_time
                 ],
                 'wchart_lists': [
                     {
@@ -630,6 +657,8 @@ def get_report_week(request):
                 ],
             }
     })
+
+
 # 今日日期
 # @api_view()
 # @user_login_required
@@ -729,7 +758,7 @@ def get_report_day(request):
 
     user = User.objects.get(pk=user_id)
     dplans = Dplan_filter_view.objects.filter(user=user_id)
-    dsuccesslists = Success_list.objects.filter(user=user_id)
+    dsuccesslists = Success_list.objects.filter(user=user_id).order_by('success_no_id')  # user's success
     rinfos = Day_subcinterval_view.objects.filter(user=user_id)
     chineses = Chinese_day_view.objects.filter(user=user_id)
     englishs = English_day_view.objects.filter(user=user_id)
@@ -738,6 +767,10 @@ def get_report_day(request):
     socials = Social_day_view.objects.filter(user=user_id)
     others = Other_day_view.objects.filter(user=user_id)
     days = Day_view.objects.all()
+
+    all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
+    dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
+    study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
     return Response({
         'success': True,
         'data':
@@ -781,11 +814,30 @@ def get_report_day(request):
                                 'suc_no': success.no,
                                 'suc_name': success.name,
                                 'suc_pace': success.pace,
+                                'suc_classroom': success.classroom_no.pk,
                             }
                             for success in Success.objects.filter(pk=dsuccesslist.success_no.pk)
                         ],
                     }
                     for dsuccesslist in dsuccesslists
+                ],
+                'all_tot_time': [
+                    {
+                        'total_min': all_tot_time.total_min
+                    }
+                    for all_tot_time in all_tot_time
+                ],
+                'dis_tot_time': [
+                    {
+                        'dis_total_min': dis_tot_time.dis_total_min
+                    }
+                    for dis_tot_time in dis_tot_time
+                ],
+                'study_tot_time': [
+                    {
+                        'study_total_min': study_tot_time.study_total_min
+                    }
+                    for study_tot_time in study_tot_time
                 ],
                 'dchart_lists': [
                     {
