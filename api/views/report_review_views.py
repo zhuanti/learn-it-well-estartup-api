@@ -771,6 +771,48 @@ def get_report_day(request):
     all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
     dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
     study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
+
+    success_nos = Success.objects.all()  # success name
+    subject_nos = Subject.objects.all()
+
+    # 當沒有成就或報表中沒有讀書時間時，執行以下while
+    while not dsuccesslists.exists(): # user don't have successs
+        for success_no in success_nos:
+            Success_list.objects.create(user_id=user_id, success_no=success_no, pace=0,
+                                        lockif=0)
+
+        dsuccesslists = Success_list.objects.filter(user_id=user_id).order_by('success_no_id') # user's success
+
+    while not all_tot_time.exists():
+        for subject_no in subject_nos:
+            Report.objects.create(user_id=user_id,
+                                  classroom_type_no_id="4",
+                                  subject_no_id=subject_no.pk,
+                                  entry_time=datetime.now(),
+                                  exit_time=datetime.now(),
+                                  )
+        all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
+
+    while not dis_tot_time.exists():
+        for subject_no in subject_nos:
+            Report.objects.create(user_id=user_id,
+                                  classroom_type_no_id="3",
+                                  subject_no_id=subject_no.pk,
+                                  entry_time=datetime.now(),
+                                  exit_time=datetime.now(),
+                                  )
+        dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
+
+    while not study_tot_time.exists():
+        for subject_no in subject_nos:
+            Report.objects.create(user_id=user_id,
+                                  classroom_type_no_id="1",
+                                  subject_no_id=subject_no.pk,
+                                  entry_time=datetime.now(),
+                                  exit_time=datetime.now(),
+                                  )
+        study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
+
     return Response({
         'success': True,
         'data':
