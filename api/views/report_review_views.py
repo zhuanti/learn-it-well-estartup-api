@@ -490,8 +490,8 @@ def get_report_week(request):
             Report.objects.create(user_id=user_id,
                                   classroom_type_no_id="4",
                                   subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
+                                  entry_time=datetime.datetime.now(),
+                                  exit_time=datetime.datetime.now(),
                                   )
         all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
 
@@ -500,8 +500,8 @@ def get_report_week(request):
             Report.objects.create(user_id=user_id,
                                   classroom_type_no_id="3",
                                   subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
+                                  entry_time=datetime.datetime.now(),
+                                  exit_time=datetime.datetime.now(),
                                   )
         dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
 
@@ -510,8 +510,8 @@ def get_report_week(request):
             Report.objects.create(user_id=user_id,
                                   classroom_type_no_id="1",
                                   subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
+                                  entry_time=datetime.datetime.now(),
+                                  exit_time=datetime.datetime.now(),
                                   )
         study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 
@@ -808,6 +808,8 @@ def get_report_day(request):
     others = Other_day_view.objects.filter(user=user_id)
     days = Day_view.objects.all()
 
+    week_days = Weekdatetime_final_view.objects.all()
+
     all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
     dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
     study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
@@ -828,8 +830,8 @@ def get_report_day(request):
             Report.objects.create(user_id=user_id,
                                   classroom_type_no_id="4",
                                   subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
+                                  entry_time=datetime.datetime.now(),
+                                  exit_time=datetime.datetime.now(),
                                   )
         all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
 
@@ -838,8 +840,8 @@ def get_report_day(request):
             Report.objects.create(user_id=user_id,
                                   classroom_type_no_id="3",
                                   subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
+                                  entry_time=datetime.datetime.now(),
+                                  exit_time=datetime.datetime.now(),
                                   )
         dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
 
@@ -848,8 +850,8 @@ def get_report_day(request):
             Report.objects.create(user_id=user_id,
                                   classroom_type_no_id="1",
                                   subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
+                                  entry_time=datetime.datetime.now(),
+                                  exit_time=datetime.datetime.now(),
                                   )
         study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 

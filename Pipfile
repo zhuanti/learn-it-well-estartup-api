@@ -15,6 +15,7 @@ django-filter = "*"
 channels = "*"
 channels-redis = "*"
 cryptocode = "*"
+django-datetime = "*"
 
 [dev-packages]
 
