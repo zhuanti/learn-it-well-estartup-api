@@ -49,7 +49,12 @@ def get_user_detail(request):
             'name': user.name,
             'id': user.pk,
             'gender': user.gender,
-            'live': user.live,
+            'live': [
+                {
+
+                }
+                for success in Success.objects.filter(pk=usersuccesslist.success_no.pk)
+            ],
             'borth': user.borth,
             'usersuccess_lists': [
                 {
