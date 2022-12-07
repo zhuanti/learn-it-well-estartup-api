@@ -13,6 +13,22 @@ from django.db import models
 from django.db.models import Model
 
 
+class Live(models.Model):
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=30)
+
+    class Meta:
+        managed = False
+        db_table = 'live'
+
+class Gender(models.Model):
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=30)
+
+    class Meta:
+        managed = False
+        db_table = 'gender'
+
 class User(models.Model):
     id = models.CharField(primary_key=True, max_length=100)
     pwd = models.CharField(max_length=30)
