@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Success, Success_list, User, All_tot_time_view, Report, Subject, Dis_tot_time_view, Study_tot_time_view
+from api.models import Success, Success_list, User, All_tot_time_view, Report, Subject, Dis_tot_time_view, \
+    Study_tot_time_view
 
 from utils.decorators import user_login_required
 
@@ -40,10 +41,8 @@ def get_all_reviews(request):
     dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
     study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 
-    success_nos = Success.objects.all() # success name
+    success_nos = Success.objects.all()  # success name
     subject_nos = Subject.objects.all()
-
-
 
     while not success_lists.exists(): # user don't have successs
         for success_no in success_nos:
@@ -83,45 +82,79 @@ def get_all_reviews(request):
         study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 
 
+    data = []
+
+    for success_list in success_lists:
+        flag = Success.objects.filter(pk=success_list.success_no.pk).first().classroom_no.pk
+        d = {
+            'no': success_list.pk,
+            'user_id': success_list.user.pk,
+            'success_no': success_list.success_no.pk,
+            'pace': success_list.pace,
+            'lockif': success_list.lockif,
+            'suc_no': Success.objects.filter(pk=success_list.success_no.pk).first().no,  # 成就流水號
+            'suc_name': Success.objects.filter(pk=success_list.success_no.pk).first().name,
+            'suc_pace': Success.objects.filter(pk=success_list.success_no.pk).first().pace,  # 進度
+            'suc_classroom': Success.objects.filter(pk=success_list.success_no.pk).first().classroom_no.pk,
+        }
+
+        if flag == 1:
+            d['res_time'] = int(study_tot_time.first().study_total_min)
+        elif flag == 3:
+            d['res_time'] = int(dis_tot_time.first().dis_total_min)
+        else:
+            d['res_time'] = int(all_tot_time.first().total_min)
+        data.append(d)
+
+
+
     return Response({
         'success': True,
-        'data': {
-            'all_tot_time': [
-                {
-                    'total_min': all_tot_time.total_min
-                }
-                for all_tot_time in all_tot_time
-            ],
-            'dis_tot_time': [
-                {
-                    'dis_total_min': dis_tot_time.dis_total_min
-                }
-                for dis_tot_time in dis_tot_time
-            ],
-            'study_tot_time': [
-                {
-                    'study_total_min': study_tot_time.study_total_min
-                }
-                for study_tot_time in study_tot_time
-            ],
-            'sus_all': [
-                {
-                    'no': success_list.pk,
-                    'user_id': success_list.user.pk,
-                    'success_no': success_list.success_no.pk,
-                    'pace': success_list.pace,
-                    'lockif': success_list.lockif,
-                    'success_names': [
-                        {
-                            'suc_no': success.no,
-                            'suc_name': success.name,
-                            'suc_pace': success.pace,
-                            'suc_classroom': success.classroom_no.pk,
-                        }
-                        for success in Success.objects.filter(pk=success_list.success_no.pk)
-                    ],
-                }
-                for success_list in success_lists
-            ]
-        }
+        'data': data
     })
+
+
+    # 舊得抓取方法
+    #
+    # return Response({
+    #     'success': True,
+    #     'data': {
+    #         'all_tot_time': [
+    #             {
+    #                 'total_min': all_tot_time.total_min
+    #             }
+    #             for all_tot_time in all_tot_time
+    #         ],
+    #         'dis_tot_time': [
+    #             {
+    #                 'dis_total_min': dis_tot_time.dis_total_min
+    #             }
+    #             for dis_tot_time in dis_tot_time
+    #         ],
+    #         'study_tot_time': [
+    #             {
+    #                 'study_total_min': study_tot_time.study_total_min
+    #             }
+    #             for study_tot_time in study_tot_time
+    #         ],
+    #         'sus_all': [
+    #             {
+    #                 'no': success_list.pk,
+    #                 'user_id': success_list.user.pk,
+    #                 'success_no': success_list.success_no.pk,
+    #                 'pace': success_list.pace,
+    #                 'lockif': success_list.lockif,
+    #                 'success_names': [
+    #                     {
+    #                         'suc_no': success.no,
+    #                         'suc_name': success.name,
+    #                         'suc_pace': success.pace,
+    #                         'suc_classroom': success.classroom_no.pk,
+    #                     }
+    #                     for success in Success.objects.filter(pk=success_list.success_no.pk)
+    #                 ],
+    #             }
+    #             for success_list in success_lists
+    #         ]
+    #     }
+    # })

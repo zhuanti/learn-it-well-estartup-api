@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-0n537xapk)821+*%ea3jo7zz@dxxg$x=h^%3c!q2(9!ol3$@h)
 
 # on school's server
 DEBUG = True
-ALLOWED_HOSTS = ['140.131.114.169', '127.0.0.1']
+ALLOWED_HOSTS = ['140.131.114.169', '127.0.0.1', 'localhost']
 
 # 在Heroku用的連線資訊
 # DEBUG = False
