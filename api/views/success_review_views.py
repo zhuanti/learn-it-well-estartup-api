@@ -158,3 +158,28 @@ def get_all_reviews(request):
     #         ]
     #     }
     # })
+
+# 編輯成就
+@api_view(['POST'])
+@user_login_required
+def success_fin(request):
+
+    data = request.data
+
+    no = data.get('no')
+    user_id = data.get('user_id')
+
+    user = User.objects.filter(pk=user_id)
+    success_list = Success_list.objects.filter(pk=no)
+
+
+    if not success_list.exists():
+        return Response({'success': False, 'message': '沒有此成就'}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        success_list.update(lockif=1)
+        user.update(point=int(user.first().point)+100)
+        return Response({'success': True, 'message': '編輯成功'})
+
+    except:
+        return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)

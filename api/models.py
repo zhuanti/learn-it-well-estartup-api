@@ -38,6 +38,7 @@ class User(models.Model):
     photo = models.TextField(blank=True, null=True)
     borth = models.DateField(blank=True, null=True)
     purview = models.CharField(max_length=1)
+    point = models.IntegerField()
 
     class Meta:
         managed = False
