@@ -166,8 +166,8 @@ def success_fin(request):
 
     data = request.data
 
-    no = data.get('no')
-    user_id = data.get('user_id')
+    no = data['no']
+    user_id = data['user_id']
 
     user = User.objects.filter(pk=user_id)
     success_list = Success_list.objects.filter(pk=no)
@@ -177,7 +177,7 @@ def success_fin(request):
         return Response({'success': False, 'message': '沒有此成就'}, status=status.HTTP_404_NOT_FOUND)
 
     try:
-        success_list.update(lockif=1)
+        success_list.update(lockif="1")
         user.update(point=int(user.first().point)+100)
         return Response({'success': True, 'message': '編輯成功'})
 
