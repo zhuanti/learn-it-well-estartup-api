@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', logout),
     path('forget/', forget),
     path('forget/reset/', forget_rest),
+    path('live_gender/', get_live_gender),
 ]
