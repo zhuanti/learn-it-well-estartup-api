@@ -57,7 +57,7 @@ def get_user_detail(request):
                     for gender in Gender.objects.filter(no=user.gender.pk)
             ],
             'live': user.live.pk,
-            'live': [
+            'live_list': [
                     {
                         'live_no': live.pk,
                         'live_name': live.name,
