@@ -524,6 +524,7 @@ def get_report_week(request):
                         'name': user.name,
                         'id': user.pk,
                         'live': user.live.pk,
+                        'point': user.point,
                         'live_list': [
                                 {
                                     'live_no': live.pk,
@@ -573,19 +574,19 @@ def get_report_week(request):
                 ],
                 'all_tot_time': [
                     {
-                        'total_min': all_tot_time.total_min
+                        'total_min': int(all_tot_time.total_min)
                     }
                     for all_tot_time in all_tot_time
                 ],
                 'dis_tot_time': [
                     {
-                        'dis_total_min': dis_tot_time.dis_total_min
+                        'dis_total_min': int(dis_tot_time.dis_total_min)
                     }
                     for dis_tot_time in dis_tot_time
                 ],
                 'study_tot_time': [
                     {
-                        'study_total_min': study_tot_time.study_total_min
+                        'study_total_min': int(study_tot_time.study_total_min)
                     }
                     for study_tot_time in study_tot_time
                 ],
@@ -870,6 +871,7 @@ def get_report_day(request):
                     {
                         'name': user.name,
                         'id': user.pk,
+                        'point': user.point,
                         'live': user.live.pk,
                         'live_list': [
                                 {

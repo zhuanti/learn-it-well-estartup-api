@@ -68,7 +68,8 @@ def register(request):
                             gender_id=data['gender'], live_id=data['live'],
                             # photo=data['photo'],
                             # photo=photo_string,
-                            borth=data['borth'], purview=data['purview'])
+                            borth=data['borth'], purview='0',
+                            point='0')
 
         return Response({'success': True, 'message': '註冊成功'})
 

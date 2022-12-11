@@ -48,6 +48,7 @@ def get_user_detail(request):
         'data': {
             'name': user.name,
             'id': user.pk,
+            'point': user.point,
             'gender': user.gender.pk,
             'gender_list': [
                     {
