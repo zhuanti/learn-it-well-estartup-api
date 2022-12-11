@@ -23,7 +23,7 @@ class Live(models.Model):
 
 class Gender(models.Model):
     no = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=30)
+    gender = models.CharField(max_length=30)
 
     class Meta:
         managed = False
