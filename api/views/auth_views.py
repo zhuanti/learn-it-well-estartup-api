@@ -65,7 +65,7 @@ def register(request):
         # 這邊 encrypt 是雜湊的名稱 (密碼資料,加密形式) 加密形式在登入與註冊的設定要一樣
         pwd = cryptocode.encrypt(data['pwd'], '93842')
         User.objects.create(id=data['id'], pwd=pwd, name=data['name'],
-                            gender=data['gender'], live=data['live'],
+                            gender_id=data['gender'], live_id=data['live'],
                             # photo=data['photo'],
                             # photo=photo_string,
                             borth=data['borth'], purview=data['purview'])
@@ -125,12 +125,13 @@ def forget_rest(request):
 # 居住地&性別列表
 @api_view()
 def get_live_gender(request):
+
     genders = Gender.objects.all()
     lives = Live.objects.all()
 
     return Response({
         'success': True,
-        'data': [
+        'data':
             {
                 'gender_lists': [
                     {
@@ -147,7 +148,6 @@ def get_live_gender(request):
                     for live in lives
                 ],
             }
-        ]
     })
 
 
