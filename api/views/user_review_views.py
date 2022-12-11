@@ -64,6 +64,13 @@ def get_user_detail(request):
                     }
                     for live in Live.objects.filter(no=user.live.pk)
             ],
+            'all_live_list': [
+                {
+                    'live_no': live.pk,
+                    'live_name': live.name,
+                }
+                for live in Live.objects.all()
+            ],
             'borth': user.borth,
             'usersuccess_lists': [
                 {
