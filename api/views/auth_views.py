@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import User
+from api.models import User, Gender, Live
 
 from utils.decorators import user_login_required
 
@@ -121,5 +121,33 @@ def forget_rest(request):
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+# 居住地&性別列表
+@api_view()
+def get_live_gender(request):
+    genders = Gender.objects.all()
+    lives = Live.objects.all()
+
+    return Response({
+        'success': True,
+        'data': [
+            {
+                'gender_lists': [
+                    {
+                        'gender_no': gender.pk,
+                        'gender_gender': gender.gender,
+                    }
+                    for gender in genders
+                ],
+                'live_lists': [
+                    {
+                        'live_no': live.pk,
+                        'live_name': live.name,
+                    }
+                    for live in lives
+                ],
+            }
+        ]
+    })
 
 
