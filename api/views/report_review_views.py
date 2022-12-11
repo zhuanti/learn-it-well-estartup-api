@@ -7,7 +7,7 @@ from api.models import Report, Subject, User, Dplan_filter_view, Day_subcinterva
     Weekreport_subinterval_view, Success_list, Success, Pace, Day_view, Countnum_view, Weekdate_view, Chinese_day_view, \
     English_day_view, Math_day_view, Science_day_view, Social_day_view, Other_day_view, Chinese_week_view, \
     English_week_view, Math_week_view, Science_week_view, Social_week_view, Other_week_view, Weekdatetime_final_view, \
-    All_tot_time_view, Dis_tot_time_view, Study_tot_time_view
+    All_tot_time_view, Dis_tot_time_view, Study_tot_time_view, Live
 
 from utils.decorators import user_login_required
 
@@ -523,8 +523,14 @@ def get_report_week(request):
                     {
                         'name': user.name,
                         'id': user.pk,
-                        'gender': user.gender,
-                        'live': user.live,
+                        'live': user.live.pk,
+                        'live_list': [
+                                {
+                                    'live_no': live.pk,
+                                    'live_name': live.name,
+                                }
+                                for live in Live.objects.filter(no=user.live.pk)
+                        ],
                         'borth': user.borth,
                     }
                 ],
@@ -864,8 +870,14 @@ def get_report_day(request):
                     {
                         'name': user.name,
                         'id': user.pk,
-                        'gender': user.gender,
-                        'live': user.live,
+                        'live': user.live.pk,
+                        'live_list': [
+                                {
+                                    'live_no': live.pk,
+                                    'live_name': live.name,
+                                }
+                                for live in Live.objects.filter(no=user.live.pk)
+                        ],
                         'borth': user.borth,
                     }
                 ],
