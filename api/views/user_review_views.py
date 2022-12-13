@@ -51,19 +51,26 @@ def get_user_detail(request):
             'point': user.point,
             'gender': user.gender.pk,
             'gender_list': [
-                    {
-                        'gender_no': gender.pk,
-                        'gender_gender': gender.gender,
-                    }
-                    for gender in Gender.objects.filter(no=user.gender.pk)
+                {
+                    'gender_no': gender.pk,
+                    'gender_gender': gender.gender,
+                }
+                for gender in Gender.objects.filter(no=user.gender.pk)
+            ],
+            'all_gender_list': [
+                {
+                    'gender_no': gender.pk,
+                    'gender_gender': gender.gender,
+                }
+                for gender in Gender.objects.all()
             ],
             'live': user.live.pk,
             'live_list': [
-                    {
-                        'live_no': live.pk,
-                        'live_name': live.name,
-                    }
-                    for live in Live.objects.filter(no=user.live.pk)
+                {
+                    'live_no': live.pk,
+                    'live_name': live.name,
+                }
+                for live in Live.objects.filter(no=user.live.pk)
             ],
             'all_live_list': [
                 {
@@ -109,7 +116,7 @@ def user_detail_edit(request):
 
     try:
         pwd = cryptocode.encrypt(data['pwd'], '93842')
-        user.update(pwd=pwd, name=data['name'], live=data['live'], borth=data['borth'])
+        user.update(pwd=pwd, name=data['name'], gender=data['gender'], live=data['live'], borth=data['borth'])
         return Response({'success': True, 'message': '編輯成功'})
     except:
         return Response({'success': False, 'message': '編輯失敗'}, status=status.HTTP_400_BAD_REQUEST)
