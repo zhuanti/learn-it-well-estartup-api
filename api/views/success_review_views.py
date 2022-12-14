@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from api.models import Success, Success_list, User, All_tot_time_view, Report, Subject, Dis_tot_time_view, \
-    Study_tot_time_view
+    Study_tot_time_view, Weekdatetime_final_view
 
 from utils.decorators import user_login_required
 
@@ -37,12 +37,11 @@ def get_all_reviews(request):
     user_id = data.get('user_id')
 
     success_lists = Success_list.objects.filter(user_id=user_id).order_by('success_no_id')  # user's success
-    all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
-    dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
-    study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 
     success_nos = Success.objects.all()  # success name
-    subject_nos = Subject.objects.all()
+
+    # subject_nos = Subject.objects.all()
+    # week_days = Weekdatetime_final_view.objects.all()
 
     while not success_lists.exists(): # user don't have successs
         for success_no in success_nos:
@@ -51,35 +50,35 @@ def get_all_reviews(request):
 
         success_lists = Success_list.objects.filter(user_id=user_id).order_by('success_no_id') # user's success
 
-    while not all_tot_time.exists():
-        for subject_no in subject_nos:
-            Report.objects.create(user_id=user_id,
-                                  classroom_type_no_id="4",
-                                  subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
-                                  )
-        all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
+    # while not all_tot_time.exists():
+    # for subject_no in subject_nos:
+    Report.objects.create(user_id=user_id,
+                          classroom_type_no_id="4",
+                          subject_no_id="6",
+                          entry_time=datetime.now(),
+                          exit_time=datetime.now(),
+                          )
+    all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
 
-    while not dis_tot_time.exists():
-        for subject_no in subject_nos:
-            Report.objects.create(user_id=user_id,
-                                  classroom_type_no_id="3",
-                                  subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
-                                  )
-        dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
+    # while not dis_tot_time.exists():
+    # for subject_no in subject_nos:
+    Report.objects.create(user_id=user_id,
+                          classroom_type_no_id="3",
+                          subject_no_id="6",
+                          entry_time=datetime.now(),
+                          exit_time=datetime.now(),
+                          )
+    dis_tot_time = Dis_tot_time_view.objects.filter(user_id=user_id)
 
-    while not study_tot_time.exists():
-        for subject_no in subject_nos:
-            Report.objects.create(user_id=user_id,
-                                  classroom_type_no_id="1",
-                                  subject_no_id=subject_no.pk,
-                                  entry_time=datetime.now(),
-                                  exit_time=datetime.now(),
-                                  )
-        study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
+    # while not study_tot_time.exists():
+    # for subject_no in subject_nos:
+    Report.objects.create(user_id=user_id,
+                          classroom_type_no_id="1",
+                          subject_no_id="6",
+                          entry_time=datetime.now(),
+                          exit_time=datetime.now(),
+                          )
+    study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 
 
     data = []
@@ -99,6 +98,7 @@ def get_all_reviews(request):
         }
 
         if flag == 1:
+
             d['res_time'] = int(study_tot_time.first().study_total_min)
         elif flag == 3:
             d['res_time'] = int(dis_tot_time.first().dis_total_min)
