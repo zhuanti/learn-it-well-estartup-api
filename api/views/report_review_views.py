@@ -824,7 +824,7 @@ def get_report_day(request):
     # study_tot_time = Study_tot_time_view.objects.filter(user_id=user_id)
 
     success_nos = Success.objects.all()  # success name
-    # subject_nos = Subject.objects.all()
+    subject_nos = Subject.objects.all()
 
     # 當沒有成就或報表中沒有讀書時間時，執行以下while
     while not dsuccesslists.exists(): # user don't have successs
@@ -835,13 +835,13 @@ def get_report_day(request):
         dsuccesslists = Success_list.objects.filter(user_id=user_id).order_by('success_no_id') # user's success
 
     # while not all_tot_time.exists():
-    # for subject_no in subject_nos:
-    Report.objects.create(user_id=user_id,
-                          classroom_type_no_id="4",
-                          subject_no_id="6",
-                          entry_time=datetime.datetime.now(),
-                          exit_time=datetime.datetime.now(),
-                          )
+    for subject_no in subject_nos:
+        Report.objects.create(user_id=user_id,
+                              classroom_type_no_id="4",
+                              subject_no_id=subject_no.pk,
+                              entry_time=datetime.datetime.now(),
+                              exit_time=datetime.datetime.now(),
+                              )
     all_tot_time = All_tot_time_view.objects.filter(user_id=user_id)  # all read time
 
     # while not dis_tot_time.exists():
