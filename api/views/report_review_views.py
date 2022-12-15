@@ -450,7 +450,7 @@ def get_report_week(request):
     user = User.objects.get(pk=user_id)
     wplans = Wplan_fliter_view.objects.filter(user=user_id)
     wsuccesslists = Success_list.objects.filter(user=user_id).order_by('success_no_id')  # user's success
-    rinfos = Weekreport_subinterval_view.objects.filter(user=user_id)
+    rinfos = Weekreport_subinterval_view.objects.filter(user=user_id).order_by('subject_no')
     cinfos = Chinese_week_view.objects.filter(user=user_id)
     einfos = English_week_view.objects.filter(user=user_id)
     minfos = Math_week_view.objects.filter(user=user_id)
@@ -808,7 +808,7 @@ def get_report_day(request):
     user = User.objects.get(pk=user_id)
     dplans = Dplan_filter_view.objects.filter(user=user_id)
     dsuccesslists = Success_list.objects.filter(user=user_id).order_by('success_no_id')  # user's success
-    rinfos = Day_subcinterval_view.objects.filter(user=user_id)
+    rinfos = Day_subcinterval_view.objects.filter(user=user_id).order_by('subject_no')
     chineses = Chinese_day_view.objects.filter(user=user_id)
     englishs = English_day_view.objects.filter(user=user_id)
     maths = Math_day_view.objects.filter(user=user_id)
